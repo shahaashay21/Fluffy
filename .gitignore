@@ -1,0 +1,12 @@
+#ignore the classes
+classes/
+
+#ignore .idea folder
+.idea/
+
+#ignore .settings folder
+.settings/
+
+#ignore build files
+build_pb.sh
+startServer.sh

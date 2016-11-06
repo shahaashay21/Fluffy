@@ -1,0 +1,64 @@
+option optimize_for = SPEED;
+option java_package = "pipe.work";
+
+import "common.proto";
+import "election.proto";
+import "storage.proto";
+
+message WorkState {
+    required int32 enqueued = 1;
+    required int32 processed = 2;
+}
+
+message Heartbeat {
+    required WorkState state = 1;
+}
+
+/**
+ * description of the work
+ */
+message Task {
+    required int64 series_id = 1;
+    required int32 seq_id = 2;
+}
+
+message SavedFile{
+    optional string key = 12;
+    optional int32 sequence_no = 14;
+}
+
+message Payload{
+    optional Failure err = 3;
+
+    // a sanity check for testing
+    optional bool ping = 4;
+
+    // status updates between adjacent workers
+    optional Heartbeat beat = 5;
+
+    optional Task task = 6;
+    optional WorkState state = 7;
+    optional LeaderStatus leader = 8;
+    optional RaftMessage raftmsg = 9;
+    optional LeaderElection election = 10;
+    optional Query query = 16;
+
+    optional Response response = 17;
+    optional bytes storageFile = 18;
+    optional SavedFile savedFile = 19;
+
+}
+
+// These are messages to keep the network running (not to perform work)
+message WorkRequest {
+    required Header header = 1;
+    optional int64 secret = 2;
+
+    /**
+     * The actions (request or response) is
+     * implicit through which data structure is in the payload.
+     */
+
+    required Payload payload = 3;
+}
+
