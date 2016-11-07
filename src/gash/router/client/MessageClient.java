@@ -164,9 +164,9 @@ public class MessageClient {
 
     public static GlobalHeader.Builder createHeader(int cluster_id, int distination_id) {
         GlobalHeader.Builder hb = GlobalHeader.newBuilder();
-        hb.setCluster_id(cluster_id);
+        hb.setClusterId(cluster_id);
         hb.setTime(System.currentTimeMillis());
-        hb.setDistination_id(distination_id);
+        hb.setDistinationId(distination_id);
         return hb;
     }
 }

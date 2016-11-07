@@ -38,11 +38,11 @@ import pipe.work.Work;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
- * 
+ *
  * TODO replace println with logging!
- * 
+ *
  * @author gash
- * 
+ *
  */
 public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	protected static Logger logger = LoggerFactory.getLogger("work");
@@ -58,42 +58,42 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 
 	/**
 	 * override this method to provide processing behavior. T
-	 * 
+	 *
 	 * @param msg
 	 */
-	public void handleMessage(Work.WorkRequest msg, Channel channel) {
-		if (msg == null) {
-			// TODO add logging
-			logger.error("ERROR: Unexpected content - " + msg);
-			return;
-		}
-
-		if (debug)
-
-
-		// TODO How can you implement this without if-else statements?
-		try {
-
-		} catch (Exception e) {
-			// TODO add logging
-			Failure.Builder eb = Failure.newBuilder();
-			eb.setId(state.getConf().getNodeId());
-			eb.setRefId(msg.getHeader().getNodeId());
-			eb.setMessage(e.getMessage());
-			Work.WorkRequest.Builder rb = Work.WorkRequest.newBuilder(msg);
-			rb.setPayload(Work.Payload.newBuilder().setErr(eb));
-			channel.write(rb.build());
-		}
-
-		System.out.flush();
-
-	}
+	// public void handleMessage(Work.WorkRequest msg, Channel channel) {
+	// 	if (msg == null) {
+	// 		// TODO add logging
+	// 		logger.error("ERROR: Unexpected content - " + msg);
+	// 		return;
+	// 	}
+	//
+	// 	if (debug)
+	//
+	//
+	// 	// TODO How can you implement this without if-else statements?
+	// 	try {
+	//
+	// 	} catch (Exception e) {
+	// 		// TODO add logging
+	// 		Failure.Builder eb = Failure.newBuilder();
+	// 		eb.setId(state.getConf().getNodeId());
+	// 		eb.setRefId(msg.getHeader().getNodeId());
+	// 		eb.setMessage(e.getMessage());
+	// 		Work.WorkRequest.Builder rb = Work.WorkRequest.newBuilder(msg);
+	// 		rb.setPayload(Work.Payload.newBuilder().setErr(eb));
+	// 		channel.write(rb.build());
+	// 	}
+	//
+	// 	System.out.flush();
+	//
+	// }
 
 	/**
 	 * a message was received from the server. Here we dispatch the message to
 	 * the client's thread pool to minimize the time it takes to process other
 	 * messages.
-	 * 
+	 *
 	 * @param ctx
 	 *            The channel the message was received from
 	 * @param msg

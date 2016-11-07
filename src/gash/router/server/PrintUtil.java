@@ -30,8 +30,8 @@ public class PrintUtil {
 		System.out.println("\n-------------------------------------------------------");
 		System.out.println("ID:        " + hdr.getNodeId());
 		System.out.println("Time:      " + hdr.getTime());
-		System.out.println("Sorc Host: " + hdr.getSourceHost());
-		System.out.println("Dest Host: " + hdr.getDestinationHost());
+		//System.out.println("Sorc Host: " + hdr.getSourceHost());
+		//System.out.println("Dest Host: " + hdr.getDestination());
 		if (hdr.hasMaxHops())
 			System.out.println("Hops: " + hdr.getMaxHops());
 		if (hdr.hasDestination())
@@ -39,10 +39,10 @@ public class PrintUtil {
 
 	}
 
-	public static void printCommand(Pipe.CommandRequest msg) {
+	public static void printCommand(Pipe.CommandMessage msg) {
 		PrintUtil.printHeader(msg.getHeader());
 
-		Pipe.Payload py = msg.getPayload();
+		Pipe.CommandMessage.Payload py = msg.getCommandMessage().getPayload();
 
 		System.out.print("\nCommand: ");
 		if (py.hasErr()) {
@@ -59,11 +59,11 @@ public class PrintUtil {
 			System.out.println("Unknown");
 	}
 
-	public static void printGlobalCommand(Global.GlobalCommandMessage msg) {
+	public static void printGlobalCommand(Global.GlobalMessage msg) {
 		PrintUtil.printHeader(msg.getHeader());
 
-		System.out.print("\nCommand: ");
-		if (msg.hasErr()) {
+		System.out.print("\nGlobalMessage: ");
+		if (msg.getPayload().hasFailure()) {
 			System.out.println("Failure");
 			System.out.println(PrintUtil.gap + "Code:    " + msg.getErr().getId());
 			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getErr().getRefId());
@@ -80,15 +80,15 @@ public class PrintUtil {
 		}
 	}
 
-	public static void printQuery(Storage.Query query){
+	public static void printQuery(Global.GlobalMessage.Payload.Request req){
 		System.out.println("Query");
-		switch(query.getAction()){
-			case GET:
-				System.out.println(PrintUtil.gap + "Search File:  " + query.getKey());
+		switch(req.getRequestType()){
+			case READ:
+				System.out.println(PrintUtil.gap + "Search File:  " + req.getRequestId());
 				break;
-			case STORE:
-				System.out.println(PrintUtil.gap + " File to Store:  " + query.getKey());
-				System.out.println(PrintUtil.gap + " Sequence:  " + query.getSequenceNo());
+			case WRITE:
+				System.out.println(PrintUtil.gap + " File to Store:  " + req.getRequestId());
+				System.out.println(PrintUtil.gap + " Sequence:  " + query.getPayload().getFile().getChunkId();
 				break;
 			case UPDATE:
 				break;

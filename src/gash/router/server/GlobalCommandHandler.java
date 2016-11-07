@@ -27,11 +27,11 @@ import routing.Pipe;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
- * 
+ *
  * TODO replace println with logging!
- * 
+ *
  * @author gash
- * 
+ *
  */
 public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.GlobalCommandMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
@@ -48,41 +48,41 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	 * override this method to provide processing behavior. This implementation
 	 * mimics the routing we see in annotating classes to support a RESTful-like
 	 * behavior (e.g., jax-rs).
-	 * 
+	 *
 	 * @param msg
 	 */
-	public void handleMessage(Global.GlobalCommandMessage msg, Channel channel) {
-		if (msg == null) {
-			// TODO add logging
-			logger.error("ERROR: Unexpected content - " + msg);
-			return;
-		}
-
-		//PrintUtil.printCommand(msg);
-
-		try {
-
-		} catch (Exception e) {
-			// TODO add logging
-			Failure.Builder eb = Failure.newBuilder();
-			eb.setId(conf.getNodeId());
-			eb.setRefId(msg.getHeader().getNodeId());
-			eb.setMessage(e.getMessage());
-			Global.GlobalCommandMessage.Builder rb = Global.GlobalCommandMessage.newBuilder(msg);
-			Pipe.Payload.Builder pb = Pipe.Payload.newBuilder();
-			pb.setErr(eb);
-
-			channel.write(rb.build());
-		}
-
-		System.out.flush();
-	}
+	// public void handleMessage(Global.GlobalCommandMessage msg, Channel channel) {
+	// 	if (msg == null) {
+	// 		// TODO add logging
+	// 		logger.error("ERROR: Unexpected content - " + msg);
+	// 		return;
+	// 	}
+	//
+	// 	//PrintUtil.printCommand(msg);
+	//
+	// 	try {
+	//
+	// 	} catch (Exception e) {
+	// 		// TODO add logging
+	// 		Failure.Builder eb = Failure.newBuilder();
+	// 		eb.setId(conf.getNodeId());
+	// 		eb.setRefId(msg.getHeader().getNodeId());
+	// 		eb.setMessage(e.getMessage());
+	// 		Global.GlobalCommandMessage.Builder rb = Global.GlobalCommandMessage.newBuilder(msg);
+	// 		Pipe.Payload.Builder pb = Pipe.Payload.newBuilder();
+	// 		pb.setErr(eb);
+	//
+	// 		channel.write(rb.build());
+	// 	}
+	//
+	// 	System.out.flush();
+	// }
 
 	/**
 	 * a message was received from the server. Here we dispatch the message to
 	 * the client's thread pool to minimize the time it takes to process other
 	 * messages.
-	 * 
+	 *
 	 * @param ctx
 	 *            The channel the message was received from
 	 * @param msg
