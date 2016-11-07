@@ -19,8 +19,7 @@ package gash.router.app;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
-import global.Global;
-import global.Global.*;
+import global.*;
 import routing.Pipe;
 
 public class DemoApp implements CommListener {
@@ -80,8 +79,9 @@ public class DemoApp implements CommListener {
 		return "demo";
 	}
 
+
 	@Override
-	public void onMessage(GlobalMessage msg) {
+	public void onMessage(Global.GlobalMessage msg) {
 		if(msg.getResponse().getRequestType().equals("WRITE"))
 			System.out.println("Result of data save request : Saved successfully---> " + msg.getResponse().getSuccess());
 		else // for GET message response

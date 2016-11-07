@@ -2203,17 +2203,17 @@ public final class Work {
     pipe.election.Election.LeaderElectionOrBuilder getElectionOrBuilder();
 
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
     boolean hasQuery();
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
-    storage.Storage.Query getQuery();
+    pipe.common.Common.Request getQuery();
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
-    storage.Storage.QueryOrBuilder getQueryOrBuilder();
+    pipe.common.Common.RequestOrBuilder getQueryOrBuilder();
 
     /**
      * <code>optional .Response response = 17;</code>
@@ -2222,11 +2222,11 @@ public final class Work {
     /**
      * <code>optional .Response response = 17;</code>
      */
-    storage.Storage.Response getResponse();
+    pipe.common.Common.Response getResponse();
     /**
      * <code>optional .Response response = 17;</code>
      */
-    storage.Storage.ResponseOrBuilder getResponseOrBuilder();
+    pipe.common.Common.ResponseOrBuilder getResponseOrBuilder();
 
     /**
      * <code>optional bytes storageFile = 18;</code>
@@ -2399,11 +2399,11 @@ public final class Work {
               break;
             }
             case 130: {
-              storage.Storage.Query.Builder subBuilder = null;
+              pipe.common.Common.Request.Builder subBuilder = null;
               if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = query_.toBuilder();
               }
-              query_ = input.readMessage(storage.Storage.Query.PARSER, extensionRegistry);
+              query_ = input.readMessage(pipe.common.Common.Request.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(query_);
                 query_ = subBuilder.buildPartial();
@@ -2412,11 +2412,11 @@ public final class Work {
               break;
             }
             case 138: {
-              storage.Storage.Response.Builder subBuilder = null;
+              pipe.common.Common.Response.Builder subBuilder = null;
               if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = response_.toBuilder();
               }
-              response_ = input.readMessage(storage.Storage.Response.PARSER, extensionRegistry);
+              response_ = input.readMessage(pipe.common.Common.Response.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
@@ -2665,28 +2665,28 @@ public final class Work {
     }
 
     public static final int QUERY_FIELD_NUMBER = 16;
-    private storage.Storage.Query query_;
+    private pipe.common.Common.Request query_;
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
     public boolean hasQuery() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
-    public storage.Storage.Query getQuery() {
+    public pipe.common.Common.Request getQuery() {
       return query_;
     }
     /**
-     * <code>optional .Query query = 16;</code>
+     * <code>optional .Request query = 16;</code>
      */
-    public storage.Storage.QueryOrBuilder getQueryOrBuilder() {
+    public pipe.common.Common.RequestOrBuilder getQueryOrBuilder() {
       return query_;
     }
 
     public static final int RESPONSE_FIELD_NUMBER = 17;
-    private storage.Storage.Response response_;
+    private pipe.common.Common.Response response_;
     /**
      * <code>optional .Response response = 17;</code>
      */
@@ -2696,13 +2696,13 @@ public final class Work {
     /**
      * <code>optional .Response response = 17;</code>
      */
-    public storage.Storage.Response getResponse() {
+    public pipe.common.Common.Response getResponse() {
       return response_;
     }
     /**
      * <code>optional .Response response = 17;</code>
      */
-    public storage.Storage.ResponseOrBuilder getResponseOrBuilder() {
+    public pipe.common.Common.ResponseOrBuilder getResponseOrBuilder() {
       return response_;
     }
 
@@ -2751,8 +2751,8 @@ public final class Work {
       leader_ = pipe.election.Election.LeaderStatus.getDefaultInstance();
       raftmsg_ = pipe.election.Election.RaftMessage.getDefaultInstance();
       election_ = pipe.election.Election.LeaderElection.getDefaultInstance();
-      query_ = storage.Storage.Query.getDefaultInstance();
-      response_ = storage.Storage.Response.getDefaultInstance();
+      query_ = pipe.common.Common.Request.getDefaultInstance();
+      response_ = pipe.common.Common.Response.getDefaultInstance();
       storageFile_ = com.google.protobuf.ByteString.EMPTY;
       savedFile_ = pipe.work.Work.SavedFile.getDefaultInstance();
     }
@@ -3082,13 +3082,13 @@ public final class Work {
         }
         bitField0_ = (bitField0_ & ~0x00000080);
         if (queryBuilder_ == null) {
-          query_ = storage.Storage.Query.getDefaultInstance();
+          query_ = pipe.common.Common.Request.getDefaultInstance();
         } else {
           queryBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000100);
         if (responseBuilder_ == null) {
-          response_ = storage.Storage.Response.getDefaultInstance();
+          response_ = pipe.common.Common.Response.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
@@ -4240,19 +4240,19 @@ public final class Work {
         return electionBuilder_;
       }
 
-      private storage.Storage.Query query_ = storage.Storage.Query.getDefaultInstance();
+      private pipe.common.Common.Request query_ = pipe.common.Common.Request.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder> queryBuilder_;
+          pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder> queryBuilder_;
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
       public boolean hasQuery() {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
-      public storage.Storage.Query getQuery() {
+      public pipe.common.Common.Request getQuery() {
         if (queryBuilder_ == null) {
           return query_;
         } else {
@@ -4260,9 +4260,9 @@ public final class Work {
         }
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
-      public Builder setQuery(storage.Storage.Query value) {
+      public Builder setQuery(pipe.common.Common.Request value) {
         if (queryBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4276,10 +4276,10 @@ public final class Work {
         return this;
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
       public Builder setQuery(
-          storage.Storage.Query.Builder builderForValue) {
+          pipe.common.Common.Request.Builder builderForValue) {
         if (queryBuilder_ == null) {
           query_ = builderForValue.build();
           onChanged();
@@ -4290,14 +4290,14 @@ public final class Work {
         return this;
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
-      public Builder mergeQuery(storage.Storage.Query value) {
+      public Builder mergeQuery(pipe.common.Common.Request value) {
         if (queryBuilder_ == null) {
           if (((bitField0_ & 0x00000100) == 0x00000100) &&
-              query_ != storage.Storage.Query.getDefaultInstance()) {
+              query_ != pipe.common.Common.Request.getDefaultInstance()) {
             query_ =
-              storage.Storage.Query.newBuilder(query_).mergeFrom(value).buildPartial();
+              pipe.common.Common.Request.newBuilder(query_).mergeFrom(value).buildPartial();
           } else {
             query_ = value;
           }
@@ -4309,11 +4309,11 @@ public final class Work {
         return this;
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
       public Builder clearQuery() {
         if (queryBuilder_ == null) {
-          query_ = storage.Storage.Query.getDefaultInstance();
+          query_ = pipe.common.Common.Request.getDefaultInstance();
           onChanged();
         } else {
           queryBuilder_.clear();
@@ -4322,17 +4322,17 @@ public final class Work {
         return this;
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
-      public storage.Storage.Query.Builder getQueryBuilder() {
+      public pipe.common.Common.Request.Builder getQueryBuilder() {
         bitField0_ |= 0x00000100;
         onChanged();
         return getQueryFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
-      public storage.Storage.QueryOrBuilder getQueryOrBuilder() {
+      public pipe.common.Common.RequestOrBuilder getQueryOrBuilder() {
         if (queryBuilder_ != null) {
           return queryBuilder_.getMessageOrBuilder();
         } else {
@@ -4340,14 +4340,14 @@ public final class Work {
         }
       }
       /**
-       * <code>optional .Query query = 16;</code>
+       * <code>optional .Request query = 16;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder> 
+          pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder> 
           getQueryFieldBuilder() {
         if (queryBuilder_ == null) {
           queryBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder>(
+              pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder>(
                   getQuery(),
                   getParentForChildren(),
                   isClean());
@@ -4356,9 +4356,9 @@ public final class Work {
         return queryBuilder_;
       }
 
-      private storage.Storage.Response response_ = storage.Storage.Response.getDefaultInstance();
+      private pipe.common.Common.Response response_ = pipe.common.Common.Response.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder> responseBuilder_;
+          pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder> responseBuilder_;
       /**
        * <code>optional .Response response = 17;</code>
        */
@@ -4368,7 +4368,7 @@ public final class Work {
       /**
        * <code>optional .Response response = 17;</code>
        */
-      public storage.Storage.Response getResponse() {
+      public pipe.common.Common.Response getResponse() {
         if (responseBuilder_ == null) {
           return response_;
         } else {
@@ -4378,7 +4378,7 @@ public final class Work {
       /**
        * <code>optional .Response response = 17;</code>
        */
-      public Builder setResponse(storage.Storage.Response value) {
+      public Builder setResponse(pipe.common.Common.Response value) {
         if (responseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4395,7 +4395,7 @@ public final class Work {
        * <code>optional .Response response = 17;</code>
        */
       public Builder setResponse(
-          storage.Storage.Response.Builder builderForValue) {
+          pipe.common.Common.Response.Builder builderForValue) {
         if (responseBuilder_ == null) {
           response_ = builderForValue.build();
           onChanged();
@@ -4408,12 +4408,12 @@ public final class Work {
       /**
        * <code>optional .Response response = 17;</code>
        */
-      public Builder mergeResponse(storage.Storage.Response value) {
+      public Builder mergeResponse(pipe.common.Common.Response value) {
         if (responseBuilder_ == null) {
           if (((bitField0_ & 0x00000200) == 0x00000200) &&
-              response_ != storage.Storage.Response.getDefaultInstance()) {
+              response_ != pipe.common.Common.Response.getDefaultInstance()) {
             response_ =
-              storage.Storage.Response.newBuilder(response_).mergeFrom(value).buildPartial();
+              pipe.common.Common.Response.newBuilder(response_).mergeFrom(value).buildPartial();
           } else {
             response_ = value;
           }
@@ -4429,7 +4429,7 @@ public final class Work {
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
-          response_ = storage.Storage.Response.getDefaultInstance();
+          response_ = pipe.common.Common.Response.getDefaultInstance();
           onChanged();
         } else {
           responseBuilder_.clear();
@@ -4440,7 +4440,7 @@ public final class Work {
       /**
        * <code>optional .Response response = 17;</code>
        */
-      public storage.Storage.Response.Builder getResponseBuilder() {
+      public pipe.common.Common.Response.Builder getResponseBuilder() {
         bitField0_ |= 0x00000200;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
@@ -4448,7 +4448,7 @@ public final class Work {
       /**
        * <code>optional .Response response = 17;</code>
        */
-      public storage.Storage.ResponseOrBuilder getResponseOrBuilder() {
+      public pipe.common.Common.ResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
           return responseBuilder_.getMessageOrBuilder();
         } else {
@@ -4459,11 +4459,11 @@ public final class Work {
        * <code>optional .Response response = 17;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder> 
+          pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder> 
           getResponseFieldBuilder() {
         if (responseBuilder_ == null) {
           responseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder>(
+              pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder>(
                   getResponse(),
                   getParentForChildren(),
                   isClean());
@@ -5489,22 +5489,22 @@ public final class Work {
   static {
     java.lang.String[] descriptorData = {
       "\n\nwork.proto\032\014common.proto\032\016election.pro" +
-      "to\032\rstorage.proto\"0\n\tWorkState\022\020\n\010enqueu" +
-      "ed\030\001 \002(\005\022\021\n\tprocessed\030\002 \002(\005\"&\n\tHeartbeat" +
-      "\022\031\n\005state\030\001 \002(\0132\n.WorkState\")\n\004Task\022\021\n\ts" +
-      "eries_id\030\001 \002(\003\022\016\n\006seq_id\030\002 \002(\005\"-\n\tSavedF" +
-      "ile\022\013\n\003key\030\014 \001(\t\022\023\n\013sequence_no\030\016 \001(\005\"\301\002" +
-      "\n\007Payload\022\025\n\003err\030\003 \001(\0132\010.Failure\022\014\n\004ping" +
-      "\030\004 \001(\010\022\030\n\004beat\030\005 \001(\0132\n.Heartbeat\022\023\n\004task" +
-      "\030\006 \001(\0132\005.Task\022\031\n\005state\030\007 \001(\0132\n.WorkState" +
-      "\022\035\n\006leader\030\010 \001(\0132\r.LeaderStatus\022\035\n\007raftm",
-      "sg\030\t \001(\0132\014.RaftMessage\022!\n\010election\030\n \001(\013" +
-      "2\017.LeaderElection\022\025\n\005query\030\020 \001(\0132\006.Query" +
-      "\022\033\n\010response\030\021 \001(\0132\t.Response\022\023\n\013storage" +
-      "File\030\022 \001(\014\022\035\n\tsavedFile\030\023 \001(\0132\n.SavedFil" +
-      "e\"Q\n\013WorkRequest\022\027\n\006header\030\001 \002(\0132\007.Heade" +
-      "r\022\016\n\006secret\030\002 \001(\003\022\031\n\007payload\030\003 \002(\0132\010.Pay" +
-      "loadB\r\n\tpipe.workH\001"
+      "to\"0\n\tWorkState\022\020\n\010enqueued\030\001 \002(\005\022\021\n\tpro" +
+      "cessed\030\002 \002(\005\"&\n\tHeartbeat\022\031\n\005state\030\001 \002(\013" +
+      "2\n.WorkState\")\n\004Task\022\021\n\tseries_id\030\001 \002(\003\022" +
+      "\016\n\006seq_id\030\002 \002(\005\"-\n\tSavedFile\022\013\n\003key\030\014 \001(" +
+      "\t\022\023\n\013sequence_no\030\016 \001(\005\"\303\002\n\007Payload\022\025\n\003er" +
+      "r\030\003 \001(\0132\010.Failure\022\014\n\004ping\030\004 \001(\010\022\030\n\004beat\030" +
+      "\005 \001(\0132\n.Heartbeat\022\023\n\004task\030\006 \001(\0132\005.Task\022\031" +
+      "\n\005state\030\007 \001(\0132\n.WorkState\022\035\n\006leader\030\010 \001(" +
+      "\0132\r.LeaderStatus\022\035\n\007raftmsg\030\t \001(\0132\014.Raft",
+      "Message\022!\n\010election\030\n \001(\0132\017.LeaderElecti" +
+      "on\022\027\n\005query\030\020 \001(\0132\010.Request\022\033\n\010response\030" +
+      "\021 \001(\0132\t.Response\022\023\n\013storageFile\030\022 \001(\014\022\035\n" +
+      "\tsavedFile\030\023 \001(\0132\n.SavedFile\"Q\n\013WorkRequ" +
+      "est\022\027\n\006header\030\001 \002(\0132\007.Header\022\016\n\006secret\030\002" +
+      " \001(\003\022\031\n\007payload\030\003 \002(\0132\010.PayloadB\r\n\tpipe." +
+      "workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5519,7 +5519,6 @@ public final class Work {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           pipe.common.Common.getDescriptor(),
           pipe.election.Election.getDescriptor(),
-          storage.Storage.getDescriptor(),
         }, assigner);
     internal_static_WorkState_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -5559,7 +5558,6 @@ public final class Work {
         new java.lang.String[] { "Header", "Secret", "Payload", });
     pipe.common.Common.getDescriptor();
     pipe.election.Election.getDescriptor();
-    storage.Storage.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -1,23 +1,25 @@
 option optimize_for = SPEED;
 option java_package = "pipe.common";
 
+
+
 /**
  * the accompanying information for all messages. Provides origination,
  * security, authentication, and tracking information
  */
-message Header {  
+message Header {
     required int32 node_id = 1;
     required int64 time = 2;
     optional string source_host = 3 [default = ""];
     optional string destination_host = 4 [default = ""];
-    repeated VectorClock path = 5;
+    //repeated VectorClock path = 5;
 
     optional int32 source = 7;
 
     // if the message is for a specific node, this will be set
     optional int32 destination = 8;
 
-    // This factor limits the distance that a msg travels from the originating 
+    // This factor limits the distance that a msg travels from the originating
     // node. Default (-1) is the whole network (not restricted).
     optional int32 max_hops = 10 [default = -1];
 }
@@ -27,28 +29,39 @@ message Failure {
     optional int32 ref_id = 2;
     optional string message = 3;
 }
-
-message VectorClock {
-    required int32 node_id = 1;
-    required int32 version = 2;
-    required int64 time = 3;
+message File {
+    optional int32 chunkId = 1;
+    optional bytes data = 2;
+    required string filename = 3;
+    optional int32 chunkCount = 5;
 }
 
-/**
- * description of the work
- */
-message Request {
-    required Type type = 1;
-    optional bytes file = 2;
-    optional string file_name = 3;
-    optional Update update =4;
+enum RequestType {
+    READ = 1;
+    WRITE = 2;
+    UPDATE = 3;
+    DELETE = 4;
+}
 
-    enum Type {
-        SAVE = 1;
-        SEARCH = 2;
-        UPDATE = 3;
+message Request {
+    optional string requestId = 4;
+    required RequestType requestType = 1;
+    oneof payload {
+        string fileName = 2;
+        File file = 3;
     }
 }
+
+message Response {
+    optional string requestId = 5;
+    required RequestType requestType = 1;
+    optional bool success = 2;
+    oneof payload {
+        Failure failure = 3;
+        File file = 4;
+    }
+}
+
 
 message Update {
     required bytes file = 2;

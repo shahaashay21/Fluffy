@@ -1,19 +1,60 @@
 option optimize_for = SPEED;
 option java_package = "global";
 import "common.proto";
-import "storage.proto";
 
-message GlobalCommandMessage {
-    required Header header = 1;
-    oneof payload {
-        // a client (external) sanity check for testing
-        bool ping = 3;
-
-        string message = 4;
-
-        Failure err = 5;
-        Query query = 6;
-
-        Response response = 7;
-    }
+message GlobalHeader {
+ required int32 cluster_id = 1;
+ required int64 time = 2;
+ optional int32 destination_id = 8;
+ optional int32 max_hops = 10 [default = -1]; //todo
 }
+
+message GlobalMessage {
+ required GlobalHeader globalHeader = 1;
+ oneof payload {
+   bool ping = 2;
+   string message = 3;
+   Failure failure = 4;
+   Request request = 5;
+   Response response = 6;
+ }
+}
+
+//message Failure {
+//    required int32 id = 1;
+//    optional int32 ref_id = 2;
+//    optional string message = 3;
+//}
+
+//message File {
+// optional int32 chunkId = 1;
+// optional bytes data = 2;
+// required string filename = 3;
+// optional int32 chunkCount = 5;
+//}
+//
+//enum RequestType {
+// READ = 1;
+// WRITE = 2;
+// UPDATE = 3;
+// DELETE = 4;
+//}
+//
+//message Request {
+// optional string requestId = 4;
+// required RequestType requestType = 1;
+// oneof payload {
+//   string fileName = 2;
+//   File file = 3;
+// }
+//}
+//
+//message Response {
+//    optional string requestId = 5;
+//    required RequestType requestType = 1;
+//    optional bool success = 2;
+//    oneof payload {
+//        Failure failure = 3;
+//        File file = 4;
+//    }
+//}

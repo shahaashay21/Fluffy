@@ -88,7 +88,7 @@ public class PrintUtil {
 				break;
 			case WRITE:
 				System.out.println(PrintUtil.gap + " File to Store:  " + req.getRequestId());
-				System.out.println(PrintUtil.gap + " Sequence:  " + query.getPayload().getFile().getChunkId();
+				System.out.println(PrintUtil.gap + " Sequence:  " + query.getPayload().getFile().getChunkId());
 				break;
 			case UPDATE:
 				break;

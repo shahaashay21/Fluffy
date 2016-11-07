@@ -8,113 +8,74 @@ public final class Global {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface GlobalCommandMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GlobalCommandMessage)
+  public interface GlobalHeaderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GlobalHeader)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required .Header header = 1;</code>
+     * <code>required int32 cluster_id = 1;</code>
      */
-    boolean hasHeader();
+    boolean hasClusterId();
     /**
-     * <code>required .Header header = 1;</code>
+     * <code>required int32 cluster_id = 1;</code>
      */
-    pipe.common.Common.Header getHeader();
-    /**
-     * <code>required .Header header = 1;</code>
-     */
-    pipe.common.Common.HeaderOrBuilder getHeaderOrBuilder();
+    int getClusterId();
 
     /**
-     * <code>optional bool ping = 3;</code>
+     * <code>required int64 time = 2;</code>
+     */
+    boolean hasTime();
+    /**
+     * <code>required int64 time = 2;</code>
+     */
+    long getTime();
+
+    /**
+     * <code>optional int32 destination_id = 8;</code>
+     */
+    boolean hasDestinationId();
+    /**
+     * <code>optional int32 destination_id = 8;</code>
+     */
+    int getDestinationId();
+
+    /**
+     * <code>optional int32 max_hops = 10 [default = -1];</code>
      *
      * <pre>
-     * a client (external) sanity check for testing
+     *todo
      * </pre>
      */
-    boolean hasPing();
+    boolean hasMaxHops();
     /**
-     * <code>optional bool ping = 3;</code>
+     * <code>optional int32 max_hops = 10 [default = -1];</code>
      *
      * <pre>
-     * a client (external) sanity check for testing
+     *todo
      * </pre>
      */
-    boolean getPing();
-
-    /**
-     * <code>optional string message = 4;</code>
-     */
-    boolean hasMessage();
-    /**
-     * <code>optional string message = 4;</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>optional string message = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    boolean hasErr();
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    pipe.common.Common.Failure getErr();
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    pipe.common.Common.FailureOrBuilder getErrOrBuilder();
-
-    /**
-     * <code>optional .Query query = 6;</code>
-     */
-    boolean hasQuery();
-    /**
-     * <code>optional .Query query = 6;</code>
-     */
-    storage.Storage.Query getQuery();
-    /**
-     * <code>optional .Query query = 6;</code>
-     */
-    storage.Storage.QueryOrBuilder getQueryOrBuilder();
-
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    boolean hasResponse();
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    storage.Storage.Response getResponse();
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    storage.Storage.ResponseOrBuilder getResponseOrBuilder();
+    int getMaxHops();
   }
   /**
-   * Protobuf type {@code GlobalCommandMessage}
+   * Protobuf type {@code GlobalHeader}
    */
-  public static final class GlobalCommandMessage extends
+  public static final class GlobalHeader extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:GlobalCommandMessage)
-      GlobalCommandMessageOrBuilder {
-    // Use GlobalCommandMessage.newBuilder() to construct.
-    private GlobalCommandMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:GlobalHeader)
+      GlobalHeaderOrBuilder {
+    // Use GlobalHeader.newBuilder() to construct.
+    private GlobalHeader(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private GlobalCommandMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private GlobalHeader(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final GlobalCommandMessage defaultInstance;
-    public static GlobalCommandMessage getDefaultInstance() {
+    private static final GlobalHeader defaultInstance;
+    public static GlobalHeader getDefaultInstance() {
       return defaultInstance;
     }
 
-    public GlobalCommandMessage getDefaultInstanceForType() {
+    public GlobalHeader getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -124,7 +85,717 @@ public final class Global {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private GlobalCommandMessage(
+    private GlobalHeader(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              clusterId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              time_ = input.readInt64();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000004;
+              destinationId_ = input.readInt32();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000008;
+              maxHops_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return global.Global.internal_static_GlobalHeader_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return global.Global.internal_static_GlobalHeader_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              global.Global.GlobalHeader.class, global.Global.GlobalHeader.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GlobalHeader> PARSER =
+        new com.google.protobuf.AbstractParser<GlobalHeader>() {
+      public GlobalHeader parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GlobalHeader(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GlobalHeader> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int CLUSTER_ID_FIELD_NUMBER = 1;
+    private int clusterId_;
+    /**
+     * <code>required int32 cluster_id = 1;</code>
+     */
+    public boolean hasClusterId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 cluster_id = 1;</code>
+     */
+    public int getClusterId() {
+      return clusterId_;
+    }
+
+    public static final int TIME_FIELD_NUMBER = 2;
+    private long time_;
+    /**
+     * <code>required int64 time = 2;</code>
+     */
+    public boolean hasTime() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 time = 2;</code>
+     */
+    public long getTime() {
+      return time_;
+    }
+
+    public static final int DESTINATION_ID_FIELD_NUMBER = 8;
+    private int destinationId_;
+    /**
+     * <code>optional int32 destination_id = 8;</code>
+     */
+    public boolean hasDestinationId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 destination_id = 8;</code>
+     */
+    public int getDestinationId() {
+      return destinationId_;
+    }
+
+    public static final int MAX_HOPS_FIELD_NUMBER = 10;
+    private int maxHops_;
+    /**
+     * <code>optional int32 max_hops = 10 [default = -1];</code>
+     *
+     * <pre>
+     *todo
+     * </pre>
+     */
+    public boolean hasMaxHops() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 max_hops = 10 [default = -1];</code>
+     *
+     * <pre>
+     *todo
+     * </pre>
+     */
+    public int getMaxHops() {
+      return maxHops_;
+    }
+
+    private void initFields() {
+      clusterId_ = 0;
+      time_ = 0L;
+      destinationId_ = 0;
+      maxHops_ = -1;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasClusterId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, clusterId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, time_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(8, destinationId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(10, maxHops_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, clusterId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, time_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, destinationId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, maxHops_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static global.Global.GlobalHeader parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static global.Global.GlobalHeader parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static global.Global.GlobalHeader parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static global.Global.GlobalHeader parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static global.Global.GlobalHeader parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static global.Global.GlobalHeader parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static global.Global.GlobalHeader parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static global.Global.GlobalHeader parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static global.Global.GlobalHeader parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static global.Global.GlobalHeader parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(global.Global.GlobalHeader prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GlobalHeader}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GlobalHeader)
+        global.Global.GlobalHeaderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return global.Global.internal_static_GlobalHeader_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return global.Global.internal_static_GlobalHeader_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                global.Global.GlobalHeader.class, global.Global.GlobalHeader.Builder.class);
+      }
+
+      // Construct using global.Global.GlobalHeader.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        clusterId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        time_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        destinationId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        maxHops_ = -1;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return global.Global.internal_static_GlobalHeader_descriptor;
+      }
+
+      public global.Global.GlobalHeader getDefaultInstanceForType() {
+        return global.Global.GlobalHeader.getDefaultInstance();
+      }
+
+      public global.Global.GlobalHeader build() {
+        global.Global.GlobalHeader result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public global.Global.GlobalHeader buildPartial() {
+        global.Global.GlobalHeader result = new global.Global.GlobalHeader(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.clusterId_ = clusterId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.time_ = time_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.destinationId_ = destinationId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.maxHops_ = maxHops_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof global.Global.GlobalHeader) {
+          return mergeFrom((global.Global.GlobalHeader)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(global.Global.GlobalHeader other) {
+        if (other == global.Global.GlobalHeader.getDefaultInstance()) return this;
+        if (other.hasClusterId()) {
+          setClusterId(other.getClusterId());
+        }
+        if (other.hasTime()) {
+          setTime(other.getTime());
+        }
+        if (other.hasDestinationId()) {
+          setDestinationId(other.getDestinationId());
+        }
+        if (other.hasMaxHops()) {
+          setMaxHops(other.getMaxHops());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasClusterId()) {
+          
+          return false;
+        }
+        if (!hasTime()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        global.Global.GlobalHeader parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (global.Global.GlobalHeader) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int clusterId_ ;
+      /**
+       * <code>required int32 cluster_id = 1;</code>
+       */
+      public boolean hasClusterId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 cluster_id = 1;</code>
+       */
+      public int getClusterId() {
+        return clusterId_;
+      }
+      /**
+       * <code>required int32 cluster_id = 1;</code>
+       */
+      public Builder setClusterId(int value) {
+        bitField0_ |= 0x00000001;
+        clusterId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 cluster_id = 1;</code>
+       */
+      public Builder clearClusterId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        clusterId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long time_ ;
+      /**
+       * <code>required int64 time = 2;</code>
+       */
+      public boolean hasTime() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int64 time = 2;</code>
+       */
+      public long getTime() {
+        return time_;
+      }
+      /**
+       * <code>required int64 time = 2;</code>
+       */
+      public Builder setTime(long value) {
+        bitField0_ |= 0x00000002;
+        time_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 time = 2;</code>
+       */
+      public Builder clearTime() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        time_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int destinationId_ ;
+      /**
+       * <code>optional int32 destination_id = 8;</code>
+       */
+      public boolean hasDestinationId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 destination_id = 8;</code>
+       */
+      public int getDestinationId() {
+        return destinationId_;
+      }
+      /**
+       * <code>optional int32 destination_id = 8;</code>
+       */
+      public Builder setDestinationId(int value) {
+        bitField0_ |= 0x00000004;
+        destinationId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 destination_id = 8;</code>
+       */
+      public Builder clearDestinationId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        destinationId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int maxHops_ = -1;
+      /**
+       * <code>optional int32 max_hops = 10 [default = -1];</code>
+       *
+       * <pre>
+       *todo
+       * </pre>
+       */
+      public boolean hasMaxHops() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 max_hops = 10 [default = -1];</code>
+       *
+       * <pre>
+       *todo
+       * </pre>
+       */
+      public int getMaxHops() {
+        return maxHops_;
+      }
+      /**
+       * <code>optional int32 max_hops = 10 [default = -1];</code>
+       *
+       * <pre>
+       *todo
+       * </pre>
+       */
+      public Builder setMaxHops(int value) {
+        bitField0_ |= 0x00000008;
+        maxHops_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 max_hops = 10 [default = -1];</code>
+       *
+       * <pre>
+       *todo
+       * </pre>
+       */
+      public Builder clearMaxHops() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        maxHops_ = -1;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:GlobalHeader)
+    }
+
+    static {
+      defaultInstance = new GlobalHeader(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:GlobalHeader)
+  }
+
+  public interface GlobalMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GlobalMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .GlobalHeader globalHeader = 1;</code>
+     */
+    boolean hasGlobalHeader();
+    /**
+     * <code>required .GlobalHeader globalHeader = 1;</code>
+     */
+    global.Global.GlobalHeader getGlobalHeader();
+    /**
+     * <code>required .GlobalHeader globalHeader = 1;</code>
+     */
+    global.Global.GlobalHeaderOrBuilder getGlobalHeaderOrBuilder();
+
+    /**
+     * <code>optional bool ping = 2;</code>
+     */
+    boolean hasPing();
+    /**
+     * <code>optional bool ping = 2;</code>
+     */
+    boolean getPing();
+
+    /**
+     * <code>optional string message = 3;</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 3;</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+
+    /**
+     * <code>optional .Failure failure = 4;</code>
+     */
+    boolean hasFailure();
+    /**
+     * <code>optional .Failure failure = 4;</code>
+     */
+    pipe.common.Common.Failure getFailure();
+    /**
+     * <code>optional .Failure failure = 4;</code>
+     */
+    pipe.common.Common.FailureOrBuilder getFailureOrBuilder();
+
+    /**
+     * <code>optional .Request request = 5;</code>
+     */
+    boolean hasRequest();
+    /**
+     * <code>optional .Request request = 5;</code>
+     */
+    pipe.common.Common.Request getRequest();
+    /**
+     * <code>optional .Request request = 5;</code>
+     */
+    pipe.common.Common.RequestOrBuilder getRequestOrBuilder();
+
+    /**
+     * <code>optional .Response response = 6;</code>
+     */
+    boolean hasResponse();
+    /**
+     * <code>optional .Response response = 6;</code>
+     */
+    pipe.common.Common.Response getResponse();
+    /**
+     * <code>optional .Response response = 6;</code>
+     */
+    pipe.common.Common.ResponseOrBuilder getResponseOrBuilder();
+  }
+  /**
+   * Protobuf type {@code GlobalMessage}
+   */
+  public static final class GlobalMessage extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:GlobalMessage)
+      GlobalMessageOrBuilder {
+    // Use GlobalMessage.newBuilder() to construct.
+    private GlobalMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GlobalMessage(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GlobalMessage defaultInstance;
+    public static GlobalMessage getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GlobalMessage getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GlobalMessage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -148,32 +819,32 @@ public final class Global {
               break;
             }
             case 10: {
-              pipe.common.Common.Header.Builder subBuilder = null;
+              global.Global.GlobalHeader.Builder subBuilder = null;
               if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = header_.toBuilder();
+                subBuilder = globalHeader_.toBuilder();
               }
-              header_ = input.readMessage(pipe.common.Common.Header.PARSER, extensionRegistry);
+              globalHeader_ = input.readMessage(global.Global.GlobalHeader.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(header_);
-                header_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(globalHeader_);
+                globalHeader_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000001;
               break;
             }
-            case 24: {
-              payloadCase_ = 3;
+            case 16: {
+              payloadCase_ = 2;
               payload_ = input.readBool();
               break;
             }
-            case 34: {
+            case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              payloadCase_ = 4;
+              payloadCase_ = 3;
               payload_ = bs;
               break;
             }
-            case 42: {
+            case 34: {
               pipe.common.Common.Failure.Builder subBuilder = null;
-              if (payloadCase_ == 5) {
+              if (payloadCase_ == 4) {
                 subBuilder = ((pipe.common.Common.Failure) payload_).toBuilder();
               }
               payload_ = input.readMessage(pipe.common.Common.Failure.PARSER, extensionRegistry);
@@ -181,33 +852,33 @@ public final class Global {
                 subBuilder.mergeFrom((pipe.common.Common.Failure) payload_);
                 payload_ = subBuilder.buildPartial();
               }
+              payloadCase_ = 4;
+              break;
+            }
+            case 42: {
+              pipe.common.Common.Request.Builder subBuilder = null;
+              if (payloadCase_ == 5) {
+                subBuilder = ((pipe.common.Common.Request) payload_).toBuilder();
+              }
+              payload_ = input.readMessage(pipe.common.Common.Request.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((pipe.common.Common.Request) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
               payloadCase_ = 5;
               break;
             }
             case 50: {
-              storage.Storage.Query.Builder subBuilder = null;
+              pipe.common.Common.Response.Builder subBuilder = null;
               if (payloadCase_ == 6) {
-                subBuilder = ((storage.Storage.Query) payload_).toBuilder();
+                subBuilder = ((pipe.common.Common.Response) payload_).toBuilder();
               }
-              payload_ = input.readMessage(storage.Storage.Query.PARSER, extensionRegistry);
+              payload_ = input.readMessage(pipe.common.Common.Response.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((storage.Storage.Query) payload_);
+                subBuilder.mergeFrom((pipe.common.Common.Response) payload_);
                 payload_ = subBuilder.buildPartial();
               }
               payloadCase_ = 6;
-              break;
-            }
-            case 58: {
-              storage.Storage.Response.Builder subBuilder = null;
-              if (payloadCase_ == 7) {
-                subBuilder = ((storage.Storage.Response) payload_).toBuilder();
-              }
-              payload_ = input.readMessage(storage.Storage.Response.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((storage.Storage.Response) payload_);
-                payload_ = subBuilder.buildPartial();
-              }
-              payloadCase_ = 7;
               break;
             }
           }
@@ -224,28 +895,28 @@ public final class Global {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return global.Global.internal_static_GlobalCommandMessage_descriptor;
+      return global.Global.internal_static_GlobalMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return global.Global.internal_static_GlobalCommandMessage_fieldAccessorTable
+      return global.Global.internal_static_GlobalMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              global.Global.GlobalCommandMessage.class, global.Global.GlobalCommandMessage.Builder.class);
+              global.Global.GlobalMessage.class, global.Global.GlobalMessage.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<GlobalCommandMessage> PARSER =
-        new com.google.protobuf.AbstractParser<GlobalCommandMessage>() {
-      public GlobalCommandMessage parsePartialFrom(
+    public static com.google.protobuf.Parser<GlobalMessage> PARSER =
+        new com.google.protobuf.AbstractParser<GlobalMessage>() {
+      public GlobalMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GlobalCommandMessage(input, extensionRegistry);
+        return new GlobalMessage(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<GlobalCommandMessage> getParserForType() {
+    public com.google.protobuf.Parser<GlobalMessage> getParserForType() {
       return PARSER;
     }
 
@@ -254,11 +925,11 @@ public final class Global {
     private java.lang.Object payload_;
     public enum PayloadCase
         implements com.google.protobuf.Internal.EnumLite {
-      PING(3),
-      MESSAGE(4),
-      ERR(5),
-      QUERY(6),
-      RESPONSE(7),
+      PING(2),
+      MESSAGE(3),
+      FAILURE(4),
+      REQUEST(5),
+      RESPONSE(6),
       PAYLOAD_NOT_SET(0);
       private int value = 0;
       private PayloadCase(int value) {
@@ -266,11 +937,11 @@ public final class Global {
       }
       public static PayloadCase valueOf(int value) {
         switch (value) {
-          case 3: return PING;
-          case 4: return MESSAGE;
-          case 5: return ERR;
-          case 6: return QUERY;
-          case 7: return RESPONSE;
+          case 2: return PING;
+          case 3: return MESSAGE;
+          case 4: return FAILURE;
+          case 5: return REQUEST;
+          case 6: return RESPONSE;
           case 0: return PAYLOAD_NOT_SET;
           default: throw new java.lang.IllegalArgumentException(
             "Value is undefined for this oneof enum.");
@@ -287,65 +958,57 @@ public final class Global {
           payloadCase_);
     }
 
-    public static final int HEADER_FIELD_NUMBER = 1;
-    private pipe.common.Common.Header header_;
+    public static final int GLOBALHEADER_FIELD_NUMBER = 1;
+    private global.Global.GlobalHeader globalHeader_;
     /**
-     * <code>required .Header header = 1;</code>
+     * <code>required .GlobalHeader globalHeader = 1;</code>
      */
-    public boolean hasHeader() {
+    public boolean hasGlobalHeader() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .Header header = 1;</code>
+     * <code>required .GlobalHeader globalHeader = 1;</code>
      */
-    public pipe.common.Common.Header getHeader() {
-      return header_;
+    public global.Global.GlobalHeader getGlobalHeader() {
+      return globalHeader_;
     }
     /**
-     * <code>required .Header header = 1;</code>
+     * <code>required .GlobalHeader globalHeader = 1;</code>
      */
-    public pipe.common.Common.HeaderOrBuilder getHeaderOrBuilder() {
-      return header_;
+    public global.Global.GlobalHeaderOrBuilder getGlobalHeaderOrBuilder() {
+      return globalHeader_;
     }
 
-    public static final int PING_FIELD_NUMBER = 3;
+    public static final int PING_FIELD_NUMBER = 2;
     /**
-     * <code>optional bool ping = 3;</code>
-     *
-     * <pre>
-     * a client (external) sanity check for testing
-     * </pre>
+     * <code>optional bool ping = 2;</code>
      */
     public boolean hasPing() {
-      return payloadCase_ == 3;
+      return payloadCase_ == 2;
     }
     /**
-     * <code>optional bool ping = 3;</code>
-     *
-     * <pre>
-     * a client (external) sanity check for testing
-     * </pre>
+     * <code>optional bool ping = 2;</code>
      */
     public boolean getPing() {
-      if (payloadCase_ == 3) {
+      if (payloadCase_ == 2) {
         return (java.lang.Boolean) payload_;
       }
       return false;
     }
 
-    public static final int MESSAGE_FIELD_NUMBER = 4;
+    public static final int MESSAGE_FIELD_NUMBER = 3;
     /**
-     * <code>optional string message = 4;</code>
+     * <code>optional string message = 3;</code>
      */
     public boolean hasMessage() {
-      return payloadCase_ == 4;
+      return payloadCase_ == 3;
     }
     /**
-     * <code>optional string message = 4;</code>
+     * <code>optional string message = 3;</code>
      */
     public java.lang.String getMessage() {
       java.lang.Object ref = "";
-      if (payloadCase_ == 4) {
+      if (payloadCase_ == 3) {
         ref = payload_;
       }
       if (ref instanceof java.lang.String) {
@@ -354,26 +1017,26 @@ public final class Global {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8() && (payloadCase_ == 4)) {
+        if (bs.isValidUtf8() && (payloadCase_ == 3)) {
           payload_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string message = 4;</code>
+     * <code>optional string message = 3;</code>
      */
     public com.google.protobuf.ByteString
         getMessageBytes() {
       java.lang.Object ref = "";
-      if (payloadCase_ == 4) {
+      if (payloadCase_ == 3) {
         ref = payload_;
       }
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           payload_ = b;
         }
         return b;
@@ -382,86 +1045,86 @@ public final class Global {
       }
     }
 
-    public static final int ERR_FIELD_NUMBER = 5;
+    public static final int FAILURE_FIELD_NUMBER = 4;
     /**
-     * <code>optional .Failure err = 5;</code>
+     * <code>optional .Failure failure = 4;</code>
      */
-    public boolean hasErr() {
+    public boolean hasFailure() {
+      return payloadCase_ == 4;
+    }
+    /**
+     * <code>optional .Failure failure = 4;</code>
+     */
+    public pipe.common.Common.Failure getFailure() {
+      if (payloadCase_ == 4) {
+         return (pipe.common.Common.Failure) payload_;
+      }
+      return pipe.common.Common.Failure.getDefaultInstance();
+    }
+    /**
+     * <code>optional .Failure failure = 4;</code>
+     */
+    public pipe.common.Common.FailureOrBuilder getFailureOrBuilder() {
+      if (payloadCase_ == 4) {
+         return (pipe.common.Common.Failure) payload_;
+      }
+      return pipe.common.Common.Failure.getDefaultInstance();
+    }
+
+    public static final int REQUEST_FIELD_NUMBER = 5;
+    /**
+     * <code>optional .Request request = 5;</code>
+     */
+    public boolean hasRequest() {
       return payloadCase_ == 5;
     }
     /**
-     * <code>optional .Failure err = 5;</code>
+     * <code>optional .Request request = 5;</code>
      */
-    public pipe.common.Common.Failure getErr() {
+    public pipe.common.Common.Request getRequest() {
       if (payloadCase_ == 5) {
-         return (pipe.common.Common.Failure) payload_;
+         return (pipe.common.Common.Request) payload_;
       }
-      return pipe.common.Common.Failure.getDefaultInstance();
+      return pipe.common.Common.Request.getDefaultInstance();
     }
     /**
-     * <code>optional .Failure err = 5;</code>
+     * <code>optional .Request request = 5;</code>
      */
-    public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
+    public pipe.common.Common.RequestOrBuilder getRequestOrBuilder() {
       if (payloadCase_ == 5) {
-         return (pipe.common.Common.Failure) payload_;
+         return (pipe.common.Common.Request) payload_;
       }
-      return pipe.common.Common.Failure.getDefaultInstance();
+      return pipe.common.Common.Request.getDefaultInstance();
     }
 
-    public static final int QUERY_FIELD_NUMBER = 6;
+    public static final int RESPONSE_FIELD_NUMBER = 6;
     /**
-     * <code>optional .Query query = 6;</code>
+     * <code>optional .Response response = 6;</code>
      */
-    public boolean hasQuery() {
+    public boolean hasResponse() {
       return payloadCase_ == 6;
     }
     /**
-     * <code>optional .Query query = 6;</code>
+     * <code>optional .Response response = 6;</code>
      */
-    public storage.Storage.Query getQuery() {
+    public pipe.common.Common.Response getResponse() {
       if (payloadCase_ == 6) {
-         return (storage.Storage.Query) payload_;
+         return (pipe.common.Common.Response) payload_;
       }
-      return storage.Storage.Query.getDefaultInstance();
+      return pipe.common.Common.Response.getDefaultInstance();
     }
     /**
-     * <code>optional .Query query = 6;</code>
+     * <code>optional .Response response = 6;</code>
      */
-    public storage.Storage.QueryOrBuilder getQueryOrBuilder() {
+    public pipe.common.Common.ResponseOrBuilder getResponseOrBuilder() {
       if (payloadCase_ == 6) {
-         return (storage.Storage.Query) payload_;
+         return (pipe.common.Common.Response) payload_;
       }
-      return storage.Storage.Query.getDefaultInstance();
-    }
-
-    public static final int RESPONSE_FIELD_NUMBER = 7;
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    public boolean hasResponse() {
-      return payloadCase_ == 7;
-    }
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    public storage.Storage.Response getResponse() {
-      if (payloadCase_ == 7) {
-         return (storage.Storage.Response) payload_;
-      }
-      return storage.Storage.Response.getDefaultInstance();
-    }
-    /**
-     * <code>optional .Response response = 7;</code>
-     */
-    public storage.Storage.ResponseOrBuilder getResponseOrBuilder() {
-      if (payloadCase_ == 7) {
-         return (storage.Storage.Response) payload_;
-      }
-      return storage.Storage.Response.getDefaultInstance();
+      return pipe.common.Common.Response.getDefaultInstance();
     }
 
     private void initFields() {
-      header_ = pipe.common.Common.Header.getDefaultInstance();
+      globalHeader_ = global.Global.GlobalHeader.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -469,22 +1132,22 @@ public final class Global {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasHeader()) {
+      if (!hasGlobalHeader()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!getHeader().isInitialized()) {
+      if (!getGlobalHeader().isInitialized()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (hasErr()) {
-        if (!getErr().isInitialized()) {
+      if (hasFailure()) {
+        if (!getFailure().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
       }
-      if (hasQuery()) {
-        if (!getQuery().isInitialized()) {
+      if (hasRequest()) {
+        if (!getRequest().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -503,23 +1166,23 @@ public final class Global {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, header_);
+        output.writeMessage(1, globalHeader_);
+      }
+      if (payloadCase_ == 2) {
+        output.writeBool(
+            2, (boolean)((java.lang.Boolean) payload_));
       }
       if (payloadCase_ == 3) {
-        output.writeBool(
-            3, (boolean)((java.lang.Boolean) payload_));
+        output.writeBytes(3, getMessageBytes());
       }
       if (payloadCase_ == 4) {
-        output.writeBytes(4, getMessageBytes());
+        output.writeMessage(4, (pipe.common.Common.Failure) payload_);
       }
       if (payloadCase_ == 5) {
-        output.writeMessage(5, (pipe.common.Common.Failure) payload_);
+        output.writeMessage(5, (pipe.common.Common.Request) payload_);
       }
       if (payloadCase_ == 6) {
-        output.writeMessage(6, (storage.Storage.Query) payload_);
-      }
-      if (payloadCase_ == 7) {
-        output.writeMessage(7, (storage.Storage.Response) payload_);
+        output.writeMessage(6, (pipe.common.Common.Response) payload_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -532,28 +1195,28 @@ public final class Global {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, header_);
+          .computeMessageSize(1, globalHeader_);
+      }
+      if (payloadCase_ == 2) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(
+              2, (boolean)((java.lang.Boolean) payload_));
       }
       if (payloadCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(
-              3, (boolean)((java.lang.Boolean) payload_));
+          .computeBytesSize(3, getMessageBytes());
       }
       if (payloadCase_ == 4) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getMessageBytes());
+          .computeMessageSize(4, (pipe.common.Common.Failure) payload_);
       }
       if (payloadCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, (pipe.common.Common.Failure) payload_);
+          .computeMessageSize(5, (pipe.common.Common.Request) payload_);
       }
       if (payloadCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, (storage.Storage.Query) payload_);
-      }
-      if (payloadCase_ == 7) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (storage.Storage.Response) payload_);
+          .computeMessageSize(6, (pipe.common.Common.Response) payload_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -567,53 +1230,53 @@ public final class Global {
       return super.writeReplace();
     }
 
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(byte[] data)
+    public static global.Global.GlobalMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(java.io.InputStream input)
+    public static global.Global.GlobalMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static global.Global.GlobalCommandMessage parseDelimitedFrom(java.io.InputStream input)
+    public static global.Global.GlobalMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static global.Global.GlobalCommandMessage parseDelimitedFrom(
+    public static global.Global.GlobalMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static global.Global.GlobalCommandMessage parseFrom(
+    public static global.Global.GlobalMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -622,7 +1285,7 @@ public final class Global {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(global.Global.GlobalCommandMessage prototype) {
+    public static Builder newBuilder(global.Global.GlobalMessage prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -634,25 +1297,25 @@ public final class Global {
       return builder;
     }
     /**
-     * Protobuf type {@code GlobalCommandMessage}
+     * Protobuf type {@code GlobalMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GlobalCommandMessage)
-        global.Global.GlobalCommandMessageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:GlobalMessage)
+        global.Global.GlobalMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return global.Global.internal_static_GlobalCommandMessage_descriptor;
+        return global.Global.internal_static_GlobalMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return global.Global.internal_static_GlobalCommandMessage_fieldAccessorTable
+        return global.Global.internal_static_GlobalMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                global.Global.GlobalCommandMessage.class, global.Global.GlobalCommandMessage.Builder.class);
+                global.Global.GlobalMessage.class, global.Global.GlobalMessage.Builder.class);
       }
 
-      // Construct using global.Global.GlobalCommandMessage.newBuilder()
+      // Construct using global.Global.GlobalMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -664,7 +1327,7 @@ public final class Global {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getHeaderFieldBuilder();
+          getGlobalHeaderFieldBuilder();
         }
       }
       private static Builder create() {
@@ -673,10 +1336,10 @@ public final class Global {
 
       public Builder clear() {
         super.clear();
-        if (headerBuilder_ == null) {
-          header_ = pipe.common.Common.Header.getDefaultInstance();
+        if (globalHeaderBuilder_ == null) {
+          globalHeader_ = global.Global.GlobalHeader.getDefaultInstance();
         } else {
-          headerBuilder_.clear();
+          globalHeaderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
         payloadCase_ = 0;
@@ -690,54 +1353,54 @@ public final class Global {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return global.Global.internal_static_GlobalCommandMessage_descriptor;
+        return global.Global.internal_static_GlobalMessage_descriptor;
       }
 
-      public global.Global.GlobalCommandMessage getDefaultInstanceForType() {
-        return global.Global.GlobalCommandMessage.getDefaultInstance();
+      public global.Global.GlobalMessage getDefaultInstanceForType() {
+        return global.Global.GlobalMessage.getDefaultInstance();
       }
 
-      public global.Global.GlobalCommandMessage build() {
-        global.Global.GlobalCommandMessage result = buildPartial();
+      public global.Global.GlobalMessage build() {
+        global.Global.GlobalMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public global.Global.GlobalCommandMessage buildPartial() {
-        global.Global.GlobalCommandMessage result = new global.Global.GlobalCommandMessage(this);
+      public global.Global.GlobalMessage buildPartial() {
+        global.Global.GlobalMessage result = new global.Global.GlobalMessage(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        if (headerBuilder_ == null) {
-          result.header_ = header_;
+        if (globalHeaderBuilder_ == null) {
+          result.globalHeader_ = globalHeader_;
         } else {
-          result.header_ = headerBuilder_.build();
+          result.globalHeader_ = globalHeaderBuilder_.build();
+        }
+        if (payloadCase_ == 2) {
+          result.payload_ = payload_;
         }
         if (payloadCase_ == 3) {
           result.payload_ = payload_;
         }
         if (payloadCase_ == 4) {
-          result.payload_ = payload_;
-        }
-        if (payloadCase_ == 5) {
-          if (errBuilder_ == null) {
+          if (failureBuilder_ == null) {
             result.payload_ = payload_;
           } else {
-            result.payload_ = errBuilder_.build();
+            result.payload_ = failureBuilder_.build();
+          }
+        }
+        if (payloadCase_ == 5) {
+          if (requestBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = requestBuilder_.build();
           }
         }
         if (payloadCase_ == 6) {
-          if (queryBuilder_ == null) {
-            result.payload_ = payload_;
-          } else {
-            result.payload_ = queryBuilder_.build();
-          }
-        }
-        if (payloadCase_ == 7) {
           if (responseBuilder_ == null) {
             result.payload_ = payload_;
           } else {
@@ -751,18 +1414,18 @@ public final class Global {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof global.Global.GlobalCommandMessage) {
-          return mergeFrom((global.Global.GlobalCommandMessage)other);
+        if (other instanceof global.Global.GlobalMessage) {
+          return mergeFrom((global.Global.GlobalMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(global.Global.GlobalCommandMessage other) {
-        if (other == global.Global.GlobalCommandMessage.getDefaultInstance()) return this;
-        if (other.hasHeader()) {
-          mergeHeader(other.getHeader());
+      public Builder mergeFrom(global.Global.GlobalMessage other) {
+        if (other == global.Global.GlobalMessage.getDefaultInstance()) return this;
+        if (other.hasGlobalHeader()) {
+          mergeGlobalHeader(other.getGlobalHeader());
         }
         switch (other.getPayloadCase()) {
           case PING: {
@@ -770,17 +1433,17 @@ public final class Global {
             break;
           }
           case MESSAGE: {
-            payloadCase_ = 4;
+            payloadCase_ = 3;
             payload_ = other.payload_;
             onChanged();
             break;
           }
-          case ERR: {
-            mergeErr(other.getErr());
+          case FAILURE: {
+            mergeFailure(other.getFailure());
             break;
           }
-          case QUERY: {
-            mergeQuery(other.getQuery());
+          case REQUEST: {
+            mergeRequest(other.getRequest());
             break;
           }
           case RESPONSE: {
@@ -796,22 +1459,22 @@ public final class Global {
       }
 
       public final boolean isInitialized() {
-        if (!hasHeader()) {
+        if (!hasGlobalHeader()) {
           
           return false;
         }
-        if (!getHeader().isInitialized()) {
+        if (!getGlobalHeader().isInitialized()) {
           
           return false;
         }
-        if (hasErr()) {
-          if (!getErr().isInitialized()) {
+        if (hasFailure()) {
+          if (!getFailure().isInitialized()) {
             
             return false;
           }
         }
-        if (hasQuery()) {
-          if (!getQuery().isInitialized()) {
+        if (hasRequest()) {
+          if (!getRequest().isInitialized()) {
             
             return false;
           }
@@ -829,11 +1492,11 @@ public final class Global {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        global.Global.GlobalCommandMessage parsedMessage = null;
+        global.Global.GlobalMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (global.Global.GlobalCommandMessage) e.getUnfinishedMessage();
+          parsedMessage = (global.Global.GlobalMessage) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -859,167 +1522,151 @@ public final class Global {
 
       private int bitField0_;
 
-      private pipe.common.Common.Header header_ = pipe.common.Common.Header.getDefaultInstance();
+      private global.Global.GlobalHeader globalHeader_ = global.Global.GlobalHeader.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          pipe.common.Common.Header, pipe.common.Common.Header.Builder, pipe.common.Common.HeaderOrBuilder> headerBuilder_;
+          global.Global.GlobalHeader, global.Global.GlobalHeader.Builder, global.Global.GlobalHeaderOrBuilder> globalHeaderBuilder_;
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public boolean hasHeader() {
+      public boolean hasGlobalHeader() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public pipe.common.Common.Header getHeader() {
-        if (headerBuilder_ == null) {
-          return header_;
+      public global.Global.GlobalHeader getGlobalHeader() {
+        if (globalHeaderBuilder_ == null) {
+          return globalHeader_;
         } else {
-          return headerBuilder_.getMessage();
+          return globalHeaderBuilder_.getMessage();
         }
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public Builder setHeader(pipe.common.Common.Header value) {
-        if (headerBuilder_ == null) {
+      public Builder setGlobalHeader(global.Global.GlobalHeader value) {
+        if (globalHeaderBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          header_ = value;
+          globalHeader_ = value;
           onChanged();
         } else {
-          headerBuilder_.setMessage(value);
+          globalHeaderBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public Builder setHeader(
-          pipe.common.Common.Header.Builder builderForValue) {
-        if (headerBuilder_ == null) {
-          header_ = builderForValue.build();
+      public Builder setGlobalHeader(
+          global.Global.GlobalHeader.Builder builderForValue) {
+        if (globalHeaderBuilder_ == null) {
+          globalHeader_ = builderForValue.build();
           onChanged();
         } else {
-          headerBuilder_.setMessage(builderForValue.build());
+          globalHeaderBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public Builder mergeHeader(pipe.common.Common.Header value) {
-        if (headerBuilder_ == null) {
+      public Builder mergeGlobalHeader(global.Global.GlobalHeader value) {
+        if (globalHeaderBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              header_ != pipe.common.Common.Header.getDefaultInstance()) {
-            header_ =
-              pipe.common.Common.Header.newBuilder(header_).mergeFrom(value).buildPartial();
+              globalHeader_ != global.Global.GlobalHeader.getDefaultInstance()) {
+            globalHeader_ =
+              global.Global.GlobalHeader.newBuilder(globalHeader_).mergeFrom(value).buildPartial();
           } else {
-            header_ = value;
+            globalHeader_ = value;
           }
           onChanged();
         } else {
-          headerBuilder_.mergeFrom(value);
+          globalHeaderBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public Builder clearHeader() {
-        if (headerBuilder_ == null) {
-          header_ = pipe.common.Common.Header.getDefaultInstance();
+      public Builder clearGlobalHeader() {
+        if (globalHeaderBuilder_ == null) {
+          globalHeader_ = global.Global.GlobalHeader.getDefaultInstance();
           onChanged();
         } else {
-          headerBuilder_.clear();
+          globalHeaderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public pipe.common.Common.Header.Builder getHeaderBuilder() {
+      public global.Global.GlobalHeader.Builder getGlobalHeaderBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
-        return getHeaderFieldBuilder().getBuilder();
+        return getGlobalHeaderFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
-      public pipe.common.Common.HeaderOrBuilder getHeaderOrBuilder() {
-        if (headerBuilder_ != null) {
-          return headerBuilder_.getMessageOrBuilder();
+      public global.Global.GlobalHeaderOrBuilder getGlobalHeaderOrBuilder() {
+        if (globalHeaderBuilder_ != null) {
+          return globalHeaderBuilder_.getMessageOrBuilder();
         } else {
-          return header_;
+          return globalHeader_;
         }
       }
       /**
-       * <code>required .Header header = 1;</code>
+       * <code>required .GlobalHeader globalHeader = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          pipe.common.Common.Header, pipe.common.Common.Header.Builder, pipe.common.Common.HeaderOrBuilder> 
-          getHeaderFieldBuilder() {
-        if (headerBuilder_ == null) {
-          headerBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              pipe.common.Common.Header, pipe.common.Common.Header.Builder, pipe.common.Common.HeaderOrBuilder>(
-                  getHeader(),
+          global.Global.GlobalHeader, global.Global.GlobalHeader.Builder, global.Global.GlobalHeaderOrBuilder> 
+          getGlobalHeaderFieldBuilder() {
+        if (globalHeaderBuilder_ == null) {
+          globalHeaderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              global.Global.GlobalHeader, global.Global.GlobalHeader.Builder, global.Global.GlobalHeaderOrBuilder>(
+                  getGlobalHeader(),
                   getParentForChildren(),
                   isClean());
-          header_ = null;
+          globalHeader_ = null;
         }
-        return headerBuilder_;
+        return globalHeaderBuilder_;
       }
 
       /**
-       * <code>optional bool ping = 3;</code>
-       *
-       * <pre>
-       * a client (external) sanity check for testing
-       * </pre>
+       * <code>optional bool ping = 2;</code>
        */
       public boolean hasPing() {
-        return payloadCase_ == 3;
+        return payloadCase_ == 2;
       }
       /**
-       * <code>optional bool ping = 3;</code>
-       *
-       * <pre>
-       * a client (external) sanity check for testing
-       * </pre>
+       * <code>optional bool ping = 2;</code>
        */
       public boolean getPing() {
-        if (payloadCase_ == 3) {
+        if (payloadCase_ == 2) {
           return (java.lang.Boolean) payload_;
         }
         return false;
       }
       /**
-       * <code>optional bool ping = 3;</code>
-       *
-       * <pre>
-       * a client (external) sanity check for testing
-       * </pre>
+       * <code>optional bool ping = 2;</code>
        */
       public Builder setPing(boolean value) {
-        payloadCase_ = 3;
+        payloadCase_ = 2;
         payload_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool ping = 3;</code>
-       *
-       * <pre>
-       * a client (external) sanity check for testing
-       * </pre>
+       * <code>optional bool ping = 2;</code>
        */
       public Builder clearPing() {
-        if (payloadCase_ == 3) {
+        if (payloadCase_ == 2) {
           payloadCase_ = 0;
           payload_ = null;
           onChanged();
@@ -1028,24 +1675,24 @@ public final class Global {
       }
 
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public boolean hasMessage() {
-        return payloadCase_ == 4;
+        return payloadCase_ == 3;
       }
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public java.lang.String getMessage() {
         java.lang.Object ref = "";
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           ref = payload_;
         }
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (payloadCase_ == 4) {
+          if (payloadCase_ == 3) {
             if (bs.isValidUtf8()) {
               payload_ = s;
             }
@@ -1056,19 +1703,19 @@ public final class Global {
         }
       }
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public com.google.protobuf.ByteString
           getMessageBytes() {
         java.lang.Object ref = "";
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           ref = payload_;
         }
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          if (payloadCase_ == 4) {
+          if (payloadCase_ == 3) {
             payload_ = b;
           }
           return b;
@@ -1077,23 +1724,23 @@ public final class Global {
         }
       }
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  payloadCase_ = 4;
+  payloadCase_ = 3;
         payload_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public Builder clearMessage() {
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           payloadCase_ = 0;
           payload_ = null;
           onChanged();
@@ -1101,79 +1748,79 @@ public final class Global {
         return this;
       }
       /**
-       * <code>optional string message = 4;</code>
+       * <code>optional string message = 3;</code>
        */
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  payloadCase_ = 4;
+  payloadCase_ = 3;
         payload_ = value;
         onChanged();
         return this;
       }
 
       private com.google.protobuf.SingleFieldBuilder<
-          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> errBuilder_;
+          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> failureBuilder_;
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public boolean hasErr() {
-        return payloadCase_ == 5;
+      public boolean hasFailure() {
+        return payloadCase_ == 4;
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public pipe.common.Common.Failure getErr() {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5) {
+      public pipe.common.Common.Failure getFailure() {
+        if (failureBuilder_ == null) {
+          if (payloadCase_ == 4) {
             return (pipe.common.Common.Failure) payload_;
           }
           return pipe.common.Common.Failure.getDefaultInstance();
         } else {
-          if (payloadCase_ == 5) {
-            return errBuilder_.getMessage();
+          if (payloadCase_ == 4) {
+            return failureBuilder_.getMessage();
           }
           return pipe.common.Common.Failure.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public Builder setErr(pipe.common.Common.Failure value) {
-        if (errBuilder_ == null) {
+      public Builder setFailure(pipe.common.Common.Failure value) {
+        if (failureBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           payload_ = value;
           onChanged();
         } else {
-          errBuilder_.setMessage(value);
+          failureBuilder_.setMessage(value);
         }
-        payloadCase_ = 5;
+        payloadCase_ = 4;
         return this;
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public Builder setErr(
+      public Builder setFailure(
           pipe.common.Common.Failure.Builder builderForValue) {
-        if (errBuilder_ == null) {
+        if (failureBuilder_ == null) {
           payload_ = builderForValue.build();
           onChanged();
         } else {
-          errBuilder_.setMessage(builderForValue.build());
+          failureBuilder_.setMessage(builderForValue.build());
         }
-        payloadCase_ = 5;
+        payloadCase_ = 4;
         return this;
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public Builder mergeErr(pipe.common.Common.Failure value) {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5 &&
+      public Builder mergeFailure(pipe.common.Common.Failure value) {
+        if (failureBuilder_ == null) {
+          if (payloadCase_ == 4 &&
               payload_ != pipe.common.Common.Failure.getDefaultInstance()) {
             payload_ = pipe.common.Common.Failure.newBuilder((pipe.common.Common.Failure) payload_)
                 .mergeFrom(value).buildPartial();
@@ -1182,236 +1829,236 @@ public final class Global {
           }
           onChanged();
         } else {
-          if (payloadCase_ == 5) {
-            errBuilder_.mergeFrom(value);
+          if (payloadCase_ == 4) {
+            failureBuilder_.mergeFrom(value);
           }
-          errBuilder_.setMessage(value);
+          failureBuilder_.setMessage(value);
         }
-        payloadCase_ = 5;
+        payloadCase_ = 4;
         return this;
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public Builder clearErr() {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5) {
+      public Builder clearFailure() {
+        if (failureBuilder_ == null) {
+          if (payloadCase_ == 4) {
             payloadCase_ = 0;
             payload_ = null;
             onChanged();
           }
         } else {
-          if (payloadCase_ == 5) {
+          if (payloadCase_ == 4) {
             payloadCase_ = 0;
             payload_ = null;
           }
-          errBuilder_.clear();
+          failureBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public pipe.common.Common.Failure.Builder getErrBuilder() {
-        return getErrFieldBuilder().getBuilder();
+      public pipe.common.Common.Failure.Builder getFailureBuilder() {
+        return getFailureFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
-      public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
-        if ((payloadCase_ == 5) && (errBuilder_ != null)) {
-          return errBuilder_.getMessageOrBuilder();
+      public pipe.common.Common.FailureOrBuilder getFailureOrBuilder() {
+        if ((payloadCase_ == 4) && (failureBuilder_ != null)) {
+          return failureBuilder_.getMessageOrBuilder();
         } else {
-          if (payloadCase_ == 5) {
+          if (payloadCase_ == 4) {
             return (pipe.common.Common.Failure) payload_;
           }
           return pipe.common.Common.Failure.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Failure err = 5;</code>
+       * <code>optional .Failure failure = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> 
-          getErrFieldBuilder() {
-        if (errBuilder_ == null) {
-          if (!(payloadCase_ == 5)) {
+          getFailureFieldBuilder() {
+        if (failureBuilder_ == null) {
+          if (!(payloadCase_ == 4)) {
             payload_ = pipe.common.Common.Failure.getDefaultInstance();
           }
-          errBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          failureBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder>(
                   (pipe.common.Common.Failure) payload_,
                   getParentForChildren(),
                   isClean());
           payload_ = null;
         }
-        payloadCase_ = 5;
-        return errBuilder_;
+        payloadCase_ = 4;
+        return failureBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder> queryBuilder_;
+          pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder> requestBuilder_;
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public boolean hasQuery() {
-        return payloadCase_ == 6;
+      public boolean hasRequest() {
+        return payloadCase_ == 5;
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public storage.Storage.Query getQuery() {
-        if (queryBuilder_ == null) {
-          if (payloadCase_ == 6) {
-            return (storage.Storage.Query) payload_;
+      public pipe.common.Common.Request getRequest() {
+        if (requestBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.Request) payload_;
           }
-          return storage.Storage.Query.getDefaultInstance();
+          return pipe.common.Common.Request.getDefaultInstance();
         } else {
-          if (payloadCase_ == 6) {
-            return queryBuilder_.getMessage();
+          if (payloadCase_ == 5) {
+            return requestBuilder_.getMessage();
           }
-          return storage.Storage.Query.getDefaultInstance();
+          return pipe.common.Common.Request.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public Builder setQuery(storage.Storage.Query value) {
-        if (queryBuilder_ == null) {
+      public Builder setRequest(pipe.common.Common.Request value) {
+        if (requestBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           payload_ = value;
           onChanged();
         } else {
-          queryBuilder_.setMessage(value);
+          requestBuilder_.setMessage(value);
         }
-        payloadCase_ = 6;
+        payloadCase_ = 5;
         return this;
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public Builder setQuery(
-          storage.Storage.Query.Builder builderForValue) {
-        if (queryBuilder_ == null) {
+      public Builder setRequest(
+          pipe.common.Common.Request.Builder builderForValue) {
+        if (requestBuilder_ == null) {
           payload_ = builderForValue.build();
           onChanged();
         } else {
-          queryBuilder_.setMessage(builderForValue.build());
+          requestBuilder_.setMessage(builderForValue.build());
         }
-        payloadCase_ = 6;
+        payloadCase_ = 5;
         return this;
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public Builder mergeQuery(storage.Storage.Query value) {
-        if (queryBuilder_ == null) {
-          if (payloadCase_ == 6 &&
-              payload_ != storage.Storage.Query.getDefaultInstance()) {
-            payload_ = storage.Storage.Query.newBuilder((storage.Storage.Query) payload_)
+      public Builder mergeRequest(pipe.common.Common.Request value) {
+        if (requestBuilder_ == null) {
+          if (payloadCase_ == 5 &&
+              payload_ != pipe.common.Common.Request.getDefaultInstance()) {
+            payload_ = pipe.common.Common.Request.newBuilder((pipe.common.Common.Request) payload_)
                 .mergeFrom(value).buildPartial();
           } else {
             payload_ = value;
           }
           onChanged();
         } else {
-          if (payloadCase_ == 6) {
-            queryBuilder_.mergeFrom(value);
+          if (payloadCase_ == 5) {
+            requestBuilder_.mergeFrom(value);
           }
-          queryBuilder_.setMessage(value);
+          requestBuilder_.setMessage(value);
         }
-        payloadCase_ = 6;
+        payloadCase_ = 5;
         return this;
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public Builder clearQuery() {
-        if (queryBuilder_ == null) {
-          if (payloadCase_ == 6) {
+      public Builder clearRequest() {
+        if (requestBuilder_ == null) {
+          if (payloadCase_ == 5) {
             payloadCase_ = 0;
             payload_ = null;
             onChanged();
           }
         } else {
-          if (payloadCase_ == 6) {
+          if (payloadCase_ == 5) {
             payloadCase_ = 0;
             payload_ = null;
           }
-          queryBuilder_.clear();
+          requestBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public storage.Storage.Query.Builder getQueryBuilder() {
-        return getQueryFieldBuilder().getBuilder();
+      public pipe.common.Common.Request.Builder getRequestBuilder() {
+        return getRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
-      public storage.Storage.QueryOrBuilder getQueryOrBuilder() {
-        if ((payloadCase_ == 6) && (queryBuilder_ != null)) {
-          return queryBuilder_.getMessageOrBuilder();
+      public pipe.common.Common.RequestOrBuilder getRequestOrBuilder() {
+        if ((payloadCase_ == 5) && (requestBuilder_ != null)) {
+          return requestBuilder_.getMessageOrBuilder();
         } else {
-          if (payloadCase_ == 6) {
-            return (storage.Storage.Query) payload_;
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.Request) payload_;
           }
-          return storage.Storage.Query.getDefaultInstance();
+          return pipe.common.Common.Request.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Query query = 6;</code>
+       * <code>optional .Request request = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder> 
-          getQueryFieldBuilder() {
-        if (queryBuilder_ == null) {
-          if (!(payloadCase_ == 6)) {
-            payload_ = storage.Storage.Query.getDefaultInstance();
+          pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder> 
+          getRequestFieldBuilder() {
+        if (requestBuilder_ == null) {
+          if (!(payloadCase_ == 5)) {
+            payload_ = pipe.common.Common.Request.getDefaultInstance();
           }
-          queryBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              storage.Storage.Query, storage.Storage.Query.Builder, storage.Storage.QueryOrBuilder>(
-                  (storage.Storage.Query) payload_,
+          requestBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              pipe.common.Common.Request, pipe.common.Common.Request.Builder, pipe.common.Common.RequestOrBuilder>(
+                  (pipe.common.Common.Request) payload_,
                   getParentForChildren(),
                   isClean());
           payload_ = null;
         }
-        payloadCase_ = 6;
-        return queryBuilder_;
+        payloadCase_ = 5;
+        return requestBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder> responseBuilder_;
+          pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder> responseBuilder_;
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
       public boolean hasResponse() {
-        return payloadCase_ == 7;
+        return payloadCase_ == 6;
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
-      public storage.Storage.Response getResponse() {
+      public pipe.common.Common.Response getResponse() {
         if (responseBuilder_ == null) {
-          if (payloadCase_ == 7) {
-            return (storage.Storage.Response) payload_;
+          if (payloadCase_ == 6) {
+            return (pipe.common.Common.Response) payload_;
           }
-          return storage.Storage.Response.getDefaultInstance();
+          return pipe.common.Common.Response.getDefaultInstance();
         } else {
-          if (payloadCase_ == 7) {
+          if (payloadCase_ == 6) {
             return responseBuilder_.getMessage();
           }
-          return storage.Storage.Response.getDefaultInstance();
+          return pipe.common.Common.Response.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
-      public Builder setResponse(storage.Storage.Response value) {
+      public Builder setResponse(pipe.common.Common.Response value) {
         if (responseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1421,57 +2068,57 @@ public final class Global {
         } else {
           responseBuilder_.setMessage(value);
         }
-        payloadCase_ = 7;
+        payloadCase_ = 6;
         return this;
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
       public Builder setResponse(
-          storage.Storage.Response.Builder builderForValue) {
+          pipe.common.Common.Response.Builder builderForValue) {
         if (responseBuilder_ == null) {
           payload_ = builderForValue.build();
           onChanged();
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        payloadCase_ = 7;
+        payloadCase_ = 6;
         return this;
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
-      public Builder mergeResponse(storage.Storage.Response value) {
+      public Builder mergeResponse(pipe.common.Common.Response value) {
         if (responseBuilder_ == null) {
-          if (payloadCase_ == 7 &&
-              payload_ != storage.Storage.Response.getDefaultInstance()) {
-            payload_ = storage.Storage.Response.newBuilder((storage.Storage.Response) payload_)
+          if (payloadCase_ == 6 &&
+              payload_ != pipe.common.Common.Response.getDefaultInstance()) {
+            payload_ = pipe.common.Common.Response.newBuilder((pipe.common.Common.Response) payload_)
                 .mergeFrom(value).buildPartial();
           } else {
             payload_ = value;
           }
           onChanged();
         } else {
-          if (payloadCase_ == 7) {
+          if (payloadCase_ == 6) {
             responseBuilder_.mergeFrom(value);
           }
           responseBuilder_.setMessage(value);
         }
-        payloadCase_ = 7;
+        payloadCase_ = 6;
         return this;
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
-          if (payloadCase_ == 7) {
+          if (payloadCase_ == 6) {
             payloadCase_ = 0;
             payload_ = null;
             onChanged();
           }
         } else {
-          if (payloadCase_ == 7) {
+          if (payloadCase_ == 6) {
             payloadCase_ = 0;
             payload_ = null;
           }
@@ -1480,61 +2127,66 @@ public final class Global {
         return this;
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
-      public storage.Storage.Response.Builder getResponseBuilder() {
+      public pipe.common.Common.Response.Builder getResponseBuilder() {
         return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
-      public storage.Storage.ResponseOrBuilder getResponseOrBuilder() {
-        if ((payloadCase_ == 7) && (responseBuilder_ != null)) {
+      public pipe.common.Common.ResponseOrBuilder getResponseOrBuilder() {
+        if ((payloadCase_ == 6) && (responseBuilder_ != null)) {
           return responseBuilder_.getMessageOrBuilder();
         } else {
-          if (payloadCase_ == 7) {
-            return (storage.Storage.Response) payload_;
+          if (payloadCase_ == 6) {
+            return (pipe.common.Common.Response) payload_;
           }
-          return storage.Storage.Response.getDefaultInstance();
+          return pipe.common.Common.Response.getDefaultInstance();
         }
       }
       /**
-       * <code>optional .Response response = 7;</code>
+       * <code>optional .Response response = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder> 
+          pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder> 
           getResponseFieldBuilder() {
         if (responseBuilder_ == null) {
-          if (!(payloadCase_ == 7)) {
-            payload_ = storage.Storage.Response.getDefaultInstance();
+          if (!(payloadCase_ == 6)) {
+            payload_ = pipe.common.Common.Response.getDefaultInstance();
           }
           responseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              storage.Storage.Response, storage.Storage.Response.Builder, storage.Storage.ResponseOrBuilder>(
-                  (storage.Storage.Response) payload_,
+              pipe.common.Common.Response, pipe.common.Common.Response.Builder, pipe.common.Common.ResponseOrBuilder>(
+                  (pipe.common.Common.Response) payload_,
                   getParentForChildren(),
                   isClean());
           payload_ = null;
         }
-        payloadCase_ = 7;
+        payloadCase_ = 6;
         return responseBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:GlobalCommandMessage)
+      // @@protoc_insertion_point(builder_scope:GlobalMessage)
     }
 
     static {
-      defaultInstance = new GlobalCommandMessage(true);
+      defaultInstance = new GlobalMessage(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:GlobalCommandMessage)
+    // @@protoc_insertion_point(class_scope:GlobalMessage)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GlobalCommandMessage_descriptor;
+    internal_static_GlobalHeader_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_GlobalCommandMessage_fieldAccessorTable;
+      internal_static_GlobalHeader_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GlobalMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_GlobalMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1544,12 +2196,15 @@ public final class Global {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014global.proto\032\014common.proto\032\rstorage.pr" +
-      "oto\"\256\001\n\024GlobalCommandMessage\022\027\n\006header\030\001" +
-      " \002(\0132\007.Header\022\016\n\004ping\030\003 \001(\010H\000\022\021\n\007message" +
-      "\030\004 \001(\tH\000\022\027\n\003err\030\005 \001(\0132\010.FailureH\000\022\027\n\005que" +
-      "ry\030\006 \001(\0132\006.QueryH\000\022\035\n\010response\030\007 \001(\0132\t.R" +
-      "esponseH\000B\t\n\007payloadB\n\n\006globalH\001"
+      "\n\014global.proto\032\014common.proto\"^\n\014GlobalHe" +
+      "ader\022\022\n\ncluster_id\030\001 \002(\005\022\014\n\004time\030\002 \002(\003\022\026" +
+      "\n\016destination_id\030\010 \001(\005\022\024\n\010max_hops\030\n \001(\005" +
+      ":\002-1\"\273\001\n\rGlobalMessage\022#\n\014globalHeader\030\001" +
+      " \002(\0132\r.GlobalHeader\022\016\n\004ping\030\002 \001(\010H\000\022\021\n\007m" +
+      "essage\030\003 \001(\tH\000\022\033\n\007failure\030\004 \001(\0132\010.Failur" +
+      "eH\000\022\033\n\007request\030\005 \001(\0132\010.RequestH\000\022\035\n\010resp" +
+      "onse\030\006 \001(\0132\t.ResponseH\000B\t\n\007payloadB\n\n\006gl" +
+      "obalH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1563,16 +2218,20 @@ public final class Global {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           pipe.common.Common.getDescriptor(),
-          storage.Storage.getDescriptor(),
         }, assigner);
-    internal_static_GlobalCommandMessage_descriptor =
+    internal_static_GlobalHeader_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_GlobalCommandMessage_fieldAccessorTable = new
+    internal_static_GlobalHeader_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_GlobalCommandMessage_descriptor,
-        new java.lang.String[] { "Header", "Ping", "Message", "Err", "Query", "Response", "Payload", });
+        internal_static_GlobalHeader_descriptor,
+        new java.lang.String[] { "ClusterId", "Time", "DestinationId", "MaxHops", });
+    internal_static_GlobalMessage_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_GlobalMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_GlobalMessage_descriptor,
+        new java.lang.String[] { "GlobalHeader", "Ping", "Message", "Failure", "Request", "Response", "Payload", });
     pipe.common.Common.getDescriptor();
-    storage.Storage.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

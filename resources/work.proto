@@ -3,7 +3,7 @@ option java_package = "pipe.work";
 
 import "common.proto";
 import "election.proto";
-import "storage.proto";
+
 
 message WorkState {
     required int32 enqueued = 1;
@@ -41,7 +41,7 @@ message Payload{
     optional LeaderStatus leader = 8;
     optional RaftMessage raftmsg = 9;
     optional LeaderElection election = 10;
-    optional Query query = 16;
+    optional Request query = 16;
 
     optional Response response = 17;
     optional bytes storageFile = 18;
