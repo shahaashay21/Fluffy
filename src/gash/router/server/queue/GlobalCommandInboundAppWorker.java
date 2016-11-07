@@ -63,10 +63,10 @@ public class GlobalCommandInboundAppWorker extends Thread {
 				boolean msgDropFlag;
 
 				// process request and enqueue response
-				if(msg instanceof Global.GlobalCommandMessage){
+				if(msg instanceof Global.GlobalMessage){
 
 					//PrintUtil.printCommand((Pipe.CommandRequest) msg);
-					Global.GlobalCommandMessage req = ((Global.GlobalCommandMessage) msg);
+					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 
 					if (req.hasPing()) {
 						/*logger.info("ping from " + req.getHeader().getNodeId());
@@ -110,7 +110,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 						}*/
 						new Ping(sq).handle(req);
-					}else if(req.hasQuery()){
+					}else if(req.hasRequest()){
 						new Query(sq).handle(req);
 					}
 					else{

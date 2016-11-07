@@ -16,12 +16,9 @@
 package gash.router.client;
 
 import com.google.protobuf.ByteString;
-import global.Global;
-import global.Global.*;
-import global.*;
-import pipe.common.Common.Header;
-import routing.Pipe;
-import storage.Storage;
+import global.Global.GlobalHeader;
+import global.Global.GlobalMessage;
+import pipe.common.Common;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -57,7 +54,7 @@ public class MessageClient {
         GlobalHeader.Builder hb = createHeader(999, 6);
 
         GlobalMessage.Builder rb = GlobalMessage.newBuilder();
-        rb.setHeader(hb);
+        rb.setGlobalHeader(hb);
         rb.setPing(true);
 
         try {
@@ -76,7 +73,7 @@ public class MessageClient {
         GlobalHeader.Builder hb = createHeader(999, 5);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
-        gmb.setHeader(hb);
+        gmb.setGlobalHeader(hb);
         gmb.setMessage(message);
 
         try {
@@ -93,12 +90,12 @@ public class MessageClient {
         // construct the message to send
         GlobalHeader.Builder hb = createHeader(999, 5);
 
-        Request.Builder rb = Request.newBuilder();
-        rb.setAction(RequestType.Read);
+        Common.Request.Builder rb = Common.Request.newBuilder();
+        rb.setRequestType(Common.RequestType.READ);
         rb.setFileName(value);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
-        gmb.setHeader(hb);
+        gmb.setGlobalHeader(hb);
         gmb.setRequest(rb);
 
         try {
@@ -125,17 +122,17 @@ public class MessageClient {
 
         for(int i = 0; i < arrayList.size(); i++)
         {
-            File.Builder fb = File.newBuilder();
-            fb.setFileName(path.getFileName().toString());
+            Common.File.Builder fb = Common.File.newBuilder();
+            fb.setFilename(path.getFileName().toString());
             fb.setData(ByteString.copyFrom(arrayList.get(i)));
             fb.setChunkId(i);
             fb.setChunkCount(arrayList.size());
-            Request.Builder rb = Request.newBuilder();
-            rb.setRequestType(Request.WRITE);
+            Common.Request.Builder rb = Common.Request.newBuilder();
+            rb.setRequestType(Common.RequestType.WRITE);
             rb.setFileName(path.getFileName().toString());
             rb.setFile(fb);
             GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
-            gmb.setHeader(hb);
+            gmb.setGlobalHeader(hb);
             gmb.setRequest(rb);
 
             try {
@@ -166,7 +163,7 @@ public class MessageClient {
         GlobalHeader.Builder hb = GlobalHeader.newBuilder();
         hb.setClusterId(cluster_id);
         hb.setTime(System.currentTimeMillis());
-        hb.setDistinationId(distination_id);
+        hb.setDestinationId(distination_id);
         return hb;
     }
 }

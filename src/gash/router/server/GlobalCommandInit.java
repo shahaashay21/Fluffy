@@ -49,7 +49,7 @@ public class GlobalCommandInit extends ChannelInitializer<SocketChannel> {
 		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS)); // Added by r
 
 		// decoder must be first
-		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Global.GlobalCommandMessage.getDefaultInstance()));
+		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Global.GlobalMessage.getDefaultInstance()));
 		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 

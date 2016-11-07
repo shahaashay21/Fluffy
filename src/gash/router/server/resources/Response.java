@@ -13,7 +13,6 @@ import global.Global;
 import pipe.common.Common;
 import pipe.work.Work;
 import routing.Pipe;
-import storage.Storage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,20 +22,20 @@ import java.util.Iterator;
  */
 public class Response extends Resource {
 
-    Storage.Response response;
+    Common.Response response;
 
     public Response(ChannelQueue sq){
         super(sq);
     }
 
-    public void handleGlobalCommand(Global.GlobalCommandMessage msg) {
+    public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         response = msg.getResponse();
 
-        switch (response.getAction()){
-            case GET:
+        switch (response.getRequestType()){
+            case READ:
                 break;
-            case STORE:
+            case WRITE:
                 break;
             case UPDATE:
             case DELETE:
@@ -53,12 +52,12 @@ public class Response extends Resource {
         response = msg.getPayload().getResponse();
         logger.debug("Response on work channel from " + msg.getHeader().getNodeId());
 
-        switch (response.getAction()) {
-            case GET:
+        switch (response.getRequestType()) {
+            case READ:
                 PrintUtil.printWork(msg);
                 forwardResponseOntoIncomingChannel(msg,false);
                 break;
-            case STORE:
+            case WRITE:
                 //todo
                 PrintUtil.printWork(msg);
                 forwardResponseOntoIncomingChannel(msg,false);
@@ -95,14 +94,14 @@ public class Response extends Resource {
 
             if(!clientMessage.getHeader().getSourceHost().contains("_")){
 
-                Global.GlobalCommandMessage.Builder cb = Global.GlobalCommandMessage.newBuilder(); // message to be returned to actual client
+                Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
                 hb.setTime(((Work.WorkRequest) msg).getHeader().getTime());
                 hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
                 hb.setDestination(clientMessage.getHeader().getDestination());// wont be available in case of request from client. but can be determined based on log replication feature
                 hb.setSourceHost(Integer.toString(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId()));
                 hb.setDestinationHost(clientMessage.getHeader().getDestinationHost()); // would be used to return message back to client
 
-                cb.setHeader(hb);
+                cb.setGlobalHeader(hb);
                 cb.setResponse(((Work.WorkRequest) msg).getPayload().getResponse()); // set the reponse to the client
                 Iterator<EdgeInfo> inBoundEdgeListIt = MessageServer.getEmon().getInboundEdgeInfoList().iterator();
                 while (inBoundEdgeListIt.hasNext()) {

@@ -160,7 +160,7 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 	@Override
 	public void enqueueRequest(GeneratedMessage req, Channel notused) {
 		try {
-			EdgeInfo ei = new EdgeInfo(((Global.GlobalCommandMessage)req).getHeader().getNodeId(),((Global.GlobalCommandMessage)req).getHeader().getSourceHost(),-1);
+			EdgeInfo ei = new EdgeInfo(((Global.GlobalMessage)req).getGlobalHeader().getClusterId(),((Global.GlobalMessage)req).getGlobalHeader().getSourceHost(),-1);
 			ei.setChannel(notused);
 			ei.setClientChannel(true);
 			MessageServer.getEmon().addToInbound(ei);

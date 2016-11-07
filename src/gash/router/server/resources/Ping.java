@@ -22,15 +22,15 @@ public class Ping extends Resource {
         super(sq);
     }
 
-    public void handleGlobalCommand(Global.GlobalCommandMessage msg) {
+    public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         if(!(sq instanceof PerChannelGlobalCommandQueue)){
             logger.info("Setup queue is not global queue");
             return;
         }
         
-        if(msg.getHeader().getDestination() == ((PerChannelGlobalCommandQueue)sq).getRoutingConf().getNodeId()){
-            logger.info("ping from " + msg.getHeader().getNodeId());
+        if(msg.getGlobalHeader().getDestinationId() == ((PerChannelGlobalCommandQueue)sq).getRoutingConf().getNodeId()){
+            logger.info("ping from " + msg.getGlobalHeader().getClusterId());
         }
         else{ //message doesn't belong to current node. Forward on other edges
             forwardRequestOnWorkChannel(msg,true);
@@ -125,13 +125,13 @@ public class Ping extends Resource {
                     Common.Header.Builder hb = Common.Header.newBuilder();
 
                     if(globalCommandMessage) {
-                        Global.GlobalCommandMessage clientMessage = (Global.GlobalCommandMessage) msg;
+                        Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
 
                         hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
-                        hb.setTime(clientMessage.getHeader().getTime());
-                        hb.setDestination(clientMessage.getHeader().getDestination());// wont be available in case of request from client. but can be determined based on log replication feature
-                        hb.setSourceHost(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId() + "_" + clientMessage.getHeader().getSourceHost());
-                        hb.setDestinationHost(clientMessage.getHeader().getSourceHost()); // would be used to return message back to client
+                        hb.setTime(clientMessage.getGlobalHeader().getTime());
+                        hb.setDestination(clientMessage.getGlobalHeader().getDestinationId());// wont be available in case of request from client. but can be determined based on log replication feature
+                        hb.setSourceHost(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getSourceHost());
+                        hb.setDestinationHost(clientMessage.getGlobalHeader().getSourceHost()); // would be used to return message back to client
                         hb.setMaxHops(1);
 
                         wb.setHeader(hb);
@@ -161,8 +161,8 @@ public class Ping extends Resource {
                         logger.info("Workmessage pertaining to client ping queued");
                     }
                     if (msgDropFlag && globalCommandMessage)
-                        logger.info("Message dropped <node,ping,source>: <" + ((Global.GlobalCommandMessage) msg).getHeader().getNodeId()
-                                + "," + ((Global.GlobalCommandMessage) msg).getPing() + "," + ((Global.GlobalCommandMessage) msg).getHeader().getSourceHost() + ">");
+                        logger.info("Message dropped <node,ping,source>: <" + ((Global.GlobalMessage) msg).getGlobalHeader().getClusterId()
+                                + "," + ((Global.GlobalMessage) msg).getPing() + "," + ((Global.GlobalMessage) msg).getGlobalHeader().getSourceHost() + ">");
                     else if(msgDropFlag && !globalCommandMessage)
                         logger.info("Message dropped <node,ping,source>: <" + ((Work.WorkRequest) msg).getHeader().getNodeId()
                                 + "," + ((Work.WorkRequest) msg).getPayload().getPing() + "," + ((Work.WorkRequest) msg).getHeader().getSourceHost() + ">");

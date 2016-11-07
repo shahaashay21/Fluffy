@@ -23,28 +23,28 @@ import java.util.ArrayList;
  */
 public class Query extends Resource {
 
-    Storage.Query query;
+    Common.Request query;
 
     public Query(ChannelQueue sq){
         super(sq);
     }
 
 
-    public void handleGlobalCommand(Global.GlobalCommandMessage msg) {
+    public void handleGlobalCommand(Global.GlobalMessage msg) {
 
-        query = msg.getQuery();
+        query = msg.getRequest();
         //If this have to handle on the same node
         //TODO: change the logic so that it has to be dependent on configuration and intra cluster node space dependent.
         //if (msg.getHeader().getDestination() == ((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId()) {
         //Commenting above line as in request from client destination wouldn't be available
-            switch (query.getAction()) {
+            switch (query.getRequestType()) {
                 case GET:
                     PrintUtil.printGlobalCommand(msg);
                     ArrayList<DataModel> arrRespData = checkIfQueryIsLocalAndGetResponse(query);
                     if(arrRespData.size() > 0){
                         //generate a response message
                         for(DataModel dataModel : arrRespData){
-                            Storage.Response response = getResponseMessageForGet(dataModel);
+                            Common.Response response = getResponseMessageForGet(dataModel);
                             generateResponseOntoIncomingChannel(msg,response,true);
                         }
                     }
@@ -57,7 +57,7 @@ public class Query extends Resource {
                     if(MongoDAO.isSufficientSpace("test")){
                         // needs change
                         int result = MongoDAO.saveData("test",new DataModel(query.getKey(),query.getSequenceNo(),query.getData().toByteArray()));
-                        Storage.Response response = getResponseMessageForStore(result);
+                        Common.Response response = getResponseMessageForStore(result);
                         logger.debug("Result of save data in mongo :"+ result);
                         generateResponseOntoIncomingChannel(msg,response,true);
                     }

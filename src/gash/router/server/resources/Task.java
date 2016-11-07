@@ -17,7 +17,7 @@ public class Task extends Resource {
         this.sq = sq;
     }
 
-    public void handleGlobalCommand(Global.GlobalCommandMessage msg) {
+    public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         if(!(sq instanceof PerChannelGlobalCommandQueue)){
             logger.info("Setup queue is not global queue");

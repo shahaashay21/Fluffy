@@ -17,11 +17,11 @@ package gash.router.server;
 
 import gash.router.server.resources.Query;
 import global.Global;
+import pipe.common.Common;
 import pipe.common.Common.Failure;
 import pipe.common.Common.Header;
 import pipe.work.Work;
 import routing.Pipe;
-import storage.Storage;
 
 public class PrintUtil {
 	private static final String gap = "   ";
@@ -39,27 +39,27 @@ public class PrintUtil {
 
 	}
 
-	public static void printCommand(Pipe.CommandMessage msg) {
+	public static void printCommand(Common.CommandMessage msg) {
 		PrintUtil.printHeader(msg.getHeader());
 
-		Pipe.CommandMessage.Payload py = msg.getCommandMessage().getPayload();
+		//Common.CommandMessage py = msg.getCommandMessage();
 
 		System.out.print("\nCommand: ");
-		if (py.hasErr()) {
+		if (msg.hasErr()) {
 			System.out.println("Failure");
-			System.out.println(PrintUtil.gap + "Code:    " + py.getErr().getId());
-			System.out.println(PrintUtil.gap + "Ref ID:  " + py.getErr().getRefId());
-			System.out.println(PrintUtil.gap + "Message: " + py.getErr().getMessage());
-		} else if (py.hasPing())
+			System.out.println(PrintUtil.gap + "Code:    " + msg.getErr().getId());
+			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getErr().getRefId());
+			System.out.println(PrintUtil.gap + "Message: " + msg.getErr().getMessage());
+		} else if (msg.hasPing())
 			System.out.println("Ping");
-		else if (py.hasMessage()) {
+		else if (msg.hasMessage()) {
 			System.out.println("Message");
-			System.out.println(PrintUtil.gap + "Msg:  " + py.getMessage());
+			System.out.println(PrintUtil.gap + "Msg:  " + msg.getMessage());
 		} else
 			System.out.println("Unknown");
 	}
 
-	public static void printGlobalCommand(Global.GlobalMessage msg) {
+	public static void printGlobalCommand(Common.CommandMessage msg) {
 		PrintUtil.printHeader(msg.getHeader());
 
 		System.out.print("\nGlobalMessage: ");

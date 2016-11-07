@@ -99,7 +99,7 @@ public class CommConnection {
 	 *
 	 * @param req
 	 *            The request
-	 * @exception An exception is raised if the message cannot be enqueued.
+	 * @exception
 	 */
 	public void enqueue(GlobalMessage req) throws Exception {
 		// enqueue message
@@ -152,7 +152,7 @@ public class CommConnection {
 
 		group = new NioEventLoopGroup();
 		try {
-			CommInit si = new CommInit(false);
+			gash.router.client.CommInit si = new gash.router.client.CommInit(false);
 			Bootstrap b = new Bootstrap();
 			b.group(group).channel(NioSocketChannel.class).handler(si);
 			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);

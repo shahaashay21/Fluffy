@@ -16,7 +16,7 @@ public class Failure extends Resource {
         super(sq);
     }
 
-    public void handleGlobalCommand(Global.GlobalCommandMessage msg) {
+    public void handleGlobalCommand(Global.GlobalMessage msg) {
 
     }
 

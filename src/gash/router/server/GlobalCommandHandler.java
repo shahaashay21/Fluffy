@@ -33,7 +33,7 @@ import routing.Pipe;
  * @author gash
  *
  */
-public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.GlobalCommandMessage> {
+public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.GlobalMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
 	private ChannelQueue queue;
@@ -89,7 +89,7 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	 *            The message
 	 */
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalCommandMessage msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
 		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
 	}
@@ -121,6 +121,11 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 
 		return queue;
 	}
+
+//	@Override
+//	protected void channelRead0(ChannelHandlerContext channelHandlerContext, Global.GlobalMessage globalMessage) throws Exception {
+//
+//	}
 
 	public static class ConnectionCloseListener implements ChannelFutureListener {
 

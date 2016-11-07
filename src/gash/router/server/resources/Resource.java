@@ -25,7 +25,7 @@ public class Resource {
         this.sq = sq;
     }
 
-    void handleGlobalCommand(Global.GlobalCommandMessage msg){
+    void handleGlobalCommand(Global.GlobalMessage msg){
 
     }
 
@@ -39,8 +39,8 @@ public class Resource {
 
     public void handle(GeneratedMessage msg) {
 
-        if(msg instanceof Global.GlobalCommandMessage){
-            handleGlobalCommand((Global.GlobalCommandMessage) msg);
+        if(msg instanceof Global.GlobalMessage){
+            handleGlobalCommand((Global.GlobalMessage) msg);
         }else if(msg instanceof Pipe.CommandRequest){
             handleCommand((Pipe.CommandRequest) msg);
         }else if(msg instanceof Work.WorkRequest){
