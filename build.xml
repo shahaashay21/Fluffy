@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="NIO-based (JBoss Netty) communication pipeline" basedir="." default="build">
 
+
 	<target name="init">
 		<property name="src.dir" location="${basedir}/src" />
 		<property name="test.dir" location="${basedir}/test" />
@@ -10,6 +11,9 @@
 		<property name="protobuf.dir" location="/Users/gash/Developer/protobuf/current" />
 		<property name="junit.jar" location="/Users/gash/Developer/junit-4.8.2.jar" />
 		<property name="logging.jar" location="${basedir}/lib/slf4j-log4j12-1.6.1.jar" />
+		<!--<artifact:dependencies pathId="dependency.classpath">-->
+			<!--<dependency groupId="com.rethinkdb" artifactId="rethinkdb-driver" version="2.3.3" />-->
+		<!--</artifact:dependencies>-->
 
 		<path id="project.classpath">
 			<pathelement location="${build.dir}" />

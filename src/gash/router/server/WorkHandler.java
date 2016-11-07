@@ -61,33 +61,33 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	 *
 	 * @param msg
 	 */
-	// public void handleMessage(Work.WorkRequest msg, Channel channel) {
-	// 	if (msg == null) {
-	// 		// TODO add logging
-	// 		logger.error("ERROR: Unexpected content - " + msg);
-	// 		return;
-	// 	}
-	//
-	// 	if (debug)
-	//
-	//
-	// 	// TODO How can you implement this without if-else statements?
-	// 	try {
-	//
-	// 	} catch (Exception e) {
-	// 		// TODO add logging
-	// 		Failure.Builder eb = Failure.newBuilder();
-	// 		eb.setId(state.getConf().getNodeId());
-	// 		eb.setRefId(msg.getHeader().getNodeId());
-	// 		eb.setMessage(e.getMessage());
-	// 		Work.WorkRequest.Builder rb = Work.WorkRequest.newBuilder(msg);
-	// 		rb.setPayload(Work.Payload.newBuilder().setErr(eb));
-	// 		channel.write(rb.build());
-	// 	}
-	//
-	// 	System.out.flush();
-	//
-	// }
+	 public void handleMessage(Work.WorkRequest msg, Channel channel) {
+	 	if (msg == null) {
+	 		// TODO add logging
+	 		logger.error("ERROR: Unexpected content - " + msg);
+	 		return;
+	 	}
+
+	 	if (debug)
+
+
+	 	// TODO How can you implement this without if-else statements?
+	 	try {
+
+	 	} catch (Exception e) {
+	 		// TODO add logging
+	 		Failure.Builder eb = Failure.newBuilder();
+	 		eb.setId(state.getConf().getNodeId());
+	 		eb.setRefId(msg.getHeader().getNodeId());
+	 		eb.setMessage(e.getMessage());
+	 		Work.WorkRequest.Builder rb = Work.WorkRequest.newBuilder(msg);
+	 		rb.setPayload(Work.Payload.newBuilder().setErr(eb));
+	 		channel.write(rb.build());
+	 	}
+
+	 	System.out.flush();
+
+	 }
 
 	/**
 	 * a message was received from the server. Here we dispatch the message to

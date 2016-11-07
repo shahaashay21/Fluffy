@@ -101,12 +101,12 @@ public class RaftManager implements ElectionListener{
     }
 
     private void askWhoIsTheLeader() {
-        logger.info("Node " + conf.getNodeId() + " is searching for the leader");
+        //logger.info("Node " + conf.getNodeId() + " is searching for the leader");
         if (whoIsTheLeader() == null) {
-            logger.info("----> I cannot find the leader is! I don't know!");
+            //logger.info("----> I cannot find the leader is! I don't know!");
             return;
         } else {
-            logger.info("The Leader is " + this.leaderNode);
+            //logger.info("The Leader is " + this.leaderNode);
         }
 
     }
@@ -143,12 +143,12 @@ public class RaftManager implements ElectionListener{
 
     private void respondToWhoIsTheLeader(Work.WorkRequest msg) {
         if (this.leaderNode == null) {
-            logger.info("----> I cannot respond to who the leader is! I don't know!");
+            //logger.info("----> I cannot respond to who the leader is! I don't know!");
             return;
         }
-        logger.info("Node " + conf.getNodeId() + " is replying to "
-                + msg.getHeader().getNodeId()
-                + "'s request who the leader is. Its Node " + this.leaderNode);
+//        logger.info("Node " + conf.getNodeId() + " is replying to "
+//                + msg.getHeader().getNodeId()
+//                + "'s request who the leader is. Its Node " + this.leaderNode);
 
         Common.Header.Builder hb = Common.Header.newBuilder();
         hb.setNodeId(conf.getNodeId());
@@ -175,7 +175,7 @@ public class RaftManager implements ElectionListener{
 
 
     public void startMonitor(ServerState state) {
-        logger.info("Raft Monitor Started ");
+        //logger.info("Raft Monitor Started ");
         if (election == null)
             ((RaftElection) electionInstance()).getMonitor().start();
 
@@ -185,7 +185,7 @@ public class RaftManager implements ElectionListener{
     @Override
     public void concludeWith(boolean success, Integer LeaderID) {
         if (success) {
-            logger.info("----> the leader is " + LeaderID);
+           // logger.info("----> the leader is " + LeaderID);
             this.leaderNode = LeaderID;
         }
 

@@ -74,7 +74,7 @@ public class WorkInboundAppWorker extends Thread {
 					//PrintUtil.printWork(req);
 					if (payload.hasBeat()) {
 						//Work.Heartbeat hb = payload.getBeat();
-						logger.info("heartbeat from " + req.getHeader().getNodeId());
+						//logger.info("heartbeat from " + req.getHeader().getNodeId());
 						EdgeMonitor emon = MessageServer.getEmon();
 						EdgeInfo ei = new EdgeInfo(req.getHeader().getNodeId(),"",req.getHeader().getSource());
 						ei.setChannel(sq.getChannel());
