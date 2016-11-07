@@ -39,48 +39,59 @@ public class PrintUtil {
 
 	}
 
-	public static void printCommand(Common.CommandMessage msg) {
+	public static void printCommand(Pipe.CommandRequest msg) {
 		PrintUtil.printHeader(msg.getHeader());
 
-		//Common.CommandMessage py = msg.getCommandMessage();
+		Pipe.Payload py = msg.getPayload();
 
 		System.out.print("\nCommand: ");
-		if (msg.hasErr()) {
+		if (py.hasErr()) {
 			System.out.println("Failure");
-			System.out.println(PrintUtil.gap + "Code:    " + msg.getErr().getId());
-			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getErr().getRefId());
-			System.out.println(PrintUtil.gap + "Message: " + msg.getErr().getMessage());
-		} else if (msg.hasPing())
+			System.out.println(PrintUtil.gap + "Code:    " + py.getErr().getId());
+			System.out.println(PrintUtil.gap + "Ref ID:  " + py.getErr().getRefId());
+			System.out.println(PrintUtil.gap + "Message: " + py.getErr().getMessage());
+		} else if (py.hasPing())
 			System.out.println("Ping");
-		else if (msg.hasMessage()) {
+		else if (py.hasMessage()) {
 			System.out.println("Message");
-			System.out.println(PrintUtil.gap + "Msg:  " + msg.getMessage());
+			System.out.println(PrintUtil.gap + "Msg:  " + py.getMessage());
 		} else
 			System.out.println("Unknown");
 	}
 
-	public static void printGlobalCommand(Common.CommandMessage msg) {
-		PrintUtil.printHeader(msg.getHeader());
+	public static void printGlobalCommand(Global.GlobalMessage msg) {
+		//PrintUtil.printHeader(msg.getGlobalHeader());
+		Global.GlobalHeader hdr = msg.getGlobalHeader();
+
+		System.out.println("\n-------------------------------------------------------");
+		System.out.println("ID:        " + hdr.getClusterId());
+		System.out.println("Time:      " + hdr.getTime());
+		//System.out.println("Sorc Host: " + hdr.getSourceHost());
+		//System.out.println("Dest Host: " + hdr.getDestination());
+		if (hdr.hasMaxHops())
+			System.out.println("Hops: " + hdr.getMaxHops());
+		if (hdr.hasDestinationId())
+			System.out.println("Dest: " + hdr.getDestinationId());
 
 		System.out.print("\nGlobalMessage: ");
-		if (msg.getPayload().hasFailure()) {
+		if (msg.hasFailure()) {
 			System.out.println("Failure");
-			System.out.println(PrintUtil.gap + "Code:    " + msg.getErr().getId());
-			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getErr().getRefId());
-			System.out.println(PrintUtil.gap + "Message: " + msg.getErr().getMessage());
+			System.out.println(PrintUtil.gap + "Code:    " + msg.getFailure().getId());
+			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getFailure().getRefId());
+			System.out.println(PrintUtil.gap + "Message: " + msg.getFailure().getMessage());
 		} else if (msg.hasPing())
 			System.out.println("Ping");
 		else if (msg.hasMessage()) {
 			System.out.println("Message");
 			System.out.println(PrintUtil.gap + "Msg:  " + msg.getMessage());
-		} else if(msg.hasQuery()){
-			printQuery(msg.getQuery());
+		} else if(msg.hasRequest()){
+			printQuery(msg.getRequest());
 		}else{
 			System.out.println("Unknown");
 		}
 	}
 
-	public static void printQuery(Global.GlobalMessage.Payload.Request req){
+	public static void printQuery(Common.Request req){
 		System.out.println("Query");
 		switch(req.getRequestType()){
 			case READ:
@@ -88,7 +99,12 @@ public class PrintUtil {
 				break;
 			case WRITE:
 				System.out.println(PrintUtil.gap + " File to Store:  " + req.getRequestId());
-				System.out.println(PrintUtil.gap + " Sequence:  " + query.getPayload().getFile().getChunkId());
+				if(req.hasFile()){
+					System.out.println(PrintUtil.gap + " Sequence:  " + req.getFile().getChunkId());
+				}
+				if(req.hasFileName()){
+					System.out.println(PrintUtil.gap + " Filename:  " + req.getFileName());
+				}
 				break;
 			case UPDATE:
 				break;

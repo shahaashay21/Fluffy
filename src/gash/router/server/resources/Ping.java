@@ -130,8 +130,8 @@ public class Ping extends Resource {
                         hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
                         hb.setTime(clientMessage.getGlobalHeader().getTime());
                         hb.setDestination(clientMessage.getGlobalHeader().getDestinationId());// wont be available in case of request from client. but can be determined based on log replication feature
-                        hb.setSourceHost(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getSourceHost());
-                        hb.setDestinationHost(clientMessage.getGlobalHeader().getSourceHost()); // would be used to return message back to client
+                        hb.setSourceHost(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getClusterId());
+                        hb.setDestinationHost(Integer.toString(clientMessage.getGlobalHeader().getClusterId())); // would be used to return message back to client
                         hb.setMaxHops(1);
 
                         wb.setHeader(hb);
@@ -162,7 +162,7 @@ public class Ping extends Resource {
                     }
                     if (msgDropFlag && globalCommandMessage)
                         logger.info("Message dropped <node,ping,source>: <" + ((Global.GlobalMessage) msg).getGlobalHeader().getClusterId()
-                                + "," + ((Global.GlobalMessage) msg).getPing() + "," + ((Global.GlobalMessage) msg).getGlobalHeader().getSourceHost() + ">");
+                                + "," + ((Global.GlobalMessage) msg).getPing() + "," + ((Global.GlobalMessage) msg).getGlobalHeader().getClusterId() + ">");
                     else if(msgDropFlag && !globalCommandMessage)
                         logger.info("Message dropped <node,ping,source>: <" + ((Work.WorkRequest) msg).getHeader().getNodeId()
                                 + "," + ((Work.WorkRequest) msg).getPayload().getPing() + "," + ((Work.WorkRequest) msg).getHeader().getSourceHost() + ">");

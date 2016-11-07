@@ -17,7 +17,7 @@ public class InterClusterManager {
         this.conf= conf;
     }
 
-    public static void sendToAnotherCluster(Global.GlobalCommandMessage msg){
+    public static void sendToAnotherCluster(Global.GlobalMessage msg){
         for(RoutingConf.RoutingEntry re : conf.getAdapterRouting()){
 
         }

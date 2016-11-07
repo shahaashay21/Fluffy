@@ -31,7 +31,7 @@ public class RaftManager implements ElectionListener{
     private static RoutingConf conf;
     private static long lastKnownBeat = System.currentTimeMillis();
     //private static ClusterConfList clusterConf;
-    //public static HashMap<Integer,HashSet<DataModel>> clusterFileInfo = new HashMap<>();
+    public static HashMap<Integer,HashSet<DataModel>> clusterFileInfo = new HashMap<>();
 
     private int firstTime = 2;
     private Election election;

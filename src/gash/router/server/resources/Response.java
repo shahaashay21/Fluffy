@@ -93,25 +93,26 @@ public class Response extends Resource {
             Work.WorkRequest clientMessage = (Work.WorkRequest) msg;
 
             if(!clientMessage.getHeader().getSourceHost().contains("_")){
-
-                Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
-                hb.setTime(((Work.WorkRequest) msg).getHeader().getTime());
-                hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
-                hb.setDestination(clientMessage.getHeader().getDestination());// wont be available in case of request from client. but can be determined based on log replication feature
-                hb.setSourceHost(Integer.toString(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId()));
-                hb.setDestinationHost(clientMessage.getHeader().getDestinationHost()); // would be used to return message back to client
-
-                cb.setGlobalHeader(hb);
-                cb.setResponse(((Work.WorkRequest) msg).getPayload().getResponse()); // set the reponse to the client
-                Iterator<EdgeInfo> inBoundEdgeListIt = MessageServer.getEmon().getInboundEdgeInfoList().iterator();
-                while (inBoundEdgeListIt.hasNext()) {
-                    EdgeInfo ei = inBoundEdgeListIt.next();
-                    if (ei.isClientChannel() && ei.getRef() == Integer.parseInt(clientMessage.getHeader().getSourceHost())) { // look for client specific channel
-                        ei.getQueue().enqueueResponse(cb.build(), null);
-                    } else {
-                        // connection to client from where request came is down. // need to handle yet
-                    }
-                }
+                logger.error("_ source cluster error");
+//
+//                Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
+//                hb.setTime(((Work.WorkRequest) msg).getHeader().getTime());
+//                hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
+//                hb.setDestination(clientMessage.getHeader().getDestination());// wont be available in case of request from client. but can be determined based on log replication feature
+//                hb.setSourceHost(Integer.toString(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId()));
+//                hb.setDestinationHost(clientMessage.getHeader().getDestinationHost()); // would be used to return message back to client
+//
+//                cb.setGlobalHeader(hb);
+//                cb.setResponse(((Work.WorkRequest) msg).getPayload().getResponse()); // set the reponse to the client
+//                Iterator<EdgeInfo> inBoundEdgeListIt = MessageServer.getEmon().getInboundEdgeInfoList().iterator();
+//                while (inBoundEdgeListIt.hasNext()) {
+//                    EdgeInfo ei = inBoundEdgeListIt.next();
+//                    if (ei.isClientChannel() && ei.getRef() == Integer.parseInt(clientMessage.getHeader().getSourceHost())) { // look for client specific channel
+//                        ei.getQueue().enqueueResponse(cb.build(), null);
+//                    } else {
+//                        // connection to client from where request came is down. // need to handle yet
+//                    }
+//                }
             }
             else {
 
