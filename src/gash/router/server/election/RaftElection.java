@@ -85,7 +85,7 @@ public class RaftElection implements gash.router.server.election.Election {
                 this.term = rm.getTerm();
                 this.lastKnownBeat = System.currentTimeMillis();
                 notifyl(true, workMessage.getHeader().getNodeId());
-                //logger.info("Node " + workMessage.getHeader().getNodeId() + " is the leader");
+                logger.info("Node " + workMessage.getHeader().getNodeId() + " is the leader");
             }
         }
         else if (rm.getRaftAction() == RaftMessage.RaftAction.THELEADERIS){
@@ -94,7 +94,7 @@ public class RaftElection implements gash.router.server.election.Election {
                 this.term = rm.getTerm();
                 this.lastKnownBeat = System.currentTimeMillis();
                 notifyl(true, workMessage.getHeader().getNodeId());
-                //logger.info("Node " + workMessage.getHeader().getNodeId() + " is the leader");
+                logger.info("Node " + workMessage.getHeader().getNodeId() + " is the leader");
             }
             if(workMessage.getHeader().getDestination()== 100 && workMessage.getHeader().getMaxHops()>0){
             for(Channel ch : MessageServer.getEmon().getAllChannel())
@@ -120,8 +120,8 @@ public class RaftElection implements gash.router.server.election.Election {
                     this.term = rm.getTerm();
                     this.leaderId = workMessage.getHeader().getNodeId();
                     this.currentstate = RState.Follower;
-//                    logger.info("Received Append RPC from leader "
-//                            + workMessage.getHeader().getNodeId());
+                    logger.info("Received Append RPC from leader "
+                            + workMessage.getHeader().getNodeId());
                 }
             }
             else if (currentstate == RState.Follower) {
@@ -374,12 +374,12 @@ public class RaftElection implements gash.router.server.election.Election {
 
     private void respondToWhoIsTheLeader(Work.WorkRequest msg) {
         if (this.leaderId == 0) {
-            //logger.info("----> I cannot respond to who the leader is! I don't know!");
+            logger.info("----> I cannot respond to who the leader is! I don't know!");
             return;
         }
-//        logger.info("Node " + this.nodeId + " is replying to "
-//                + msg.getHeader().getNodeId()
-//                + "'s request who the leader is. Its Node " + this.leaderId);
+        logger.info("Node " + this.nodeId + " is replying to "
+                + msg.getHeader().getNodeId()
+                + "'s request who the leader is. Its Node " + this.leaderId);
 
         Common.Header.Builder hb = Common.Header.newBuilder();
         hb.setNodeId(this.nodeId);

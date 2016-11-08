@@ -1,78 +1,91 @@
 package database.model;
+import java.util.Arrays;
 
 /**
- * Created by n on 4/3/16.
+ * Created by manthan on 4/3/16.
  */
 public class DataModel {
-    String name;
-    int seqNumber;
-    byte[] dataChunk;
-    int seqSize;
 
+    String fileName;
+    byte[] data;
+    int chunkId;
+    int chunkCount;
 
-    public DataModel(String name, byte[] dataChunk){
-        this.name = name;
-        this.seqNumber = -1;
-        this.dataChunk = dataChunk;
-        this.seqSize=0;
+    public DataModel(String fileName, byte[] data) {
+        this.fileName = fileName;
+        this.data = data;
     }
 
-    public DataModel(String name, int seqNumber, byte[] dataChunk){
-        this.name = name;
-        this.seqNumber = seqNumber;
-        this.dataChunk = dataChunk;
-        this.seqSize=0;
+    public DataModel(String fileName, int chunkId, byte[] data) {
+        this.fileName = fileName;
+        this.data = data;
+        this.chunkId = chunkId;
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public int getSeqNumber() {
-        return seqNumber;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setSeqNumber(int seqNumber) {
-        this.seqNumber = seqNumber;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
-    public byte[] getDataChunk() {
-        return dataChunk;
+    public int getChunkId() {
+        return chunkId;
     }
 
-    public void setDataChunk(byte[] dataChunk) {
-        this.dataChunk = dataChunk;
+    public void setChunkId(int chunkId) {
+        this.chunkId = chunkId;
     }
 
-    public int getSeqSize() {
-        return seqSize;
+    public int getChunkCount() {
+        return chunkCount;
     }
 
-    public void setSeqSize(int seqSize) {
-        this.seqSize = seqSize;
+    public void setChunkCount(int chunkCount) {
+        this.chunkCount = chunkCount;
     }
 
-    public boolean equals(Object x){
-        DataModel that = (DataModel) x;
-        if(this.getName() == that.getName() && this.getSeqNumber() == that.seqNumber){
-            if(this.getDataChunk() == null || that.getDataChunk() == null){
-                return true;
-            }
-            else{
-                return (this.dataChunk.equals(that.dataChunk));
-            }
-        }
-        else
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + chunkCount;
+        result = prime * result + chunkId;
+        result = prime * result + Arrays.hashCode(data);
+        result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DataModel other = (DataModel) obj;
+        if (chunkCount != other.chunkCount)
+            return false;
+        if (chunkId != other.chunkId)
+            return false;
+        if (!Arrays.equals(data, other.data))
+            return false;
+        if (fileName == null) {
+            if (other.fileName != null)
+                return false;
+        } else if (!fileName.equals(other.fileName))
+            return false;
+        return true;
     }
-
-    public int hashCode(){
-        return this.getName().hashCode() + this.getSeqNumber();
-    }
-
 
 }

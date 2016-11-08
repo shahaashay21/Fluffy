@@ -103,8 +103,9 @@ public class DemoApp implements CommListener {
 
 			// do stuff w/ the connection
 			//da.ping(2);
-			da.message("Hello System!!");
-			//da.save("/home/n/Downloads/work-stealing2.pdf");
+//			da.message("Hello System!!");
+			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
+//			da.save("/Users/aashayshah/Desktop/239-1.mov");
 
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();

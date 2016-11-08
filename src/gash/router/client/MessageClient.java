@@ -70,7 +70,7 @@ public class MessageClient {
 
     public void message(String message) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(999, 6);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);

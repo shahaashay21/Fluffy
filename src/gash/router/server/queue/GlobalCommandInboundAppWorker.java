@@ -112,6 +112,8 @@ public class GlobalCommandInboundAppWorker extends Thread {
 						new Ping(sq).handle(req);
 					}else if(req.hasRequest()){
 						new Query(sq).handle(req);
+					}else if(req.hasMessage()){
+						logger.info("assscsdvsdcsdjvndkjbsjkdbvksdbvkbabkvbkdsbvkjsdbjkvsdkjbvbsfdvbsdibvisdbvbsdhibvhsbvhbshvb"+ req.getMessage());
 					}
 					else{
 						logger.error("Unexpected message type. Yet to handle.");
