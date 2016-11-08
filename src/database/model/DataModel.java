@@ -1,9 +1,6 @@
 package database.model;
 import java.util.Arrays;
 
-/**
- * Created by manthan on 4/3/16.
- */
 public class DataModel {
 
     String fileName;

@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
-/**
- * Created by n on 4/7/16.
- */
+
 public class PendingClientRequest {
 
     protected static Logger logger = LoggerFactory.getLogger("PendingClientRequest");

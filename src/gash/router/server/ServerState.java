@@ -36,7 +36,6 @@ public class ServerState implements RoutingConfObserver{
 	/**
 	 * Update state with latest confFile
 	 *
-	 * @author n
 	 *
 	 */
 	@Override

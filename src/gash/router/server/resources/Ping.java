@@ -13,9 +13,6 @@ import pipe.common.Common;
 import pipe.work.Work;
 import routing.Pipe;
 
-/**
- * Created by a on 4/2/16.
- */
 public class Ping extends Resource {
 
     public Ping(ChannelQueue sq){

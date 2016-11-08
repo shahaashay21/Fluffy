@@ -81,62 +81,7 @@ public class WorkInboundAppWorker extends Thread {
 						emon.addToInbound(ei);
 						RaftManager.getInstance().assessCurrentState();
 					} else if (payload.hasPing()) {
-						/*logger.info("ping from <node,host> : <" + req.getHeader().getNodeId() + ", " + req.getHeader().getSourceHost()+">");
-						PrintUtil.printWork(req);
-						if(req.getHeader().getDestination() == sq.state.getConf().getNodeId()){
-							//handle message by self
-							logger.info("Ping for me: " + " from "+ req.getHeader().getSourceHost());
-
-							Work.WorkRequest.Builder rb = Work.WorkRequest.newBuilder();
-
-							Common.Header.Builder hb = Common.Header.newBuilder();
-							hb.setNodeId(sq.state.getConf().getNodeId());
-							hb.setTime(System.currentTimeMillis());
-							hb.setDestination(Integer.parseInt(req.getHeader().getSourceHost().substring(req.getHeader().getSourceHost().lastIndexOf('_')+1)));
-							hb.setSourceHost(req.getHeader().getSourceHost().substring(req.getHeader().getSourceHost().indexOf('_')+1));
-							hb.setDestinationHost(req.getHeader().getSourceHost());
-							hb.setMaxHops(5);
-
-							rb.setHeader(hb);
-							rb.setSecret(1234567809);
-							rb.setPayload(Work.Payload.newBuilder().setPing(true));
-							//channel.writeAndFlush(rb.build());
-							sq.enqueueResponse(rb.build(),sq.getChannel());
-						}
-						else { //message doesn't belong to current node. Forward on other edges
-							msgDropFlag = true;
-							PrintUtil.printWork(req);
-							if (req.getHeader().getMaxHops() > 0 && MessageServer.getEmon() != null) {// forward if Comm-worker port is active
-								for (EdgeInfo ei : MessageServer.getEmon().getOutboundEdgeInfoList()) {
-									if (ei.isActive() && ei.getChannel() != null) {// check if channel of outbound edge is active
-										logger.debug("Workmessage being queued");
-										Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder();
-
-										Common.Header.Builder hb = Common.Header.newBuilder();
-										hb.setNodeId(sq.state.getConf().getNodeId());
-										hb.setTime(req.getHeader().getTime());
-										hb.setDestination(req.getHeader().getDestination());
-										hb.setSourceHost(sq.state.getConf().getNodeId()+"_"+req.getHeader().getSourceHost());
-										hb.setDestinationHost(req.getHeader().getDestinationHost());
-										hb.setMaxHops(req.getHeader().getMaxHops() -1);
-
-										wb.setHeader(hb);
-										wb.setSecret(1234567809);
-										wb.setPayload(Work.Payload.newBuilder().setPing(true));
-										//ei.getChannel().writeAndFlush(wb.build());
-										PerChannelWorkQueue edgeQueue = (PerChannelWorkQueue) ei.getQueue();
-										edgeQueue.enqueueResponse(wb.build(),ei.getChannel());
-										msgDropFlag = false;
-										logger.debug("Workmessage queued");
-									}
-								}
-								if (msgDropFlag)
-									logger.info("Message dropped <node,ping,destination>: <" + req.getHeader().getNodeId() + "," + payload.getPing() + "," + req.getHeader().getDestination() + ">");
-							} else {// drop the message or queue it for limited time to send to connected node
-								//todo
-								logger.info("No outbound edges to forward. To be handled");
-							}
-						}*/
+						
 						new Ping(sq).handle(req);
 
 					}else if (payload.hasQuery()) {

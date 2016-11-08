@@ -11,9 +11,7 @@
 //import java.util.HashMap;
 //import java.util.Properties;
 //
-///**
-// * Created by n on 4/3/16.
-// */
+
 //public class AerospikeConnector {
 //    protected static Logger logger = LoggerFactory.getLogger("aerospike");
 //

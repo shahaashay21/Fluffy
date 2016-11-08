@@ -13,9 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by a on 4/6/16.
- */
+
 public class StorageInfo {
 
     private static String fileStoragePath = "filestorage/storage.json";

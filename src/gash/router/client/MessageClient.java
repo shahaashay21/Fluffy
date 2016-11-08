@@ -58,10 +58,6 @@ public class MessageClient {
         rb.setPing(true);
 
         try {
-            // direct no queue
-            // CommConnection.getInstance().write(rb.build());
-
-            // using queue
             CommConnection.getInstance().enqueue(rb.build());
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,6 +119,7 @@ public class MessageClient {
         for(int i = 0; i < arrayList.size(); i++)
         {
             Common.File.Builder fb = Common.File.newBuilder();
+            System.out.println(path.getFileName().toString());
             fb.setFilename(path.getFileName().toString());
             fb.setData(ByteString.copyFrom(arrayList.get(i)));
             fb.setChunkId(i);
@@ -130,6 +127,32 @@ public class MessageClient {
             Common.Request.Builder rb = Common.Request.newBuilder();
             rb.setRequestType(Common.RequestType.WRITE);
             rb.setFileName(path.getFileName().toString());
+            rb.setFile(fb);
+            GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
+            gmb.setGlobalHeader(hb);
+            gmb.setRequest(rb);
+
+            try {
+                // using queue
+                CommConnection.getInstance().enqueue(gmb.build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void read(String value) {
+        // construct the message to send
+        List<byte[]> arrayList = new ArrayList<>();
+        GlobalHeader.Builder hb = createHeader(999, 5);
+
+        for(int i = 0; i < arrayList.size(); i++)
+        {
+            Common.File.Builder fb = Common.File.newBuilder();
+            fb.setFilename(value);
+            Common.Request.Builder rb = Common.Request.newBuilder();
+            rb.setRequestType(Common.RequestType.READ);
+            rb.setFileName(value);
             rb.setFile(fb);
             GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
             gmb.setGlobalHeader(hb);

@@ -8,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import pipe.work.Work;
 import routing.Pipe;
 
-/**
- * Created by a on 4/2/16.
- */
 public class Resource {
 
     Logger logger = LoggerFactory.getLogger("Resource Handling");

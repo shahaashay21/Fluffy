@@ -147,34 +147,18 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	}
 
 
-	/**
-	 * Attach observer for changes in conf file
-	 *
-	 * @author n
-	 *
-	 */
 	@Override
 	public void attach(RoutingConfObserver observer) {
 		routingConfOberverList.add(observer);
 	}
 
-	/**
-	 * Detach observer for changes in conf file
-	 *
-	 * @author n
-	 *
-	 */
+	
 	@Override
 	public void detach(RoutingConfObserver observer) {
 		routingConfOberverList.remove(observer);
 	}
 
-	/**
-	 * Notify observers for changes in conf file
-	 *
-	 * @author n
-	 *
-	 */
+	
 	@Override
 	public void notifyObservers() {
 		for(RoutingConfObserver observer : routingConfOberverList){
@@ -312,12 +296,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 			}
 		}
 
-		/**
-		 * Update state with latest confFile
-		 *
-		 * @author n
-		 *
-		 */
+		
 		@Override
 		public void updateRoutingConf(RoutingConf newConf){
 
@@ -326,10 +305,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		}
 	}
 
-	/**
-	 * initialize netty communication
-	 * @author n
-	 */
+	
 	private static class StartRoutingUpdater implements Runnable {
 		File confFile;
 		//RoutingConf conf;
@@ -340,12 +316,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 			this.confFile = this.svr.confFile;
 		}
 
-		/**
-		 * Thread to regularly read updated conf file
-		 *
-		 * @author n
-		 *
-		 */
+		
 		@Override
 		public void run(){
 
@@ -434,7 +405,6 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	/**
 	 * return the object of EdgeMonitor
 	 *
-	 * @author n
 	 *
 	 */
 	public static EdgeMonitor getEmon(){
@@ -444,7 +414,6 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	/**
 	 * updates the object of EdgeMonitor
 	 *
-	 * @author n
 	 *
 	 */
 	public static void setEmon(EdgeMonitor newEmon){

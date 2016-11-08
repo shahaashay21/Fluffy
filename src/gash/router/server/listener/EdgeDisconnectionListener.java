@@ -5,10 +5,7 @@ import gash.router.server.edges.EdgeMonitor;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
-/**
- * @author n
- *
- */
+
 public class EdgeDisconnectionListener implements ChannelFutureListener {
 
     EdgeMonitor emon;

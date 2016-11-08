@@ -2,21 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8fd2c7ee-8599-4eff-a1f0-f17549e8e6f0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/json-simple-1.1.1.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/database/dao/RethinkDAO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/database/dbconnetor/RethinkConnector.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/database/dao/MongoDAO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/database/dbconnetor/MongoConnector.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" afterPath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/resources/Query$1.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/resources/Query$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/resources/Query.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/resources/Query.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/cluster_storage/StorageInfo.java" afterPath="$PROJECT_DIR$/src/database/cluster_storage/StorageInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/cluster_storage/model/StoredFile.java" afterPath="$PROJECT_DIR$/src/database/cluster_storage/model/StoredFile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/dao/AerospikeDAO.java" afterPath="$PROJECT_DIR$/src/database/dao/AerospikeDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java" afterPath="$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/model/DBConfigModel.java" afterPath="$PROJECT_DIR$/src/database/model/DBConfigModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/model/DataModel.java" afterPath="$PROJECT_DIR$/src/database/model/DataModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/app/DemoApp.java" afterPath="$PROJECT_DIR$/src/gash/router/app/DemoApp.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" afterPath="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/client/ResourceUtil.java" afterPath="$PROJECT_DIR$/src/gash/router/client/ResourceUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeList.java" afterPath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" afterPath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/Election.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/Election.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/ElectionIDGenerator.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/ElectionIDGenerator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/ElectionListener.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/ElectionListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/ElectionState.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/ElectionState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/LogMessage.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/LogMessage.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/RaftElection.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/RaftElection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java" afterPath="$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/election/RaftManager.java" afterPath="$PROJECT_DIR$/src/gash/router/server/election/RaftManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/listener/EdgeDisconnectionListener.java" afterPath="$PROJECT_DIR$/src/gash/router/server/listener/EdgeDisconnectionListener.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/resources/Query.java" afterPath="$PROJECT_DIR$/src/gash/router/server/resources/Query.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/resources/Response.java" afterPath="$PROJECT_DIR$/src/gash/router/server/resources/Response.java" />
     </list>
     <ignored path="final-Netty.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,11 +49,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GlobalCommandInboundAppWorker.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java">
+      <file leaf-file-name="AerospikeDAO.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/database/dao/AerospikeDAO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="115" column="146" selection-start-line="115" selection-start-column="146" selection-end-line="115" selection-end-column="146" />
+            <state relative-caret-position="255">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RethinkConnector.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/RethinkConnector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/database/model/DataModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="27">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DBConfigModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/database/model/DBConfigModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -51,28 +92,48 @@
       <file leaf-file-name="DemoApp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/app/DemoApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1165">
-              <caret line="107" column="59" selection-start-line="107" selection-start-column="59" selection-end-line="107" selection-end-column="59" />
+            <state relative-caret-position="516">
+              <caret line="108" column="12" selection-start-line="108" selection-start-column="12" selection-end-line="108" selection-end-column="62" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
+      <file leaf-file-name="RaftManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/RaftManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="72" column="53" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
+            <state relative-caret-position="-1455">
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AerospikeDAO.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/database/dao/AerospikeDAO.java">
+      <file leaf-file-name="ElectionState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="34" column="2" selection-start-line="34" selection-start-column="2" selection-end-line="34" selection-end-column="2" />
+            <state relative-caret-position="75">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ElectionIDGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionIDGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ElectionListener.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -81,28 +142,8 @@
       <file leaf-file-name="AerospikeConnector.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RaftElection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/RaftElection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="186" column="41" selection-start-line="186" selection-start-column="41" selection-end-line="186" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PerChannelWorkQueue.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gash/router/server/queue/PerChannelWorkQueue.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-314">
-              <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+            <state relative-caret-position="66">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -123,14 +164,17 @@
       <list>
         <option value="$PROJECT_DIR$/src/database/dao/RethinkDAO.java" />
         <option value="$PROJECT_DIR$/src/database/dbconnetor/RethinkConnector.java" />
-        <option value="$PROJECT_DIR$/src/database/model/DataModel.java" />
-        <option value="$PROJECT_DIR$/src/gash/router/server/resources/Query.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java" />
-        <option value="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
-        <option value="$PROJECT_DIR$/src/database/dao/AerospikeDAO.java" />
-        <option value="$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/election/RaftElection.java" />
         <option value="$PROJECT_DIR$/src/gash/router/app/DemoApp.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/server/resources/Query.java" />
+        <option value="$PROJECT_DIR$/src/database/cluster_storage/model/StoredFile.java" />
+        <option value="$PROJECT_DIR$/src/database/cluster_storage/StorageInfo.java" />
+        <option value="$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java" />
+        <option value="$PROJECT_DIR$/src/database/dao/AerospikeDAO.java" />
+        <option value="$PROJECT_DIR$/src/database/model/DataModel.java" />
+        <option value="$PROJECT_DIR$/src/database/model/DBConfigModel.java" />
       </list>
     </option>
   </component>
@@ -248,58 +292,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="final-Netty" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="final-Netty" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="router" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="queue" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="final-Netty" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="final-Netty" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="router" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="election" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -336,11 +328,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="router" />
+              <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
+              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -354,7 +346,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -802,12 +798,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1478562819514</updated>
-      <workItem from="1478562820701" duration="2847000" />
+      <workItem from="1478562820701" duration="4954000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2847000" />
+    <option name="totallyTimeSpent" value="4954000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -824,9 +820,9 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -859,30 +855,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/database/model/DBConfigModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/model/DataModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="771">
-          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/RethinkConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build_pb.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -899,54 +871,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gash/router/server/resources/Query.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1170">
-          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/dao/RethinkDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="72" column="53" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/dao/AerospikeDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="34" column="2" selection-start-line="34" selection-start-column="2" selection-end-line="34" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/startServer.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
           <folding />
         </state>
       </provider>
@@ -967,18 +895,148 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gash/router/app/DemoApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1165">
-          <caret line="107" column="59" selection-start-line="107" selection-start-column="59" selection-end-line="107" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="381">
           <caret line="115" column="146" selection-start-line="115" selection-start-column="146" selection-end-line="115" selection-end-column="146" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="126" column="56" selection-start-line="126" selection-start-column="56" selection-end-line="126" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/common.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="34" column="28" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generated/pipe/common/Common.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="2922" column="39" selection-start-line="2922" selection-start-column="28" selection-end-line="2922" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/resources/Query.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="69" column="63" selection-start-line="69" selection-start-column="63" selection-end-line="69" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/cluster_storage/model/StoredFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/cluster_storage/StorageInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-729">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/dao/RethinkDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-489">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/AerospikeConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/dao/AerospikeDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/dbconnetor/RethinkConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/model/DataModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/database/model/DBConfigModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/app/DemoApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="516">
+          <caret line="108" column="12" selection-start-line="108" selection-start-column="12" selection-end-line="108" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/RaftManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1455">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionIDGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/election/ElectionListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
           <folding />
         </state>
       </provider>

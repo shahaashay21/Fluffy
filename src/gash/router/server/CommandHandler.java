@@ -53,32 +53,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<Pipe.CommandRequ
 	 *
 	 * @param msg
 	 */
-	// public void handleMessage(Pipe.CommandRequest msg, Channel channel) {
-	// 	if (msg == null) {
-	// 		// TODO add logging
-	// 		logger.error("ERROR: Unexpected content - " + msg);
-	// 		return;
-	// 	}
-	//
-	// 	PrintUtil.printCommand(msg);
-	//
-	// 	try {
-	//
-	// 	} catch (Exception e) {
-	// 		// TODO add logging
-	// 		Failure.Builder eb = Failure.newBuilder();
-	// 		eb.setId(conf.getNodeId());
-	// 		eb.setRefId(msg.getHeader().getNodeId());
-	// 		eb.setMessage(e.getMessage());
-	// 		Pipe.CommandRequest.Builder rb = Pipe.CommandRequest.newBuilder(msg);
-	// 		Pipe.Payload.Builder pb = Pipe.Payload.newBuilder();
-	// 		pb.setErr(eb);
-	//
-	// 		channel.write(rb.build());
-	// 	}
-	//
-	// 	System.out.flush();
-	// }
+	
 
 	/**
 	 * a message was received from the server. Here we dispatch the message to

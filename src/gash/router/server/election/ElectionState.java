@@ -3,9 +3,7 @@ package gash.router.server.election;
 import pipe.election.*;
 import pipe.election.Election;
 
-/**
- * Created by r on 4/1/16.
- */
+
 public class ElectionState {
 
     protected Integer id;

@@ -5,9 +5,6 @@ import global.Global;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by n on 4/4/16.
- */
 public class InterClusterManager {
     protected static Logger logger = LoggerFactory.getLogger("inter-cluster-manager");
 

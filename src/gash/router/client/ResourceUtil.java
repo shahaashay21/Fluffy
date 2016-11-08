@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by a on 4/4/16.
- */
 public class ResourceUtil {
 
     public static List<byte[]> divideArray(byte[] source, int chunksize) {

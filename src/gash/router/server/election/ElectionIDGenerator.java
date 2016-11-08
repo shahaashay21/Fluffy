@@ -1,8 +1,5 @@
 package gash.router.server.election;
 
-/**
- * Created by r on 4/2/16.
- */
 public class ElectionIDGenerator {
     private static int masterID = 0;
 

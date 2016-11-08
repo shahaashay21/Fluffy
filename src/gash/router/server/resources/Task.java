@@ -8,9 +8,6 @@ import global.Global;
 import pipe.work.Work;
 import routing.Pipe;
 
-/**
- * Created by a on 4/2/16.
- */
 public class Task extends Resource {
 
     public Task(ChannelQueue sq){

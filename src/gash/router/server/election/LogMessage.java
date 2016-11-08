@@ -2,9 +2,6 @@ package gash.router.server.election;
 
 import java.util.LinkedHashMap;
 
-/**
- * Created by r on 4/2/16.
- */
 public class LogMessage {
     int term;
     int logIndex=0 ;

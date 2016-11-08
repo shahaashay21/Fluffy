@@ -2,9 +2,6 @@ package database.cluster_storage.model;
 
 import org.codehaus.jackson.annotate.JsonValue;
 
-/**
- * Created by a on 4/6/16.
- */
 public class StoredFile {
 
     private String name;

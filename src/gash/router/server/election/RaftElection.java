@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Random;
 import pipe.election.Election.RaftMessage;
 
-/**
- * Created by r on 4/1/16.
- */
 public class RaftElection implements gash.router.server.election.Election {
     protected static Logger logger= LoggerFactory.getLogger("Raft");
     private EdgeMonitor emon;

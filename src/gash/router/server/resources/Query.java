@@ -18,6 +18,7 @@ import routing.Pipe;
 import pipe.common.Common.*;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
@@ -33,10 +34,6 @@ public class Query extends Resource {
     public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         query = msg.getRequest();
-        //If this have to handle on the same node
-        //TODO: change the logic so that it has to be dependent on configuration and intra cluster node space dependent.
-        //if (msg.getHeader().getDestination() == ((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId()) {
-        //Commenting above line as in request from client destination wouldn't be available
             switch (query.getRequestType()) {
                 case READ:
                     PrintUtil.printGlobalCommand(msg);
@@ -44,11 +41,18 @@ public class Query extends Resource {
                         ArrayList<DataModel> arrRespData = checkIfQueryIsLocalAndGetResponse(query);
 
                         if(arrRespData.size() > 0){
+//                            ArrayList<Byte> responsMessage = new ArrayList<>();
+                            String responsMessage = "";
                             //generate a response message
                             for(DataModel dataModel : arrRespData){
-                                Common.Response response = getResponseMessageForGet(dataModel);
-                                generateResponseOntoIncomingChannel(msg,response,true);
+                                responsMessage = responsMessage + dataModel.getData().toString();
+//                                Common.Response response = getResponseMessageForGet(dataModel);
+//                                generateResponseOntoIncomingChannel(msg,response,true);
                             }
+                            byte[] responsMessageByte = responsMessage.getBytes();
+//                            byte[] responsMessageByte = responsMessage.getBytes(Charset.forName("UTF-8"));
+                            Common.Response response = getResponseMessageForGet(new DataModel(msg.getMessage(), 0, responsMessageByte));
+                            generateResponseOntoIncomingChannel(msg,response,true);
                         }else{
                             forwardRequestOnWorkChannel(msg,true);
                         }
@@ -76,7 +80,7 @@ public class Query extends Resource {
     }
 
     public void handleCommand(Pipe.CommandRequest msg) {
-        //Not to be implement
+        
     }
 
     public void handleWork(Work.WorkRequest msg) {
@@ -119,7 +123,6 @@ public class Query extends Resource {
     private ArrayList<DataModel> checkIfQueryIsLocalAndGetResponse(Common.Request query) throws IOException {
 
         //logic to check if it belongs to current node
-//        ArrayList<DataModel> arrRespData = null;//MongoDAO.getData("test",new DataModel(query.getKey(),query.getSequenceNo(),null));
         RethinkDAO users = new RethinkDAO("Users");
         JSONObject fileNameFilter = new JSONObject();
         fileNameFilter.put("fileName", query.getFileName());
@@ -127,9 +130,6 @@ public class Query extends Resource {
         return arrRespData;
     }
 
-    /**
-     * Author : Manthan
-     * */
     private Common.Response getResponseMessageForGet(DataModel dataModel){
 
         Common.Response.Builder rb = Common.Response.newBuilder();

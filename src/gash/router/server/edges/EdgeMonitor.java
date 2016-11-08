@@ -76,15 +76,9 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		if (state.getConf().getHeartbeatDt() > this.dt)
 			this.dt = state.getConf().getHeartbeatDt();
 	}
-
-	/*BOC r
-		4/0/2016
-		EdgeMonitor instance
-	 */
 	public static EdgeMonitor getInstance(){
 		return instance.get();
 	}
-	//EOC
 
 	public void createInboundIfNew(int ref, String host, int port) {
 		inboundEdges.createIfNew(ref, host, port);
@@ -111,7 +105,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder();
 		wb.setHeader(hb);
 		wb.setPayload(py);
-		wb.setSecret(12345678);//added by n
+		wb.setSecret(12345678);
 
 		return wb.build();
 	}
@@ -205,7 +199,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 	@Override
 	public synchronized void onRemove(EdgeInfo ei) {
-		// TODO ? //added by n
 		if(ei.isActive() || ei.getChannel() != null){
 			logger.info("Edge removed, trying to disconnect to node " + ei.getRef());		
 			ei.getChannel().close();
@@ -217,24 +210,16 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		}
 	}
 
-	/**
-	 * Author : n
-	 * */
+	
 	public Collection<EdgeInfo> getOutboundEdgeInfoList(){
 		return outboundEdges.map.values();
 	}
 
-	/**
-	 * Author : n
-	 * */
 	public Collection<EdgeInfo> getInboundEdgeInfoList(){
 		return inboundEdges.map.values();
 	}
 
 
-	/**
-	 * Author : n
-	 * */
 	public void updateState(ServerState newState){
 		EdgeInfo newOutboundEdge = null;
 		this.state = newState;

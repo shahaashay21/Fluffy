@@ -21,9 +21,7 @@ import java.beans.Beans;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Created by r on 4/1/16.
- */
+
 public class RaftManager implements ElectionListener{
     protected static Logger logger = LoggerFactory.getLogger("Election Officer");
     protected static AtomicReference<RaftManager> instance = new AtomicReference<RaftManager>();
@@ -56,8 +54,6 @@ public class RaftManager implements ElectionListener{
         if (!msg.getPayload().hasRaftmsg())
             return;
         pipe.election.Election.RaftMessage rm = msg.getPayload().getRaftmsg();
-        // when a new node joins the network it will want to know who the leader
-        // is - we kind of ram this request-response in the process request
         if (rm.getRaftAction().getNumber() == pipe.election.Election.RaftMessage.RaftAction.WHOISTHELEADER_VALUE) {
             respondToWhoIsTheLeader(msg);
             return;
@@ -67,13 +63,7 @@ public class RaftManager implements ElectionListener{
         Work.WorkRequest rtn = electionInstance().process(msg);
         if (rtn != null)
         {
-           /* for(EdgeInfo ei : EdgeMonitor.getInstance().getOutboundEdgeInfoList())
-            {
-                if(ei.isActive() && ei.getChannel() != null)
-                {
-                    ei.getChannel().writeAndFlush(rtn);
-                }
-            }*/
+          
             for(Channel ch : MessageServer.getEmon().getAllChannel())
             {
                 if(ch!=null)

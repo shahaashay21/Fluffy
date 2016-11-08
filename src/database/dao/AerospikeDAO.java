@@ -15,9 +15,7 @@
 //
 //import java.util.ArrayList;
 //
-///**
-// * Created by n on 4/4/16.
-// */
+
 //public class AerospikeDAO {
 //    protected static Logger logger = LoggerFactory.getLogger("aerospikeDAO");
 //

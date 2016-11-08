@@ -78,8 +78,6 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 		iworkerList = new ArrayList<>(3);
 
 		logger.info("Starting to listen to Command worker");
-		//Creating worker threadpool
-		//Changed by: a
 		for(int i=0;i<3;i++){
 			GlobalCommandInboundAppWorker tempWorker = new GlobalCommandInboundAppWorker(tgroup, i+1, this);
 			iworkerList.add(tempWorker);
@@ -92,10 +90,6 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 			tempWorker.start();
 		}
 
-
-		// let the handler manage the queue's shutdown
-		// register listener to receive closing of channel
-		// channel.getCloseFuture().addListener(new CloseListener(this));
 	}
 
 	public Channel getChannel() {

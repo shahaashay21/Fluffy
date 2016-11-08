@@ -69,11 +69,6 @@ public class EdgeList {
 	public synchronized void clear() {
 		map.clear();
 	}
-
-	/**
-	 * Author : n
-	 *
-	 **/
 	public synchronized EdgeInfo returnAndRemoveIfNotNew(int ref, String host, int port) {
 		if (hasNode(ref)) {
 			EdgeInfo ei = getNode(ref);

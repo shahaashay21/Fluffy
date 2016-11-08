@@ -2,9 +2,6 @@ package gash.router.server.election;
 
 import pipe.work.Work;
 
-/**
- * Created by r on 4/1/16.
- */
 public interface Election {
     /**
      * notification of the election results.

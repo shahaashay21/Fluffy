@@ -82,7 +82,9 @@ public class DemoApp implements CommListener {
 
 	@Override
 	public void onMessage(Global.GlobalMessage msg) {
-		if(msg.getResponse().getRequestType().equals("WRITE"))
+		if(msg.getResponse().getRequestType().equals("READ")){
+			System.out.println("READ MESSAGE");
+		}else if(msg.getResponse().getRequestType().equals("WRITE"))
 			System.out.println("Result of data save request : Saved successfully---> " + msg.getResponse().getSuccess());
 		else // for GET message response
 			System.out.println("Final message action from server. Data needs to be parsed for --->" + msg.getResponse().getRequestType());

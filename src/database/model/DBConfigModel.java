@@ -1,8 +1,5 @@
 package database.model;
 
-/**
- * Created by n on 4/4/16.
- */
 public class DBConfigModel {
     private String host;
     private int port;
