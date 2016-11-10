@@ -66,7 +66,7 @@ public class MessageClient {
 
     public void message(String message) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 6);
+        GlobalHeader.Builder hb = createHeader(999, 1);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);
@@ -143,28 +143,26 @@ public class MessageClient {
 
     public void read(String value) {
         // construct the message to send
-        List<byte[]> arrayList = new ArrayList<>();
         GlobalHeader.Builder hb = createHeader(999, 5);
 
-        for(int i = 0; i < arrayList.size(); i++)
-        {
-            Common.File.Builder fb = Common.File.newBuilder();
-            fb.setFilename(value);
-            Common.Request.Builder rb = Common.Request.newBuilder();
-            rb.setRequestType(Common.RequestType.READ);
-            rb.setFileName(value);
-            rb.setFile(fb);
-            GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
-            gmb.setGlobalHeader(hb);
-            gmb.setRequest(rb);
+        Common.File.Builder fb = Common.File.newBuilder();
+        fb.setFilename(value);
+        Common.Request.Builder rb = Common.Request.newBuilder();
+        rb.setRequestType(Common.RequestType.READ);
+        rb.setFileName(value);
+        rb.setFile(fb);
+        GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
+        gmb.setGlobalHeader(hb);
+        gmb.setRequest(rb);
 
-            try {
-                // using queue
-                CommConnection.getInstance().enqueue(gmb.build());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            // using queue
+            CommConnection.getInstance().enqueue(gmb.build());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
     }
 
 

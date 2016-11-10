@@ -10,10 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by aashayshah on 11/7/16.
  */
 public class RethinkDAO {
+
+    protected static Logger logger = LoggerFactory.getLogger("gciaw:server");
 
         private String document;
         RethinkConnector conn = new RethinkConnector("test");;
@@ -77,9 +82,8 @@ public class RethinkDAO {
 //            }else{
 //                return RethinkConnector.r.table(document).run(conn.getConnection());
 //            }
-
             if(data != null){
-                Cursor returnedData = RethinkConnector.r.table(document).filter(data).pluck("fileName", "extension", "file").run(conn.getConnection());
+                Cursor returnedData = RethinkConnector.r.table(document).filter(data).pluck("fileName", "chunkId", "file").run(conn.getConnection());
                 ArrayList<DataModel> returnArrayData = null;
                 while(returnedData.hasNext()){
                     returnArrayData = new ArrayList();
@@ -89,6 +93,7 @@ public class RethinkDAO {
                     String newNameOfFile = (String) newData.get("fileName");
 
                     byte[] finalFile = (byte[]) newData.get("file");
+                    logger.info("GGGOOOTOTTT DDDAATTTAAA "+ finalFile.length);
                     returnArrayData.add(new DataModel(newData.get("fileName").toString(),Integer.parseInt(newData.get("chunkId").toString()), finalFile));
                 }
 

@@ -22,6 +22,9 @@ import gash.router.client.MessageClient;
 import global.*;
 import routing.Pipe;
 
+import java.io.FileOutputStream;
+import java.util.Arrays;
+
 public class DemoApp implements CommListener {
 	private MessageClient mc;
 
@@ -74,6 +77,17 @@ public class DemoApp implements CommListener {
 		System.out.println(dt);
 	}
 
+	private void read(String value) {
+		long st = System.currentTimeMillis(), ft = 0,dt = 0;
+		mc.read(value);
+		ft = System.currentTimeMillis();
+		dt = ft - st;
+		st = ft;
+
+		System.out.println("Round-trip message times (msec)");
+		System.out.println(dt);
+	}
+
 	@Override
 	public String getListenerID() {
 		return "demo";
@@ -82,9 +96,27 @@ public class DemoApp implements CommListener {
 
 	@Override
 	public void onMessage(Global.GlobalMessage msg) {
-		if(msg.getResponse().getRequestType().equals("READ")){
-			System.out.println("READ MESSAGE");
-		}else if(msg.getResponse().getRequestType().equals("WRITE"))
+		if(msg.getResponse().getRequestType().toString().equals("READ")){
+			try {
+				String newNameOfFile = (String) msg.getResponse().getFile().getFilename().toString();
+
+				byte[] finalFile = msg.getResponse().getFile().getData().toByteArray();
+
+				if(finalFile.length > 0 && newNameOfFile.length() > 0) {
+					System.out.println("Length of answers is: " + finalFile.length);
+					System.out.println(msg.getResponse().getFile().getData());
+					System.out.println(msg.getResponse().getFile().getData().toString());
+					System.out.println(msg.getResponse().getFile().getFilename());
+
+					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files"+ newNameOfFile);
+					fileOutputStream.write(finalFile);
+					fileOutputStream.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}else if(msg.getResponse().getRequestType().toString().equals("WRITE"))
 			System.out.println("Result of data save request : Saved successfully---> " + msg.getResponse().getSuccess());
 		else // for GET message response
 			System.out.println("Final message action from server. Data needs to be parsed for --->" + msg.getResponse().getRequestType());
@@ -105,8 +137,9 @@ public class DemoApp implements CommListener {
 
 			// do stuff w/ the connection
 			//da.ping(2);
-//			da.message("Hello System!!");
-			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
+//			da.message("HEREE AASHAY !!!");
+			da.read("287-Macy.pdf");
+//			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 
 			System.out.println("\n** exiting in 10 seconds. **");

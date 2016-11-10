@@ -34,13 +34,14 @@ public class Query extends Resource {
     public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         query = msg.getRequest();
+//        logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
+//        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
             switch (query.getRequestType()) {
                 case READ:
                     PrintUtil.printGlobalCommand(msg);
                     try {
                         ArrayList<DataModel> arrRespData = checkIfQueryIsLocalAndGetResponse(query);
-
-                        if(arrRespData.size() > 0){
+//                        if(arrRxespData.size() > 0){
 //                            ArrayList<Byte> responsMessage = new ArrayList<>();
                             String responsMessage = "";
                             //generate a response message
@@ -49,22 +50,22 @@ public class Query extends Resource {
 //                                Common.Response response = getResponseMessageForGet(dataModel);
 //                                generateResponseOntoIncomingChannel(msg,response,true);
                             }
-                            byte[] responsMessageByte = responsMessage.getBytes();
-//                            byte[] responsMessageByte = responsMessage.getBytes(Charset.forName("UTF-8"));
-                            Common.Response response = getResponseMessageForGet(new DataModel(msg.getMessage(), 0, responsMessageByte));
+                        byte[] responsMessageByte = arrRespData.get(0).getData();
+                        logger.info("Response message in byte"+ responsMessageByte[1]);
+                        logger.info("LENGTH OF FILE IN QUERY IS "+ responsMessageByte.length);
+                            Common.Response response = getResponseMessageForGet(new DataModel(query.getFile().getFilename(), 0, responsMessageByte));
                             generateResponseOntoIncomingChannel(msg,response,true);
-                        }else{
-                            forwardRequestOnWorkChannel(msg,true);
-                        }
+//                        }else{
+//                            forwardRequestOnWorkChannel(msg,true);
+//                        }
                     }catch(Exception e){
                         e.printStackTrace();
                     }
                     break;
                 case WRITE:
                     PrintUtil.printGlobalCommand(msg);
-
                     RethinkDAO Users = new RethinkDAO("Users");
-                    String fileInserted = (String) Users.insertFile(query.getFileName(),query.getFile().getChunkId(),query.getFile().getData().toByteArray());
+                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(),query.getFile().getData().toByteArray());
                     System.out.println(fileInserted);
                     logger.debug("Result of save data in mongo :"+ fileInserted);
                     Common.Response response = getResponseMessageForStore(1);
@@ -108,7 +109,7 @@ public class Query extends Resource {
             case WRITE:
                 PrintUtil.printWork(msg);
                 RethinkDAO Users = new RethinkDAO("Users");
-                String fileInserted = (String) Users.insertFile(query.getFileName(),query.getFile().getChunkId(),query.getFile().getData().toByteArray());
+                String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(),query.getFile().getData().toByteArray());
                 System.out.println(fileInserted);
                 logger.debug("Result of save data in mongo :"+ fileInserted);
                 Common.Response response = getResponseMessageForStore(1);
@@ -121,11 +122,11 @@ public class Query extends Resource {
     }
 
     private ArrayList<DataModel> checkIfQueryIsLocalAndGetResponse(Common.Request query) throws IOException {
-
+//        logger.info("iinnntttooo ttthhheee checkIfQueryIsLocalAndGetResponse"+ query.getFile().getFilename());
         //logic to check if it belongs to current node
         RethinkDAO users = new RethinkDAO("Users");
         JSONObject fileNameFilter = new JSONObject();
-        fileNameFilter.put("fileName", query.getFileName());
+        fileNameFilter.put("fileName", query.getFile().getFilename());
         ArrayList<DataModel> arrRespData = users.fetchFile(fileNameFilter);
         return arrRespData;
     }
@@ -214,18 +215,19 @@ public class Query extends Resource {
 
     }
 
-    private void generateResponseOntoIncomingChannel(GeneratedMessage msg, Common.Response responseMsg, boolean glabalCommandMessage){
+    private void generateResponseOntoIncomingChannel(GeneratedMessage msg, Common.Response responseMsg, boolean globalCommandMessage){
 
         Common.Header.Builder hb = Common.Header.newBuilder();
         hb.setTime(System.currentTimeMillis());
 
-        if(glabalCommandMessage){
+        if(globalCommandMessage){
             Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
             Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
             Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
 
             ghb.setClusterId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
             ghb.setDestinationId(clientMessage.getGlobalHeader().getDestinationId());// wont be available in case of request from client. but can be determined based on log replication feature
+            ghb.setTime(System.currentTimeMillis());
             //ghb.setClusterId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
             //ghb.set(clientMessage.getHeader().getSourceHost()); // would be used to return message back to client
 
