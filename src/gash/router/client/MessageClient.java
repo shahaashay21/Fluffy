@@ -20,6 +20,7 @@ import global.Global.GlobalHeader;
 import global.Global.GlobalMessage;
 import pipe.common.Common;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -111,7 +112,15 @@ public class MessageClient {
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
-            arrayList = ResourceUtil.divideArray(data,1048576);
+//            arrayList = ResourceUtil.divideArray(data,1048576);
+
+            //NEW ONE
+            arrayList = ResourceUtil.divideArray(data,1049576);
+//            FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ path.getFileName().toString(), true);
+//            for(byte[] a : arrayList){
+//                fileOutputStream.write(a);
+//            }
+//            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

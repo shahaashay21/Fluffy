@@ -43,10 +43,10 @@ public class RethinkDAO {
             }
         }
 
-        public Object insertFile(String fileName, int chunkId,  byte[] file){
+        public Object insertFile(String fileName, int chunkId, int chunkCount,  byte[] file){
             if(file.length != 0){
 //                return RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("extension", extension).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
-                return RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
+                return RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("chunkCount", chunkCount).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
             }else{
                 return null;
             }
@@ -83,10 +83,9 @@ public class RethinkDAO {
 //                return RethinkConnector.r.table(document).run(conn.getConnection());
 //            }
             if(data != null){
-                Cursor returnedData = RethinkConnector.r.table(document).filter(data).pluck("fileName", "chunkId", "file").run(conn.getConnection());
-                ArrayList<DataModel> returnArrayData = null;
+                Cursor returnedData = RethinkConnector.r.table(document).filter(data).pluck("fileName", "chunkId", "file", "chunkCount").run(conn.getConnection());
+                ArrayList<DataModel> returnArrayData = new ArrayList();;
                 while(returnedData.hasNext()){
-                    returnArrayData = new ArrayList();
 
                     HashMap<String, Object> newData = new HashMap<String, Object>();
                     newData = (HashMap<String, Object>) returnedData.next();
@@ -99,7 +98,7 @@ public class RethinkDAO {
 
                 return returnArrayData;
             }else{
-                return RethinkConnector.r.table(document).run(conn.getConnection());
+                return null;
             }
         }
 

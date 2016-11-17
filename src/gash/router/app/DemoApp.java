@@ -96,6 +96,7 @@ public class DemoApp implements CommListener {
 
 	@Override
 	public void onMessage(Global.GlobalMessage msg) {
+		System.out.println("Got message from server");
 		if(msg.getResponse().getRequestType().toString().equals("READ")){
 			try {
 				String newNameOfFile = (String) msg.getResponse().getFile().getFilename().toString();
@@ -108,7 +109,8 @@ public class DemoApp implements CommListener {
 					System.out.println(msg.getResponse().getFile().getData().toString());
 					System.out.println(msg.getResponse().getFile().getFilename());
 
-					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files"+ newNameOfFile);
+//					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ newNameOfFile);
+					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ newNameOfFile, true);
 					fileOutputStream.write(finalFile);
 					fileOutputStream.close();
 				}
@@ -138,9 +140,14 @@ public class DemoApp implements CommListener {
 			// do stuff w/ the connection
 			//da.ping(2);
 //			da.message("HEREE AASHAY !!!");
-			da.read("287-Macy.pdf");
+//			da.read("287-Macy.pdf");
+			da.read("SampleVideo_2mb.mp4");
+//			da.read("chapter2.pdf");
 //			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
+//			da.save("/Users/aashayshah/Desktop/SampleVideo_2mb.mp4");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
+//			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
+
 
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();

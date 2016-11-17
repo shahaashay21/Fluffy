@@ -20,6 +20,9 @@ import pipe.common.Common.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class Query extends Resource {
@@ -44,17 +47,29 @@ public class Query extends Resource {
 //                        if(arrRxespData.size() > 0){
 //                            ArrayList<Byte> responsMessage = new ArrayList<>();
                             String responsMessage = "";
+                        logger.info("Length of list is: "+ arrRespData.size());
+
+                        //Sorting of messages based on chunkId
+                        Collections.sort(arrRespData, new Comparator<DataModel>() {
+                            @Override
+                            public int compare(DataModel o1, DataModel o2) {
+                                return o1.getChunkId() - o2.getChunkId();
+                            }
+                        });
+
                             //generate a response message
                             for(DataModel dataModel : arrRespData){
-                                responsMessage = responsMessage + dataModel.getData().toString();
-//                                Common.Response response = getResponseMessageForGet(dataModel);
-//                                generateResponseOntoIncomingChannel(msg,response,true);
+//                                responsMessage = responsMessage + dataModel.getData().toString();
+                                logger.info("Response message in byte"+ dataModel.getData());
+                                logger.info("LENGTH OF FILE IN QUERY IS "+ dataModel.getData().length);
+                                Common.Response response = getResponseMessageForGet(dataModel);
+                                generateResponseOntoIncomingChannel(msg,response,true);
                             }
-                        byte[] responsMessageByte = arrRespData.get(0).getData();
-                        logger.info("Response message in byte"+ responsMessageByte[1]);
-                        logger.info("LENGTH OF FILE IN QUERY IS "+ responsMessageByte.length);
-                            Common.Response response = getResponseMessageForGet(new DataModel(query.getFile().getFilename(), 0, responsMessageByte));
-                            generateResponseOntoIncomingChannel(msg,response,true);
+//                        byte[] responsMessageByte = arrRespData.get(0).getData();
+//                        logger.info("Response message in byte"+ responsMessageByte[1]);
+//                        logger.info("LENGTH OF FILE IN QUERY IS "+ responsMessageByte.length);
+//                            Common.Response response = getResponseMessageForGet(new DataModel(query.getFile().getFilename(), 0, responsMessageByte));
+//                            generateResponseOntoIncomingChannel(msg,response,true);
 //                        }else{
 //                            forwardRequestOnWorkChannel(msg,true);
 //                        }
@@ -65,9 +80,9 @@ public class Query extends Resource {
                 case WRITE:
                     PrintUtil.printGlobalCommand(msg);
                     RethinkDAO Users = new RethinkDAO("Users");
-                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(),query.getFile().getData().toByteArray());
+                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
                     System.out.println(fileInserted);
-                    logger.debug("Result of save data in mongo :"+ fileInserted);
+                    logger.debug("Result of save data in rethink :"+ fileInserted);
                     Common.Response response = getResponseMessageForStore(1);
                     generateResponseOntoIncomingChannel(msg,response,true);
 
@@ -109,7 +124,7 @@ public class Query extends Resource {
             case WRITE:
                 PrintUtil.printWork(msg);
                 RethinkDAO Users = new RethinkDAO("Users");
-                String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(),query.getFile().getData().toByteArray());
+                String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
                 System.out.println(fileInserted);
                 logger.debug("Result of save data in mongo :"+ fileInserted);
                 Common.Response response = getResponseMessageForStore(1);
@@ -140,6 +155,7 @@ public class Query extends Resource {
         fb.setFilename(dataModel.getFileName());
         fb.setChunkId(dataModel.getChunkId());
         fb.setData(ByteString.copyFrom(dataModel.getData()));
+//        fb.setChunkCount(dataModel.getChunkCount());
         rb.setFile(fb);
         return rb.build();
     }
