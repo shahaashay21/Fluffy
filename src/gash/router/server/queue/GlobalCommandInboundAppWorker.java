@@ -69,7 +69,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 
 					if (req.hasPing()) {
-						
+
 						new Ping(sq).handle(req);
 					}else if(req.hasRequest()){
 						new Query(sq).handle(req);

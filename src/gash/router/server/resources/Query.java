@@ -81,9 +81,10 @@ public class Query extends Resource {
                 case WRITE:
                     PrintUtil.printGlobalCommand(msg);
                     RethinkDAO Users = new RethinkDAO("Users");
-                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
-                    System.out.println(fileInserted);
-                    logger.debug("Result of save data in rethink :"+ fileInserted);
+                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+//                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+//                    System.out.println(fileInserted);
+//                    logger.debug("Result of save data in rethink :"+ fileInserted);
                     Common.Response response = getResponseMessageForStore(1);
                     generateResponseOntoIncomingChannel(msg,response,true);
 
