@@ -116,6 +116,7 @@ public class MessageClient {
 
             //NEW ONE
             arrayList = ResourceUtil.divideArray(data,1049576);
+//            arrayList = ResourceUtil.divideArray(data,1010049576);
 //            FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ path.getFileName().toString(), true);
 //            for(byte[] a : arrayList){
 //                fileOutputStream.write(a);

@@ -50,12 +50,13 @@ public class Query extends Resource {
                         logger.info("Length of list is: "+ arrRespData.size());
 
                         //Sorting of messages based on chunkId
-                        Collections.sort(arrRespData, new Comparator<DataModel>() {
-                            @Override
-                            public int compare(DataModel o1, DataModel o2) {
-                                return o1.getChunkId() - o2.getChunkId();
-                            }
-                        });
+//                        Collections.sort(arrRespData, new Comparator<DataModel>() {
+//                            @Override
+//                            public int compare(DataModel o1, DataModel o2) {
+//
+//                                return o1.getChunkId() - o2.getChunkId();
+//                            }
+//                        });
 
                             //generate a response message
                             for(DataModel dataModel : arrRespData){
@@ -155,7 +156,7 @@ public class Query extends Resource {
         fb.setFilename(dataModel.getFileName());
         fb.setChunkId(dataModel.getChunkId());
         fb.setData(ByteString.copyFrom(dataModel.getData()));
-//        fb.setChunkCount(dataModel.getChunkCount());
+        fb.setChunkCount(dataModel.getChunkCount());
         rb.setFile(fb);
         return rb.build();
     }

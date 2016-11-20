@@ -165,7 +165,6 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 			observer.updateRoutingConf(conf);
 		}
 	}
-	/**Ended by n*/
 	/**
 	 * initialize netty communication
 	 *
@@ -238,7 +237,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 			TaskList tasks = new TaskList(new NoOpBalancer());
 			state.setTasks(tasks);
 
-			emon = new EdgeMonitor(state);//changed by n -> emon is an instance of parent class
+			emon = new EdgeMonitor(state);// emon is an instance of parent class
 			Thread t = new Thread(emon);
 			// r - RAFT
 

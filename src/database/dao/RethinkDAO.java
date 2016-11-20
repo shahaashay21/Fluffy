@@ -93,7 +93,7 @@ public class RethinkDAO {
 
                     byte[] finalFile = (byte[]) newData.get("file");
                     logger.info("GGGOOOTOTTT DDDAATTTAAA "+ finalFile.length);
-                    returnArrayData.add(new DataModel(newData.get("fileName").toString(),Integer.parseInt(newData.get("chunkId").toString()), finalFile));
+                    returnArrayData.add(new DataModel(newData.get("fileName").toString(),Integer.parseInt(newData.get("chunkId").toString()), finalFile, Integer.parseInt(newData.get("chunkCount").toString())));
                 }
 
                 return returnArrayData;

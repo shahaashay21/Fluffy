@@ -19,6 +19,13 @@ public class DataModel {
         this.chunkId = chunkId;
     }
 
+    public DataModel(String fileName, int chunkId, byte[] data, int chunkCount) {
+        this.fileName = fileName;
+        this.data = data;
+        this.chunkId = chunkId;
+        this.chunkCount = chunkCount;
+    }
+
     public String getFileName() {
         return fileName;
     }

@@ -23,10 +23,12 @@ import global.*;
 import routing.Pipe;
 
 import java.io.FileOutputStream;
-import java.util.Arrays;
+import java.util.*;
 
 public class DemoApp implements CommListener {
 	private MessageClient mc;
+	private ArrayList<Global.GlobalMessage> intakeMessages = new ArrayList<Global.GlobalMessage>();
+	private int totalChunk = 0;
 
 	public DemoApp(MessageClient mc) {
 		init(mc);
@@ -99,20 +101,49 @@ public class DemoApp implements CommListener {
 		System.out.println("Got message from server");
 		if(msg.getResponse().getRequestType().toString().equals("READ")){
 			try {
-				String newNameOfFile = (String) msg.getResponse().getFile().getFilename().toString();
+				System.out.println("CHUNK COUNT"+ msg.getResponse().getFile().getChunkCount());
+				if(totalChunk == 0){
+					totalChunk = msg.getResponse().getFile().getChunkCount();
+				}
+				if(totalChunk > intakeMessages.size()){
+					boolean repeatMessage = false;
+					for(Global.GlobalMessage tempMessage : intakeMessages){
+						if(msg.getResponse().getFile().getChunkId() == tempMessage.getResponse().getFile().getChunkId()){
+							repeatMessage = true;
+						}
+					}
+					if(!repeatMessage) {
+						intakeMessages.add(msg);
+					}
+				}
 
-				byte[] finalFile = msg.getResponse().getFile().getData().toByteArray();
 
-				if(finalFile.length > 0 && newNameOfFile.length() > 0) {
-					System.out.println("Length of answers is: " + finalFile.length);
-					System.out.println(msg.getResponse().getFile().getData());
-					System.out.println(msg.getResponse().getFile().getData().toString());
-					System.out.println(msg.getResponse().getFile().getFilename());
+				if(intakeMessages.size() == totalChunk && intakeMessages.size() != 0) {
+					//Sorting of messages based on chunkId
+					Collections.sort(intakeMessages, new Comparator<Global.GlobalMessage>() {
+						@Override
+						public int compare(Global.GlobalMessage o1, Global.GlobalMessage o2) {
+							return o1.getResponse().getFile().getChunkId() - o2.getResponse().getFile().getChunkId();
+						}
+					});
+					for(Global.GlobalMessage eachMessage : intakeMessages) {
+						String newNameOfFile = (String) eachMessage.getResponse().getFile().getFilename().toString();
 
-//					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ newNameOfFile);
-					FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ newNameOfFile, true);
-					fileOutputStream.write(finalFile);
-					fileOutputStream.close();
+						byte[] finalFile = eachMessage.getResponse().getFile().getData().toByteArray();
+
+						if (finalFile.length > 0 && newNameOfFile.length() > 0) {
+							System.out.println("Length of answers is: " + finalFile.length);
+							System.out.println(eachMessage.getResponse().getFile().getData());
+							System.out.println(eachMessage.getResponse().getFile().getData().toString());
+							System.out.println(eachMessage.getResponse().getFile().getFilename());
+
+							FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/" + newNameOfFile, true);
+							fileOutputStream.write(finalFile);
+							fileOutputStream.close();
+						}
+					}
+					intakeMessages.clear();
+					totalChunk = 0;
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -143,10 +174,12 @@ public class DemoApp implements CommListener {
 //			da.read("287-Macy.pdf");
 			da.read("SampleVideo_2mb.mp4");
 //			da.read("chapter2.pdf");
+//			da.read("239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
-//			da.save("/Users/aashayshah/Desktop/SampleVideo_2mb.mp4");
+//			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
+//			da.save("/Users/aashayshah/Desktop/Check-Files/5mb.pdf");
 
 
 			System.out.println("\n** exiting in 10 seconds. **");
