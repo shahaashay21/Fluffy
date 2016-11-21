@@ -16,13 +16,21 @@
 package gash.router.server.queue;
 
 import com.google.protobuf.GeneratedMessage;
+import gash.router.container.RoutingConf;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
+import gash.router.server.WorkInit;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.resources.Ping;
 import gash.router.server.resources.Query;
 import global.Global;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common;
@@ -35,6 +43,10 @@ public class GlobalCommandInboundAppWorker extends Thread {
 	int workerId;
 	PerChannelGlobalCommandQueue sq;
 	boolean forever = true;
+
+	private EventLoopGroup group;
+	private ChannelFuture channelFuture;
+
 	public GlobalCommandInboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelGlobalCommandQueue sq) {
 		super(tgrp, "inboundWork-" + workerId);
 		this.workerId = workerId;
@@ -59,24 +71,31 @@ public class GlobalCommandInboundAppWorker extends Thread {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inboundWork.take();
 				boolean msgDropFlag;
-
+//				Global.GlobalMessage req1 = ((Global.GlobalMessage) msg);
+//
+//				if (req1.hasPing()) {
+//					System.out.println("Has Pingggggggggggggg");
+//					new Ping(sq).handle(req1);
+//				}
 				// process request and enqueue response
-				if(msg instanceof Global.GlobalMessage){
-					//PrintUtil.printCommand((Pipe.CommandRequest) msg);
-					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
+				if(msg instanceof Global.GlobalMessage) {
+					//if (((Global.GlobalMessage) msg).getGlobalHeader().getClusterId() == sq.getRoutingConf().getClusterId()) {
+						//PrintUtil.printCommand((Pipe.CommandRequest) msg);
+						Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 
-					if (req.hasPing()) {
-
-						new Ping(sq).handle(req);
-					}else if(req.hasRequest()){
-						new Query(sq).handle(req);
-					}else if(req.hasMessage()){
-						logger.info("Mwssage is: "+ req.getMessage());
-					}
-					else{
-						logger.error("Unexpected message type. Yet to handle.");
-					}
-
+						if (req.hasPing()) {
+							System.out.println("Has Pingggggggggggggg");
+							new Ping(sq).handle(req);
+						} else if (req.hasRequest()) {
+							new Query(sq).handle(req);
+						} else if (req.hasMessage()) {
+							logger.info("Mwssage is: " + req.getMessage());
+						} else {
+							logger.error("Unexpected message type. Yet to handle.");
+						}
+//					} else {
+//						//forwardToClusterRouting((Global.GlobalMessage) msg);
+//					}
 				}
 			} catch (InterruptedException ie) {
 				break;
@@ -89,5 +108,37 @@ public class GlobalCommandInboundAppWorker extends Thread {
 		if (!forever) {
 			logger.info("Command incoming connection queue closing");
 		}
+	}
+
+//	void forwardToClusterRouting(Global.GlobalMessage msg){
+//		for(RoutingConf.ClusterRoutingEntry cid : sq.getRoutingConf().getClusterRoutingEntryRouting()){
+//			channelInit(cid.getClusterHost(),cid.getClusterPort()).writeAndFlush(msg);
+//			//TODO error handle
+//		}
+//	}
+
+	public synchronized Channel channelInit(String host, int port)
+	{
+		try
+		{
+			group = new NioEventLoopGroup();
+			WorkInit si = new WorkInit(MessageServer.getEmon().getServerState(), false);
+			Bootstrap b = new Bootstrap();
+			b.group(group).channel(NioSocketChannel.class).handler(si);
+			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+			b.option(ChannelOption.TCP_NODELAY, true);
+			b.option(ChannelOption.SO_KEEPALIVE, true);
+
+			// Make the connection attempt.
+			channelFuture = b.connect(host, port).syncUninterruptibly();
+			//channelFuture.channel().closeFuture().addListener(new EdgeDisconnectionListener(this,ei));
+
+		}
+		catch(Throwable ex)
+		{
+			logger.error("Error initializing channel: " + ex);
+			return null;
+		}
+		return channelFuture.channel();
 	}
 }

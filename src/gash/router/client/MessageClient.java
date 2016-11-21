@@ -52,7 +52,7 @@ public class MessageClient {
 
     public void ping() {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 6);
+        GlobalHeader.Builder hb = createHeader(999, 4);
 
         GlobalMessage.Builder rb = GlobalMessage.newBuilder();
         rb.setGlobalHeader(hb);

@@ -39,6 +39,7 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
 	private ChannelQueue queue;
+	private HashMap<Integer,String> map = new HashMap<>();
 
     public static HashMap<String, Channel> allChannels = new HashMap<>();
 
