@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import pipe.common.Common.Failure;
 import routing.Pipe;
 
+import java.util.HashMap;
+
 /**
  * The message handler processes json messages that are delimited by a 'newline'
  *
@@ -37,6 +39,7 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
 	private ChannelQueue queue;
+	private HashMap<Integer,String> map = new HashMap<>();
 
 	public GlobalCommandHandler(RoutingConf conf) {
 		if (conf != null) {

@@ -15,6 +15,7 @@
  */
 package gash.router.server.edges;
 
+import gash.router.container.RoutingConf;
 import gash.router.server.CommandInit;
 import gash.router.server.WorkInit;
 import gash.router.server.queue.QueueFactory;
@@ -48,6 +49,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 	private EdgeList outboundEdges;
 	private EdgeList inboundEdges;
+	private EdgeList clusterEdges;
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
@@ -62,6 +64,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 		this.outboundEdges = new EdgeList();
 		this.inboundEdges = new EdgeList();
+
 		this.state = state;
 		this.state.setEmon(this);
 
@@ -70,6 +73,11 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				outboundEdges.addNode(e.getId(), e.getHost(), e.getPort());
 			}
 		}
+//		if(state.getConf().getClusterRoutingEntryRouting() != null){
+//			for(RoutingConf.ClusterRoutingEntry e : state.getConf().getClusterRoutingEntryRouting()){
+//				clusterEdges.addNode(e.getClusterId(), e.getClusterHost(), e.getClusterPort());
+//			}
+//		}
 		instance.compareAndSet(null,this); //4/2/2016
 
 		// cannot go below 2 sec
@@ -114,6 +122,9 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		forever = false;
 	}
 
+	public ServerState getServerState(){
+		return state;
+	}
 	@Override
 	public void run() {
 		while (forever) {

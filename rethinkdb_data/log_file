@@ -25,3 +25,8 @@
 2016-11-20T19:30:59.063304000 84.299022s info: Table 75fc3b42-099b-4891-b2e9-be75a94874c3: Starting a new Raft election for term 1.
 2016-11-20T19:30:59.064077000 84.299795s info: Table 75fc3b42-099b-4891-b2e9-be75a94874c3: Added replica on this server.
 2016-11-20T19:30:59.072545000 84.308263s info: Table 75fc3b42-099b-4891-b2e9-be75a94874c3: This server is Raft leader for term 1. Latest log index is 0.
+2016-11-21T10:02:24.082672000 20851.261897s notice: Server got SIGINT from pid 603, uid 501; shutting down...
+2016-11-21T10:02:24.084934000 20851.264156s notice: Shutting down client connections...
+2016-11-21T10:02:24.086894000 20851.266116s notice: All client connections closed.
+2016-11-21T10:02:24.086905000 20851.266126s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2016-11-21T10:02:24.216379000 20851.395601s notice: Storage engine shut down.

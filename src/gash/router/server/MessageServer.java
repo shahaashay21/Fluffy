@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gash.router.container.ClusterConf;
 import gash.router.server.election.RaftManager;
 import io.netty.channel.ChannelFutureListener;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -53,6 +54,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 	protected File confFile; // added by n
 	protected RoutingConf conf;
+	protected ClusterConf clusterConf;
 	protected boolean background = false;
 
 	/**
