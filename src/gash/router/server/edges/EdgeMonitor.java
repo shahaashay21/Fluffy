@@ -70,7 +70,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				outboundEdges.addNode(e.getId(), e.getHost(), e.getPort());
 			}
 		}
-		instance.compareAndSet(null,this); //4/2/2016
+		instance.compareAndSet(null,this);
 
 		// cannot go below 2 sec
 		if (state.getConf().getHeartbeatDt() > this.dt)

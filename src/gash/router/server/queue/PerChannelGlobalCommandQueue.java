@@ -74,11 +74,11 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 		inboundWork = new LinkedBlockingDeque<GeneratedMessage>();
 		outboundWork = new LinkedBlockingDeque<GeneratedMessage>();
 
-		oworkerList = new ArrayList<>(4);
+		oworkerList = new ArrayList<>(3);
 		iworkerList = new ArrayList<>(3);
 
 		logger.info("Starting to listen to Command worker");
-		for(int i=0;i<4;i++){
+		for(int i=0;i<3;i++){
 			GlobalCommandInboundAppWorker tempWorker = new GlobalCommandInboundAppWorker(tgroup, i+1, this);
 			iworkerList.add(tempWorker);
 			tempWorker.start();

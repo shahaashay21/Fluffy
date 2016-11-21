@@ -172,28 +172,76 @@ public class Query extends Resource {
     private void forwardRequestOnWorkChannel1(GeneratedMessage msg, boolean globalCommandMessage){
         for (EdgeInfo ei : MessageServer.getEmon().getOutboundEdgeInfoList()) {
             if(ei.getChannel() != null && ei.isActive()){
-                Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
-
-
-                Common.Header.Builder hb = createHeader(999, 2);
-                Common.File.Builder fb = Common.File.newBuilder();
+//                Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
+//
+//
+//                Common.Header.Builder hb = createHeader(999, 2);
+//                Common.File.Builder fb = Common.File.newBuilder();
                 String fileName = ((Global.GlobalMessage) msg).getResponse().getFile().getFilename();
-                System.out.println(fileName);
+//                System.out.println(fileName);
+//                fb.setFilename(fileName);
+//                fb.setData(((Global.GlobalMessage) msg).getResponse().getFile().getData());
+//                fb.setChunkId(((Global.GlobalMessage) msg).getResponse().getFile().getChunkId());
+//                fb.setTotalNoOfChunks(((Global.GlobalMessage) msg).getResponse().getFile().getTotalNoOfChunks());
+//                Common.Request.Builder rb = Common.Request.newBuilder();
+//                rb.setRequestId("A1345AASHAY");
+//                rb.setRequestType(Common.RequestType.WRITE);
+//                rb.setFileName(fileName);
+//                rb.setFile(fb);
+//                Work.WorkRequest.Builder gmb = Work.WorkRequest.newBuilder();
+//                gmb.setHeader(hb);
+//                gmb.setPayload(Work.Payload.newBuilder().setQuery(rb));
+//
+//                ei.getChannel().writeAndFlush(rb.build());
+
+
+
+
+                //FRCVR
+                Work.WorkState.Builder sb = Work.WorkState.newBuilder();
+                sb.setEnqueued(-1);
+                sb.setProcessed(-1);
+
+                Work.Heartbeat.Builder bb = Work.Heartbeat.newBuilder();
+                bb.setState(sb);
+
+                Work.Payload.Builder py= Work.Payload.newBuilder();
+                py.setBeat(bb);
+
+                Common.File.Builder fb = Common.File.newBuilder();
                 fb.setFilename(fileName);
-                fb.setData(((Global.GlobalMessage) msg).getResponse().getFile().getData());
-                fb.setChunkId(((Global.GlobalMessage) msg).getResponse().getFile().getChunkId());
-                fb.setTotalNoOfChunks(((Global.GlobalMessage) msg).getResponse().getFile().getTotalNoOfChunks());
-                Common.Request.Builder rb = Common.Request.newBuilder();
-                rb.setRequestId("A1345");
-                rb.setRequestType(Common.RequestType.WRITE);
-                rb.setFileName(fileName);
-                rb.setFile(fb);
-                Work.WorkRequest.Builder gmb = Work.WorkRequest.newBuilder();
-                gmb.setHeader(hb);
-                gmb.setPayload(Work.Payload.newBuilder().setQuery(rb));
+//                System.out.println("File NAmeeeeeeeeee ::"+((Global.GlobalMessage) msg).getRequest().getFile().getFilename());
+                System.out.println("File TTOLTTALLL CCCHUUNNKKSSS ::"+ ((Global.GlobalMessage) msg).getRequest().getFile().getTotalNoOfChunks());
+                System.out.println("File TTOLTTALLL CCCHUUNNKKSSS IIIDDDD ::"+ ((Global.GlobalMessage) msg).getRequest().getFile().getChunkId());
+                fb.setData(((Global.GlobalMessage) msg).getRequest().getFile().getData());
+                fb.setChunkId(((Global.GlobalMessage) msg).getRequest().getFile().getChunkId());
+                fb.setTotalNoOfChunks(((Global.GlobalMessage) msg).getRequest().getFile().getTotalNoOfChunks());
 
-                ei.getChannel().writeAndFlush(rb.build());
+                Header.Builder hb = createHeader(999, 2);
 
+//                Header.Builder hb = Header.newBuilder();
+//                hb.setNodeId(state.getConf().getNodeId());
+//                hb.setDestination(-1);
+//                hb.setTime(System.currentTimeMillis());
+//                hb.setDestination(state.getConf().getWorkPort());
+//                hb.setSourceHost(ei.getHost());
+
+                Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder();
+                wb.setHeader(hb);
+                wb.setPayload(Work.Payload.newBuilder().setFile(fb));
+                wb.setSecret(12345678);
+                System.out.println("EDGE PORT"+ ei.getPort());
+                Work.WorkRequest check = wb.build();
+//                ei.getChannel().writeAndFlush(wb.build());
+                ei.getChannel().writeAndFlush(check);
+
+                System.out.println("File NAmeeeeeeeeee ::" + check.getPayload().getFile().getFilename());
+                System.out.println("File NAmeeeeeeeeee ::" + check.getPayload().getResponse().getFile().getFilename());
+
+
+
+//                PerChannelWorkQueue edgeQueue = (PerChannelWorkQueue) ei.getQueue();
+//                edgeQueue.enqueueRequest(wb.build(),ei.getChannel());
 
 
             }

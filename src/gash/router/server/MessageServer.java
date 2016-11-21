@@ -43,15 +43,15 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	protected static Logger logger = LoggerFactory.getLogger("server");
 
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
-	private static EdgeMonitor emon=null; // added by n
-	private static RaftManager mgr = null;//r
-	//private static ElectionManager emgr = null; // r
-	private ArrayList<RoutingConfObserver> routingConfOberverList;// added by n
+	private static EdgeMonitor emon=null;
+	private static RaftManager mgr = null;
+	//private static ElectionManager emgr = null;
+	private ArrayList<RoutingConfObserver> routingConfOberverList;
 
 	// public static final String sPort = "port";
 	// public static final String sPoolSize = "pool.size";
 
-	protected File confFile; // added by n
+	protected File confFile;
 	protected RoutingConf conf;
 	protected boolean background = false;
 

@@ -105,6 +105,17 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 //	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
 		if(msg instanceof Work.WorkRequest){
+			System.out.println(msg.getHeader().getNodeId());
+			if(msg.getPayload().hasFile()){
+				System.out.println(msg.getPayload().getFile().getFilename() + "GGOOOTTT IIITTTTTTT");
+			}
+			if(!msg.getPayload().getFile().getFilename().isEmpty()){
+				System.out.println("FILE NNAMMEE" + msg.getPayload().getFile().getFilename());
+				if(!msg.getPayload().getResponse().getRequestId().isEmpty()) {
+					System.out.println("FILE ENNNNNAAMMMMEEE"+ msg.getPayload().getResponse().getFileName());
+					System.out.println("HHEERRREETTT IISS  NONNDDDEEE IIIDDD " + msg.getPayload().getResponse().getRequestId());
+				}
+			}
 			queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
 		}else {
 //			System.out.println(msg);
