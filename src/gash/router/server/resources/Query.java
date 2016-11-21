@@ -37,8 +37,8 @@ public class Query extends Resource {
     public void handleGlobalCommand(Global.GlobalMessage msg) {
 
         query = msg.getRequest();
-//        logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
-//        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
+        logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
+        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
             switch (query.getRequestType()) {
                 case READ:
                     PrintUtil.printGlobalCommand(msg);
@@ -63,7 +63,7 @@ public class Query extends Resource {
 //                                responsMessage = responsMessage + dataModel.getData().toString();
                                 logger.info("Response message in byte"+ dataModel.getData());
                                 logger.info("LENGTH OF FILE IN QUERY IS "+ dataModel.getData().length);
-                                Common.Response response = getResponseMessageForGet(dataModel);
+                                Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId());
                                 generateResponseOntoIncomingChannel(msg,response,true);
                             }
 //                        byte[] responsMessageByte = arrRespData.get(0).getData();
@@ -79,13 +79,13 @@ public class Query extends Resource {
                     }
                     break;
                 case WRITE:
-                    PrintUtil.printGlobalCommand(msg);
+                    //PrintUtil.printGlobalCommand(msg);
                     RethinkDAO Users = new RethinkDAO("Users");
-                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
 //                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
 //                    System.out.println(fileInserted);
 //                    logger.debug("Result of save data in rethink :"+ fileInserted);
-                    Common.Response response = getResponseMessageForStore(1);
+                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
                     generateResponseOntoIncomingChannel(msg,response,true);
 
                     break;
@@ -103,6 +103,8 @@ public class Query extends Resource {
 
     public void handleWork(Work.WorkRequest msg) {
         Request query = msg.getPayload().getQuery();
+//        logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
+//        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
         logger.debug("Query on work channel from " + msg.getHeader().getNodeId());
         switch (query.getRequestType()) {
             case READ:
@@ -112,7 +114,7 @@ public class Query extends Resource {
                     if(arrRespData.size() > 0){
                         //generate a response message
                         for(DataModel dataModel : arrRespData){
-                            Common.Response response = getResponseMessageForGet(dataModel);
+                            Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId());
                             generateResponseOntoIncomingChannel(msg,response,false);
                         }
                     }
@@ -126,10 +128,10 @@ public class Query extends Resource {
             case WRITE:
                 PrintUtil.printWork(msg);
                 RethinkDAO Users = new RethinkDAO("Users");
-                String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+                String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
                 System.out.println(fileInserted);
                 logger.debug("Result of save data in mongo :"+ fileInserted);
-                Common.Response response = getResponseMessageForStore(1);
+                Common.Response response = getResponseMessageForStore(1,query.getRequestId());
                 generateResponseOntoIncomingChannel(msg,response,true);
                 break;
             case UPDATE:
@@ -148,16 +150,17 @@ public class Query extends Resource {
         return arrRespData;
     }
 
-    private Common.Response getResponseMessageForGet(DataModel dataModel){
+    private Common.Response getResponseMessageForGet(DataModel dataModel, String reqId ){
 
         Common.Response.Builder rb = Common.Response.newBuilder();
         rb.setRequestType(RequestType.READ);
         rb.setSuccess(true);
+        rb.setRequestId(reqId);
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(dataModel.getFileName());
         fb.setChunkId(dataModel.getChunkId());
         fb.setData(ByteString.copyFrom(dataModel.getData()));
-        fb.setChunkCount(dataModel.getChunkCount());
+        fb.setTotalNoOfChunks(dataModel.getChunkCount());
         rb.setFile(fb);
         return rb.build();
     }
@@ -181,7 +184,7 @@ public class Query extends Resource {
                         hb.setDestination(clientMessage.getGlobalHeader().getDestinationId());// wont be available in case of request from client. but can be determined based on log replication feature
                         hb.setSourceHost(((PerChannelWorkQueue) sq).gerServerState().getConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getClusterId());
                         hb.setDestinationHost(Integer.toString(clientMessage.getGlobalHeader().getDestinationId())); // would be used to return message back to clientMessage
-                        hb.setMaxHops(clientMessage.getGlobalHeader().getMaxHops() - 1);
+                        //hb.setMaxHops(clientMessage.getGlobalHeader().getMaxHops() - 1);
 
                         wb.setHeader(hb);
                         wb.setSecret(1234567809);
@@ -273,9 +276,10 @@ public class Query extends Resource {
         }
     }
 
-    public Common.Response getResponseMessageForStore(int result){
+    public Common.Response getResponseMessageForStore(int result, String reqId){
         Common.Response.Builder rb = Common.Response.newBuilder();
         rb.setRequestType(Common.RequestType.WRITE);
+        rb.setRequestId(reqId);
         rb.setSuccess(result > 0);
         return rb.build();
     }

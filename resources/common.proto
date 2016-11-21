@@ -1,8 +1,6 @@
 option optimize_for = SPEED;
 option java_package = "pipe.common";
 
-
-
 /**
  * the accompanying information for all messages. Provides origination,
  * security, authentication, and tracking information
@@ -33,7 +31,7 @@ message File {
     optional int32 chunkId = 1;
     optional bytes data = 2;
     required string filename = 3;
-    optional int32 chunkCount = 5;
+    optional int32 totalNoOfChunks = 5; // total number of chunks of a requested file
 }
 
 enum RequestType {
@@ -44,21 +42,22 @@ enum RequestType {
 }
 
 message Request {
-    optional string requestId = 4;
-    required RequestType requestType = 1;
+    required string requestId = 4; // UUID which maps to a client request
+    required RequestType requestType = 1; //READ for now
     oneof payload {
-        string fileName = 2;
-        File file = 3;
+        string fileName = 2 ; // Will be Sent when requestType is READ/DELETE
+        File file = 3; // Will be Sent when requestType is WRITE/UPDATE
     }
 }
 
 message Response {
-    optional string requestId = 5;
-    required RequestType requestType = 1;
-    optional bool success = 2;
+    required string requestId = 6;// UUID which maps to a client request
+    required RequestType requestType = 1; //READ for now
+    optional bool success = 2; //true When requested action is successfully (READ for now)
     oneof payload {
         Failure failure = 3;
-        File file = 4;
+        File file = 4; //Will be sent When READ/DELETE is success
+        string fileName = 5; //Will be sent When WRITE/UPDATE is success
     }
 }
 

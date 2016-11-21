@@ -2,59 +2,31 @@ option optimize_for = SPEED;
 option java_package = "global";
 import "common.proto";
 
+//Contains the cluster information of the requester Note: While forwarding the Global Message Please Don't change the DestinationId
 message GlobalHeader {
- required int32 cluster_id = 1;
- required int64 time = 2;
- optional int32 destination_id = 8;
- optional int32 max_hops = 10 [default = -1]; //todo
+    required int32 cluster_id = 1; //Own Cluster Id
+    required int64 time = 2;
+    optional int32 destination_id = 8; // ClusterId who has got Client Request
 }
 
 message GlobalMessage {
- required GlobalHeader globalHeader = 1;
- oneof payload {
-   bool ping = 2;
-   string message = 3;
-   Failure failure = 4;
-   Request request = 5;
-   Response response = 6;
- }
+    required GlobalHeader globalHeader = 1;
+    oneof payload {
+        bool ping = 2; // For testing only
+        string message = 3; // For testing only
+        Request request = 4; // Global File Request - (READ only for now)
+        Response response = 5; // Global File Response -( contains the READ's result)
+        WhoIsLeader whoIsClusterLeader = 6;
+        LeaderInfo clusterLeaderInfo =7;
+    }
 }
 
-//message Failure {
-//    required int32 id = 1;
-//    optional int32 ref_id = 2;
-//    optional string message = 3;
-//}
+message WhoIsLeader{
+    required string requesterIp =1;
+    required int32 requesterPort =2;
+}
 
-//message File {
-// optional int32 chunkId = 1;
-// optional bytes data = 2;
-// required string filename = 3;
-// optional int32 chunkCount = 5;
-//}
-//
-//enum RequestType {
-// READ = 1;
-// WRITE = 2;
-// UPDATE = 3;
-// DELETE = 4;
-//}
-//
-//message Request {
-// optional string requestId = 4;
-// required RequestType requestType = 1;
-// oneof payload {
-//   string fileName = 2;
-//   File file = 3;
-// }
-//}
-//
-//message Response {
-//    optional string requestId = 5;
-//    required RequestType requestType = 1;
-//    optional bool success = 2;
-//    oneof payload {
-//        Failure failure = 3;
-//        File file = 4;
-//    }
-//}
+message LeaderInfo{
+    required string leaderIp =1;
+    required int32 leaderPort =2;
+}

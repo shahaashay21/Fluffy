@@ -68,17 +68,17 @@ public class PrintUtil {
 		System.out.println("Time:      " + hdr.getTime());
 		//System.out.println("Sorc Host: " + hdr.getSourceHost());
 		//System.out.println("Dest Host: " + hdr.getDestination());
-		if (hdr.hasMaxHops())
-			System.out.println("Hops: " + hdr.getMaxHops());
+//		if (hdr.hasMaxHops())
+//			System.out.println("Hops: " + hdr.getMaxHops());
 		if (hdr.hasDestinationId())
 			System.out.println("Dest: " + hdr.getDestinationId());
 
 		System.out.print("\nGlobalMessage: ");
-		if (msg.hasFailure()) {
+		if (msg.getResponse().hasFailure()) {
 			System.out.println("Failure");
-			System.out.println(PrintUtil.gap + "Code:    " + msg.getFailure().getId());
-			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getFailure().getRefId());
-			System.out.println(PrintUtil.gap + "Message: " + msg.getFailure().getMessage());
+			System.out.println(PrintUtil.gap + "Code:    " + msg.getResponse().getFailure().getId());
+			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getResponse().getFailure().getRefId());
+			System.out.println(PrintUtil.gap + "Message: " + msg.getResponse().getFailure().getMessage());
 		} else if (msg.hasPing())
 			System.out.println("Ping");
 		else if (msg.hasMessage()) {
@@ -98,7 +98,7 @@ public class PrintUtil {
 				System.out.println(PrintUtil.gap + "Search File:  " + req.getRequestId());
 				break;
 			case WRITE:
-				System.out.println(PrintUtil.gap + " File to Store:  " + req.getRequestId());
+				//System.out.println(PrintUtil.gap + " File to Store:  " + req.getRequestId());
 				if(req.hasFile()){
 					System.out.println(PrintUtil.gap + " Sequence:  " + req.getFile().getChunkId());
 				}

@@ -133,8 +133,9 @@ public class MessageClient {
             fb.setFilename(path.getFileName().toString());
             fb.setData(ByteString.copyFrom(arrayList.get(i)));
             fb.setChunkId(i);
-            fb.setChunkCount(arrayList.size());
+            fb.setTotalNoOfChunks(arrayList.size());
             Common.Request.Builder rb = Common.Request.newBuilder();
+            rb.setRequestId("A1345");
             rb.setRequestType(Common.RequestType.WRITE);
             rb.setFileName(path.getFileName().toString());
             rb.setFile(fb);
@@ -161,6 +162,7 @@ public class MessageClient {
         rb.setRequestType(Common.RequestType.READ);
         rb.setFileName(value);
         rb.setFile(fb);
+        rb.setRequestId("1");
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);
         gmb.setRequest(rb);

@@ -101,9 +101,9 @@ public class DemoApp implements CommListener {
 		System.out.println("Got message from server");
 		if(msg.getResponse().getRequestType().toString().equals("READ")){
 			try {
-				System.out.println("CHUNK COUNT"+ msg.getResponse().getFile().getChunkCount());
+				System.out.println("CHUNK COUNT"+ msg.getResponse().getFile().getTotalNoOfChunks());
 				if(totalChunk == 0){
-					totalChunk = msg.getResponse().getFile().getChunkCount();
+					totalChunk = msg.getResponse().getFile().getTotalNoOfChunks();
 				}
 				if(totalChunk > intakeMessages.size()){
 					boolean repeatMessage = false;
@@ -137,7 +137,7 @@ public class DemoApp implements CommListener {
 							System.out.println(eachMessage.getResponse().getFile().getData().toString());
 							System.out.println(eachMessage.getResponse().getFile().getFilename());
 
-							FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/" + newNameOfFile, true);
+							FileOutputStream fileOutputStream = new FileOutputStream("/Users/rahilvora/Desktop/test/" + newNameOfFile, true);
 							fileOutputStream.write(finalFile);
 							fileOutputStream.close();
 						}
@@ -171,12 +171,12 @@ public class DemoApp implements CommListener {
 			// do stuff w/ the connection
 			//da.ping(2);
 //			da.message("HEREE AASHAY !!!");
-//			da.read("287-Macy.pdf");
-			da.read("SampleVideo_2mb.mp4");
+			da.read("wiki1.csr");
+			//da.read("SampleVideo_2mb.mp4");
 //			da.read("chapter2.pdf");
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");
-//			da.save("/Users/aashayshah/Desktop/287-Macy.pdf");
+//			da.save("/Users/rahilvora/Desktop/wiki1.csr");
 //			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
