@@ -57,13 +57,11 @@ public class CommandInboundAppWorker extends Thread {
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inboundWork.take();
-
 				// process request and enqueue response
 				if(msg instanceof Pipe.CommandRequest){
 
 					//PrintUtil.printCommand((Pipe.CommandRequest) msg);
 					boolean msgDropFlag;
-
 					Pipe.CommandRequest req = ((Pipe.CommandRequest) msg);
 					Pipe.Payload payload = req.getPayload();
 					if (payload.hasPing()) {

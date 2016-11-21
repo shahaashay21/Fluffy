@@ -81,11 +81,11 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		Thread cthread = new Thread(comm);
 		cthread.start();
 
-		// Start the thread that reads any updates in conf File : thread in background // Added by n
+		// Start the thread that reads any updates in conf File : thread in background
 		logger.info("Conf updater starting");
 		Thread confUpdateThread = new Thread(new StartRoutingUpdater(this));
 		confUpdateThread.start();
-		//r - raft
+		//raft
 		mgr = RaftManager.initManager(conf);
 		//emgr = ElectionManager.initManager(conf);
 		System.out.print("Raft: " + mgr);
@@ -101,7 +101,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 				comm2.run();
 		}
 
-		/*// Start the thread that reads any updates in conf File : thread in background // Added by n
+		/*// Start the thread that reads any updates in conf File : thread in background
 		logger.info("Conf update thread starting");
 		Thread confUpdateThread = new Thread(this);
 		confUpdateThread.start();
@@ -239,8 +239,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 			emon = new EdgeMonitor(state);// emon is an instance of parent class
 			Thread t = new Thread(emon);
-			// r - RAFT
-
+			// RAFT
 			t.start();
 		}
 
@@ -272,12 +271,10 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
 						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
 
-				mgr.startMonitor(state); // r - RAFT
-
+				mgr.startMonitor(state); // RAFT
 				// block until the server socket is closed.
 				f.channel().closeFuture().sync();
 				logger.info("I am done");
-
 			} catch (Exception ex) {
 				// on bind().sync()
 				logger.error("Failed to setup handler.", ex);

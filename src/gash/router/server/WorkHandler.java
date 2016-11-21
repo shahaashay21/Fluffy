@@ -58,7 +58,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	}
 
 	/**
-	 * override this method to provide processing behavior. T
+	 * override this method to provide processing behavior.
 	 *
 	 * @param msg
 	 */
@@ -168,6 +168,4 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 			inQueue = null;
 		}
 	}
-
-
 }

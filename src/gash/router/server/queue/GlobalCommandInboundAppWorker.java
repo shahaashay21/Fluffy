@@ -35,12 +35,10 @@ public class GlobalCommandInboundAppWorker extends Thread {
 	int workerId;
 	PerChannelGlobalCommandQueue sq;
 	boolean forever = true;
-
 	public GlobalCommandInboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelGlobalCommandQueue sq) {
 		super(tgrp, "inboundWork-" + workerId);
 		this.workerId = workerId;
 		this.sq = sq;
-
 		if (sq.inboundWork == null)
 			throw new RuntimeException("connection worker detected null inboundWork queue");
 	}

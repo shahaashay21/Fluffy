@@ -75,7 +75,6 @@ public class PerChannelWorkQueue implements ChannelQueue {
 
 		logger.info("Starting to listen to Work worker");
 		//Creating worker threadpool
-		//Changed by: a
 		for(int i=0;i<3;i++){
 			WorkOutboundAppWorker tempWorker = new WorkOutboundAppWorker(tgroup, i+1, this);
 			oworkerList.add(tempWorker);
