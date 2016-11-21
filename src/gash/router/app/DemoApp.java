@@ -137,7 +137,7 @@ public class DemoApp implements CommListener {
 							System.out.println(eachMessage.getResponse().getFile().getData().toString());
 							System.out.println(eachMessage.getResponse().getFile().getFilename());
 
-							FileOutputStream fileOutputStream = new FileOutputStream("/Users/rahilvora/Desktop/test/" + newNameOfFile, true);
+							FileOutputStream fileOutputStream = new FileOutputStream("/home/vivek/Desktop/abc/" + newNameOfFile, true);
 							fileOutputStream.write(finalFile);
 							fileOutputStream.close();
 						}
@@ -177,12 +177,12 @@ public class DemoApp implements CommListener {
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");
 //			da.save("/Users/rahilvora/Desktop/wiki1.csr");
-			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
+//			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
 //			da.save("/Users/aashayshah/Desktop/Check-Files/5mb.pdf");
-
-
+//			da.save("/home/vivek/Desktop/Desktop.txt");
+			da.read("Desktop.txt");
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();
 			Thread.sleep(10 * 1000);

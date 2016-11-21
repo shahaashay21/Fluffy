@@ -61,9 +61,6 @@ public class Response extends Resource {
         }
     }
 
-    /**
-     * Author : n
-     * */
     private void forwardResponseOntoIncomingChannel(GeneratedMessage msg, boolean glabalCommandMessage){
 
         Common.Header.Builder hb = Common.Header.newBuilder();

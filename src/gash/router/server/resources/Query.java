@@ -81,16 +81,16 @@ public class Query extends Resource {
                     }
                     break;
                 case WRITE:
-                    //PrintUtil.printGlobalCommand(msg);
-//                    RethinkDAO Users = new RethinkDAO("Users");
-//                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
-////                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
-////                    System.out.println(fileInserted);
-////                    logger.debug("Result of save data in rethink :"+ fileInserted);
-//                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
-//                    generateResponseOntoIncomingChannel(msg,response,true);
+                    PrintUtil.printGlobalCommand(msg);
+                    RethinkDAO Users = new RethinkDAO("Users");
+                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
+//                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+//                    System.out.println(fileInserted);
+//                    logger.debug("Result of save data in rethink :"+ fileInserted);
+                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
+                    generateResponseOntoIncomingChannel(msg,response,true);
 
-                    forwardRequestOnWorkChannel1(msg, true);
+//                    forwardRequestOnWorkChannel1(msg, true);
 
                     break;
                 case UPDATE:
@@ -134,7 +134,7 @@ public class Query extends Resource {
                 RethinkDAO Users = new RethinkDAO("Users");
                 String fileInserted = (String) Users.insertFile(query.getFile().getFilename(),query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
                 System.out.println(fileInserted);
-                logger.debug("Result of save data in mongo :"+ fileInserted);
+                logger.debug("Result of save data in rethink :"+ fileInserted);
                 Common.Response response = getResponseMessageForStore(1,query.getRequestId());
                 generateResponseOntoIncomingChannel(msg,response,true);
                 break;
