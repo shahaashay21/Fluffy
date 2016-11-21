@@ -4,13 +4,17 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.GeneratedMessage;
 import database.dao.RethinkDAO;
 import database.model.DataModel;
+import gash.router.server.GlobalCommandHandler;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
+import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.PerChannelGlobalCommandQueue;
 import gash.router.server.queue.PerChannelWorkQueue;
 import global.Global;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import org.json.simple.JSONObject;
 import pipe.common.Common;
 import pipe.work.Work;
@@ -19,10 +23,8 @@ import pipe.common.Common.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
+import java.util.logging.Logger;
 
 
 public class Query extends Resource {
@@ -80,13 +82,15 @@ public class Query extends Resource {
                     break;
                 case WRITE:
                     //PrintUtil.printGlobalCommand(msg);
-                    RethinkDAO Users = new RethinkDAO("Users");
-                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
-//                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
-//                    System.out.println(fileInserted);
-//                    logger.debug("Result of save data in rethink :"+ fileInserted);
-                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
-                    generateResponseOntoIncomingChannel(msg,response,true);
+//                    RethinkDAO Users = new RethinkDAO("Users");
+//                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
+////                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
+////                    System.out.println(fileInserted);
+////                    logger.debug("Result of save data in rethink :"+ fileInserted);
+//                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
+//                    generateResponseOntoIncomingChannel(msg,response,true);
+
+                    forwardRequestOnWorkChannel1(msg, true);
 
                     break;
                 case UPDATE:
@@ -150,7 +154,7 @@ public class Query extends Resource {
         return arrRespData;
     }
 
-    private Common.Response getResponseMessageForGet(DataModel dataModel, String reqId ){
+    private Common.Response getResponseMessageForGet(DataModel dataModel, String reqId){
 
         Common.Response.Builder rb = Common.Response.newBuilder();
         rb.setRequestType(RequestType.READ);
@@ -163,6 +167,45 @@ public class Query extends Resource {
         fb.setTotalNoOfChunks(dataModel.getChunkCount());
         rb.setFile(fb);
         return rb.build();
+    }
+
+    private void forwardRequestOnWorkChannel1(GeneratedMessage msg, boolean globalCommandMessage){
+        for (EdgeInfo ei : MessageServer.getEmon().getOutboundEdgeInfoList()) {
+            if(ei.getChannel() != null && ei.isActive()){
+                Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
+
+
+                Common.Header.Builder hb = createHeader(999, 2);
+                Common.File.Builder fb = Common.File.newBuilder();
+                String fileName = ((Global.GlobalMessage) msg).getResponse().getFile().getFilename();
+                System.out.println(fileName);
+                fb.setFilename(fileName);
+                fb.setData(((Global.GlobalMessage) msg).getResponse().getFile().getData());
+                fb.setChunkId(((Global.GlobalMessage) msg).getResponse().getFile().getChunkId());
+                fb.setTotalNoOfChunks(((Global.GlobalMessage) msg).getResponse().getFile().getTotalNoOfChunks());
+                Common.Request.Builder rb = Common.Request.newBuilder();
+                rb.setRequestId("A1345");
+                rb.setRequestType(Common.RequestType.WRITE);
+                rb.setFileName(fileName);
+                rb.setFile(fb);
+                Work.WorkRequest.Builder gmb = Work.WorkRequest.newBuilder();
+                gmb.setHeader(hb);
+                gmb.setPayload(Work.Payload.newBuilder().setQuery(rb));
+
+                ei.getChannel().writeAndFlush(rb.build());
+
+
+
+            }
+        }
+    }
+
+    public static Common.Header.Builder createHeader(int cluster_id, int distination_id) {
+        Common.Header.Builder hb = Common.Header.newBuilder();
+        hb.setTime(System.currentTimeMillis());
+        hb.setDestination(distination_id);
+        hb.setNodeId(distination_id);
+        return hb;
     }
 
     private void forwardRequestOnWorkChannel(GeneratedMessage msg, boolean globalCommandMessage){
@@ -179,10 +222,10 @@ public class Query extends Resource {
                     if(globalCommandMessage) {
 
                         Global.GlobalMessage clientMessage = (Global.GlobalMessage) msg;
-                        hb.setNodeId(((PerChannelWorkQueue) sq).gerServerState().getConf().getNodeId());
+                        hb.setNodeId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
                         hb.setTime(clientMessage.getGlobalHeader().getTime());
                         hb.setDestination(clientMessage.getGlobalHeader().getDestinationId());// wont be available in case of request from client. but can be determined based on log replication feature
-                        hb.setSourceHost(((PerChannelWorkQueue) sq).gerServerState().getConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getClusterId());
+                        hb.setSourceHost(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId() + "_" + clientMessage.getGlobalHeader().getClusterId());
                         hb.setDestinationHost(Integer.toString(clientMessage.getGlobalHeader().getDestinationId())); // would be used to return message back to clientMessage
                         //hb.setMaxHops(clientMessage.getGlobalHeader().getMaxHops() - 1);
 
@@ -254,6 +297,7 @@ public class Query extends Resource {
 
             cb.setGlobalHeader(ghb);
             cb.setResponse(responseMsg); // set the reponse to the client
+
             ((PerChannelGlobalCommandQueue) sq).enqueueResponse(cb.build(),null);
         }
         else{
@@ -283,6 +327,4 @@ public class Query extends Resource {
         rb.setSuccess(result > 0);
         return rb.build();
     }
-
-
 }

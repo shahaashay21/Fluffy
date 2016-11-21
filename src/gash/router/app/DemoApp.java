@@ -171,13 +171,13 @@ public class DemoApp implements CommListener {
 			// do stuff w/ the connection
 			//da.ping(2);
 //			da.message("HEREE AASHAY !!!");
-			da.read("wiki1.csr");
-			//da.read("SampleVideo_2mb.mp4");
+//			da.read("wiki1.csr");
+//			da.read("SampleVideo_2mb.mp4");
 //			da.read("chapter2.pdf");
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");
 //			da.save("/Users/rahilvora/Desktop/wiki1.csr");
-//			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
+			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
 //			da.save("/Users/aashayshah/Desktop/Check-Files/5mb.pdf");

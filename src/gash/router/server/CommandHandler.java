@@ -68,6 +68,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<Pipe.CommandRequ
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Pipe.CommandRequest msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
+		System.out.println("GOT MSG TO ME COMMANDDDHHAANNNDDLLLEERR");
 		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
 	}
 

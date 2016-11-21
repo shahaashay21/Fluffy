@@ -16,6 +16,7 @@
 package gash.router.server;
 
 //import gash.router.server.election.ElectionManager;
+import com.google.protobuf.GeneratedMessage;
 import gash.router.server.election.RaftManager;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.QueueFactory;
@@ -101,8 +102,15 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Work.WorkRequest msg) throws Exception {
+//	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
-		queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
+		if(msg instanceof Work.WorkRequest){
+			queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
+		}else {
+//			System.out.println(msg);
+			System.out.println("GOT MSG TO ME WWOROORRRKKKHHAANNNDDLLLEERR");
+		}
+
 	}
 
 	@Override
