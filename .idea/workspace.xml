@@ -2,30 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7294f564-e8e4-4ad6-b9ec-9bba2b9f133a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" afterPath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf$RoutingEntry.class" afterPath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf$RoutingEntry.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf.class" afterPath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/GlobalCommandHandler$ConnectionCloseListener.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/GlobalCommandHandler$ConnectionCloseListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/GlobalCommandHandler.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/GlobalCommandHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$JsonUtil.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$JsonUtil.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartCommandCommunication.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartCommandCommunication.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartRoutingUpdater.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartRoutingUpdater.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartWorkCommunication.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$StartWorkCommunication.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/edges/EdgeMonitor.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/edges/EdgeMonitor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/queue/GlobalCommandInboundAppWorker.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/queue/GlobalCommandInboundAppWorker.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/resources/Ping.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/resources/Ping.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rethinkdb_data/log_file" afterPath="$PROJECT_DIR$/rethinkdb_data/log_file" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/app/DemoApp.java" afterPath="$PROJECT_DIR$/src/gash/router/app/DemoApp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" afterPath="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" afterPath="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/GlobalCommandHandler.java" afterPath="$PROJECT_DIR$/src/gash/router/server/GlobalCommandHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/MessageServer.java" afterPath="$PROJECT_DIR$/src/gash/router/server/MessageServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" afterPath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java" afterPath="$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/resources/Ping.java" afterPath="$PROJECT_DIR$/src/gash/router/server/resources/Ping.java" />
     </list>
     <ignored path="final-Netty.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,8 +41,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state relative-caret-position="0">
+              <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -73,7 +51,7 @@
       <file leaf-file-name="GlobalCommandInboundAppWorker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1815">
+            <state relative-caret-position="1530">
               <caret line="136" column="9" selection-start-line="136" selection-start-column="9" selection-end-line="136" selection-end-column="9" />
               <folding />
             </state>
@@ -233,9 +211,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -270,6 +247,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -934,15 +912,16 @@
       <workItem from="1479678778499" duration="33371000" />
       <workItem from="1479758326727" duration="5492000" />
       <workItem from="1479768376644" duration="722000" />
+      <workItem from="1479769621009" duration="134000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73976000" />
+    <option name="totallyTimeSpent" value="74110000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -951,7 +930,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6123348" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6123348" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24959612" sideWeight="0.49234137" order="0" side_tool="false" content_ui="combo" />
@@ -1357,7 +1336,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/queue/GlobalCommandInboundAppWorker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1815">
+        <state relative-caret-position="1530">
           <caret line="136" column="9" selection-start-line="136" selection-start-column="9" selection-end-line="136" selection-end-column="9" />
           <folding />
         </state>
@@ -1375,8 +1354,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
           <folding />
         </state>
       </provider>
