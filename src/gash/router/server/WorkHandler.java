@@ -16,6 +16,7 @@
 package gash.router.server;
 
 //import gash.router.server.election.ElectionManager;
+import com.google.protobuf.GeneratedMessage;
 import gash.router.server.election.RaftManager;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.QueueFactory;
@@ -57,7 +58,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	}
 
 	/**
-	 * override this method to provide processing behavior. T
+	 * override this method to provide processing behavior.
 	 *
 	 * @param msg
 	 */
@@ -101,8 +102,26 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Work.WorkRequest msg) throws Exception {
+//	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
-		queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
+		if(msg instanceof Work.WorkRequest){
+			System.out.println(msg.getHeader().getNodeId());
+			if(msg.getPayload().hasFile()){
+				System.out.println(msg.getPayload().getFile().getFilename() + "GGOOOTTT IIITTTTTTT");
+			}
+			if(!msg.getPayload().getFile().getFilename().isEmpty()){
+				System.out.println("FILE NNAMMEE" + msg.getPayload().getFile().getFilename());
+				if(!msg.getPayload().getResponse().getRequestId().isEmpty()) {
+					System.out.println("FILE ENNNNNAAMMMMEEE"+ msg.getPayload().getResponse().getFileName());
+					System.out.println("HHEERRREETTT IISS  NONNDDDEEE IIIDDD " + msg.getPayload().getResponse().getRequestId());
+				}
+			}
+			queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
+		}else {
+//			System.out.println(msg);
+			System.out.println("GOT MSG TO ME WWOROORRRKKKHHAANNNDDLLLEERR");
+		}
+
 	}
 
 	@Override
@@ -149,6 +168,4 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 			inQueue = null;
 		}
 	}
-
-
 }

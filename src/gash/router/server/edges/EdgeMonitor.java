@@ -44,15 +44,13 @@ import java.util.Iterator;
 
 public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
-	protected static AtomicReference<EdgeMonitor> instance = new AtomicReference<EdgeMonitor>(); // r 4/2/2016
+	protected static AtomicReference<EdgeMonitor> instance = new AtomicReference<EdgeMonitor>();
 
 	private EdgeList outboundEdges;
 	private EdgeList inboundEdges;
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
-
-	//r
 	private EventLoopGroup group;
 	private ChannelFuture channelFuture;
 
@@ -70,7 +68,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				outboundEdges.addNode(e.getId(), e.getHost(), e.getPort());
 			}
 		}
-		instance.compareAndSet(null,this); //4/2/2016
+		instance.compareAndSet(null,this);
 
 		// cannot go below 2 sec
 		if (state.getConf().getHeartbeatDt() > this.dt)

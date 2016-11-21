@@ -27,7 +27,7 @@ public class EdgeInfo {
 	private boolean active = false;
 	private Channel channel;
 	private ChannelQueue queue;
-	private boolean clientChannel; //added by n
+	private boolean clientChannel;
 
 	public EdgeInfo(int ref, String host, int port) {
 		this.ref = ref;

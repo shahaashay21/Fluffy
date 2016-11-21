@@ -35,12 +35,10 @@ public class GlobalCommandInboundAppWorker extends Thread {
 	int workerId;
 	PerChannelGlobalCommandQueue sq;
 	boolean forever = true;
-
 	public GlobalCommandInboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelGlobalCommandQueue sq) {
 		super(tgrp, "inboundWork-" + workerId);
 		this.workerId = workerId;
 		this.sq = sq;
-
 		if (sq.inboundWork == null)
 			throw new RuntimeException("connection worker detected null inboundWork queue");
 	}
@@ -64,7 +62,6 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 				// process request and enqueue response
 				if(msg instanceof Global.GlobalMessage){
-
 					//PrintUtil.printCommand((Pipe.CommandRequest) msg);
 					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 

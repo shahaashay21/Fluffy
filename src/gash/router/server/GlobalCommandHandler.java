@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import pipe.common.Common.Failure;
 import routing.Pipe;
 
+import java.util.HashMap;
+
 /**
  * The message handler processes json messages that are delimited by a 'newline'
  *
@@ -38,11 +40,15 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	protected RoutingConf conf;
 	private ChannelQueue queue;
 
+    public static HashMap<String, Channel> allChannels = new HashMap<>();
+
 	public GlobalCommandHandler(RoutingConf conf) {
 		if (conf != null) {
 			this.conf = conf;
 		}
 	}
+
+    public GlobalCommandHandler(){   }
 
 	/**
 	 * override this method to provide processing behavior. This implementation
@@ -91,8 +97,14 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
+		System.out.println("GOT MSG TO ME GLOBALCOMMANDHANDLER");
+        allChannels.put(msg.getResponse().getRequestId(), ctx.channel());
 		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
 	}
+
+	public HashMap<String, Channel> getAllChannels(){
+        return allChannels;
+    }
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

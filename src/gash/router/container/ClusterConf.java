@@ -7,12 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Routing information for the server - internal use only
- *
- * @author n
- *
- */
 @XmlRootElement(name = "conf")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterConf {
