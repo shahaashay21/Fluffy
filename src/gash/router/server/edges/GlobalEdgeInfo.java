@@ -17,11 +17,10 @@ package gash.router.server.edges;
 
 import gash.router.server.queue.ChannelQueue;
 import io.netty.channel.Channel;
-import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
 
-public class EdgeInfo {
-	private int ref;
-	private String host;
+public class GlobalEdgeInfo {
+	private String ref;
+	private int id1;
 	private int port;
 	private long lastHeartbeat = -1;
 	private boolean active = false;
@@ -29,27 +28,27 @@ public class EdgeInfo {
 	private ChannelQueue queue;
 	private boolean clientChannel;
 
-	public EdgeInfo(int ref, String host, int port) {
+	public GlobalEdgeInfo(String ref, int id, int port) {
 		this.ref = ref;
-		this.host = host;
+		this.id1 = id;
 		this.port = port;
 		this.channel = null;
 	}
 
-	public int getRef() {
+	public String getRef() {
 		return ref;
 	}
 
-	public void setRef(int ref) {
+	public void setRef(String ref) {
 		this.ref = ref;
 	}
 
-	public String getHost() {
-		return host;
+	public int getId() {
+		return id1;
 	}
 
-	public void setHost(String host) {
-		this.host = host;
+	public void setId(int id) {
+		this.id1 = id;
 	}
 
 	public int getPort() {
@@ -101,8 +100,8 @@ public class EdgeInfo {
 	}
 
 	public boolean equals(Object x){
-		EdgeInfo that = (EdgeInfo) x;
-		if(this.ref == that.ref && this.host.equals(that.host) && this.port == that.port){
+		GlobalEdgeInfo that = (GlobalEdgeInfo) x;
+		if(this.ref.equals(that.ref) && (this.id1 == that.id1) && this.port == that.port){
 			return true;
 		}
 		else{
@@ -110,7 +109,7 @@ public class EdgeInfo {
 		}
 	}
 
-	public int hashCode(){
-		return this.ref + this.host.hashCode() + this.port;
-	}
+	//public int hashCode(){
+		//ref + this.host.hashCode() + this.port;
+	//}
 }

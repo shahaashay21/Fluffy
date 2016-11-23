@@ -76,7 +76,6 @@ public class PerChannelCommandQueue implements ChannelQueue {
 
 		logger.info("Starting to listen to Command worker");
 		//Creating worker threadpool
-		//Changed by: a
 		for(int i=0;i<3;i++){
 			CommandInboundAppWorker tempWorker = new CommandInboundAppWorker(tgroup, i+1, this);
 			iworkerList.add(tempWorker);
