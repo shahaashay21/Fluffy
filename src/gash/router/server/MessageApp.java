@@ -33,8 +33,9 @@ public class MessageApp {
 		}
 
 		File cf = new File(args[0]);
+		File gcf = new File(args[1]);
 		try {
-			MessageServer svr = new MessageServer(cf);
+			MessageServer svr = new MessageServer(cf, gcf);
 			svr.startServer();
 			/*// Start the thread that reads any updates in conf File : thread in background
 			Thread confUpdateThread = new Thread(svr);

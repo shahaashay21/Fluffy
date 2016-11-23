@@ -1,5 +1,6 @@
 package gash.router.server;
 
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import global.Global;
 import io.netty.channel.ChannelInitializer;
@@ -20,13 +21,13 @@ import routing.Pipe;
  */
 public class GlobalCommandInit extends ChannelInitializer<SocketChannel> {
 	boolean compress = false;
-	RoutingConf conf;
+	ServerState state;
 
-	public GlobalCommandInit(RoutingConf conf, boolean enableCompression) {
+	public GlobalCommandInit(ServerState state) {
 		super();
-		compress = enableCompression;
-		this.conf = conf;
+		compress = false;
 	}
+
 
 	@Override
 	public void initChannel(SocketChannel ch) throws Exception {
@@ -55,6 +56,6 @@ public class GlobalCommandInit extends ChannelInitializer<SocketChannel> {
 
 
 		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new GlobalCommandHandler(conf));
+		pipeline.addLast("handler", new GlobalCommandHandler(state));
 	}
 }

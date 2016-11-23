@@ -16,6 +16,7 @@
 package gash.router.server.queue;
 
 import com.google.protobuf.GeneratedMessage;
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
@@ -82,16 +83,20 @@ public class GlobalCommandInboundAppWorker extends Thread {
 					//if (((Global.GlobalMessage) msg).getGlobalHeader().getClusterId() == sq.getRoutingConf().getClusterId()) {
 						//PrintUtil.printCommand((Pipe.CommandRequest) msg);
 						Global.GlobalMessage req = ((Global.GlobalMessage) msg);
-
-						if (req.hasPing()) {
-							System.out.println("Has Pingggggggggggggg");
-							new Ping(sq).handle(req);
-						} else if (req.hasRequest()) {
-							new Query(sq).handle(req);
-						} else if (req.hasMessage()) {
-							logger.info("Mwssage is: " + req.getMessage());
-						} else {
-							logger.error("Unexpected message type. Yet to handle.");
+						if(verifyLocalOrGlobal(req)) {
+							if (req.hasPing()) {
+								System.out.println("Has Pingggggggggggggg");
+								new Ping(sq).handle(req);
+							} else if (req.hasRequest()) {
+								new Query(sq).handle(req);
+							} else if (req.hasMessage()) {
+								logger.info("Message is: " + req.getMessage());
+							} else {
+								logger.error("Unexpected message type. Yet to handle.");
+							}
+						}
+						else{
+							sq.getState().getGemon().pushMessagesIntoCluster(req);
 						}
 //					} else {
 //						//forwardToClusterRouting((Global.GlobalMessage) msg);
@@ -116,7 +121,18 @@ public class GlobalCommandInboundAppWorker extends Thread {
 //			//TODO error handle
 //		}
 //	}
+	public boolean verifyLocalOrGlobal(Global.GlobalMessage message){
+		//if(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId())
+		boolean check = true;
+		for (RoutingConf.RoutingEntry e : sq.getRoutingConf().getRouting()){
+			if(e.getId() == message.getGlobalHeader().getDestinationId()){
+				check = false;
+				break;
+			}
+		}
+		return !check;
 
+	}
 	public synchronized Channel channelInit(String host, int port)
 	{
 		try
