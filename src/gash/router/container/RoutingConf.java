@@ -39,6 +39,7 @@ public class RoutingConf {
 	private int heartbeatDt = 2000;
 	private int clusterId;
 	private List<RoutingEntry> routing;
+	private String electionImplementation;
 
 	public HashMap<String, Integer> asHashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -58,6 +59,13 @@ public class RoutingConf {
 			routing = new ArrayList<RoutingEntry>();
 
 		routing.add(entry);
+	}
+	public String getElectionImplementation() {
+		return electionImplementation;
+	}
+
+	public void setElectionImplementation(String electionImplementation) {
+		this.electionImplementation = electionImplementation;
 	}
 
 

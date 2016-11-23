@@ -1,2 +1,6 @@
-.idea/*
 .idea
+*.iml
+classes
+rethinkdb_data
+generated
+*.out

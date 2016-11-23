@@ -46,7 +46,8 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	protected static Logger logger = LoggerFactory.getLogger("server");
 
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
-	private static EdgeMonitor emon=null;
+	private static EdgeMonitor emon = null;
+	private static GlobalEdgeMonitor gmon = null;
 	//private static ServerState serverState=null;
 
 	private static RaftManager mgr = null;
@@ -100,16 +101,16 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		state.setGlobalConf(globalConf);
 		state.setConf(conf);
 
-		gMon = new GlobalEdgeMonitor(state);
-		state.setGemon(gMon);
+		gmon = new GlobalEdgeMonitor(state);
+		state.setGemon(gmon);
 
 //		StartGlobalCommunication global = new StartGlobalCommunication(state);
 //		Thread globalThread = new Thread(global);
 //		globalThread.start();
 
 		if (!conf.isInternalNode()) {
-			StartCommandCommunication comm2 = new StartCommandCommunication(state);
-			logger.info("Command starting");
+			StartGlobalCommandCommunication comm2 = new StartGlobalCommandCommunication(state);
+			logger.info("Global Command starting");
 
 			if (background) {
 				Thread cthread2 = new Thread(comm2);
@@ -470,14 +471,14 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 //		public ServerState state;
 //		public GlobalConf globalConf;
 //		public RoutingConf routingConf = null;
-//		public GlobalEdgeMonitor gMon = null;
+//		public GlobalEdgeMonitor gmon = null;
 //
 //
 //		public StartGlobalCommunication(ServerState state){
 //			this.state = state;
 //			this.globalConf = state.getGlobalConf();
-//			gMon = new GlobalEdgeMonitor(state);
-//			state.setGemon(gMon);
+//			gmon = new GlobalEdgeMonitor(state);
+//			state.setGemon(gmon);
 //			this.routingConf = state.getConf();
 //		}
 //

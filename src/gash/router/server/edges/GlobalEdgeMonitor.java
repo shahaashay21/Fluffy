@@ -27,7 +27,7 @@ public class GlobalEdgeMonitor {
 		this.state = state;
 		
 		if (state.getGlobalConf().getRouting() != null) {
-			for (GlobalConf.RoutingEntry e : state.getGlobalConf().getRouting()) {
+			for (GlobalConf.GlobalRoutingEntry e : state.getGlobalConf().getRouting()) {
 				globalOutboud.addNode(e.getHost(), e.getClusterId(), e.getPort());
 			}
 		}

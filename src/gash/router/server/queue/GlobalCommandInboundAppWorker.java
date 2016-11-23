@@ -16,8 +16,8 @@
 package gash.router.server.queue;
 
 import com.google.protobuf.GeneratedMessage;
-<import gash.router.container.GlobalConf;
->mport gash.router.container.RoutingConf;
+import gash.router.container.GlobalConf;
+import gash.router.container.RoutingConf;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
 import gash.router.server.WorkInit;
@@ -97,8 +97,9 @@ public class GlobalCommandInboundAppWorker extends Thread {
 						}
 						else{
 							sq.getState().getGemon().pushMessagesIntoCluster(req);
+						}
 				}
-			} catch (InterruptedException ie) {
+			}catch (InterruptedException e) {
 				break;
 			} catch (Exception e) {
 				logger.error("Unexpected processing failure", e);
