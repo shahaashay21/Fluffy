@@ -39,6 +39,8 @@ public class RoutingConf {
 	private int heartbeatDt = 2000;
 	private int clusterId;
 	private List<RoutingEntry> routing;
+	private List<ClusterRoutingEntry> clusterRoutingEntry;
+	private List<RoutingEntry> adapterRouting;
 	private String electionImplementation;
 
 	public HashMap<String, Integer> asHashMap() {
@@ -60,14 +62,16 @@ public class RoutingConf {
 
 		routing.add(entry);
 	}
-	public String getElectionImplementation() {
-		return electionImplementation;
-	}
 
-	public void setElectionImplementation(String electionImplementation) {
-		this.electionImplementation = electionImplementation;
-	}
+	public void addClusterEntry(ClusterRoutingEntry entry) {
+		if (entry== null)
+			return;
 
+		if (clusterRoutingEntry == null)
+			clusterRoutingEntry = new ArrayList<ClusterRoutingEntry>();
+
+		clusterRoutingEntry.add(entry);
+	}
 
 	public int getNodeId() {
 		return nodeId;
@@ -121,10 +125,43 @@ public class RoutingConf {
 		return routing;
 	}
 
+	public List<ClusterRoutingEntry> getClusterRoutingEntryRouting() {
+		return clusterRoutingEntry;
+	}
+
 	public void setRouting(List<RoutingEntry> conf) {
 		this.routing = conf;
 	}
 
+	public void setClusterRoutingEntryRouting(List<ClusterRoutingEntry> conf) {
+		this.clusterRoutingEntry = conf;
+	}
+
+	public String getElectionImplementation() {
+		return electionImplementation;
+	}
+
+	public void setElectionImplementation(String electionImplementation) {
+		this.electionImplementation = electionImplementation;
+	}
+
+	public List<RoutingEntry> getAdapterRouting() {
+		return adapterRouting;
+	}
+
+	public void setAdapterRouting(List<RoutingEntry> adapterRouting) {
+		this.adapterRouting = adapterRouting;
+	}
+
+	public void addAdapterEntry(RoutingEntry entry) {
+		if (entry == null)
+			return;
+
+		if (adapterRouting == null)
+			adapterRouting = new ArrayList<RoutingEntry>();
+
+		adapterRouting.add(entry);
+	}
 
 	@XmlRootElement(name = "entry")
 	@XmlAccessorType(XmlAccessType.PROPERTY)
@@ -164,6 +201,47 @@ public class RoutingConf {
 
 		public void setId(int id) {
 			this.id = id;
+		}
+
+	}
+
+	@XmlRootElement(name = "clusterentry")
+	@XmlAccessorType(XmlAccessType.PROPERTY)
+	public static final class ClusterRoutingEntry{
+		private String host;
+		private int port;
+		private int clusterID;
+
+		public ClusterRoutingEntry(){
+
+		}
+		public ClusterRoutingEntry(int clusterID, String host, int port){
+			this.host = host;
+			this.clusterID = clusterID;
+			this.port = port;
+		}
+		public String getClusterHost() {
+			return host;
+		}
+
+		public void setClusterHost(String host) {
+			this.host = host;
+		}
+
+		public int getClusterPort() {
+			return port;
+		}
+
+		public void setClusterPort(int port) {
+			this.port = port;
+		}
+
+		public int getClusterId() {
+			return clusterID;
+		}
+
+		public void setClusterId(int clusterID) {
+			this.clusterID = clusterID;
 		}
 
 	}

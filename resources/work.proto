@@ -47,8 +47,6 @@ message Payload{
     optional bytes storageFile = 18;
     optional SavedFile savedFile = 19;
 
-    optional File file = 20;
-
 }
 
 // These are messages to keep the network running (not to perform work)

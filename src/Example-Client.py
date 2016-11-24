@@ -25,7 +25,7 @@ def request_ping():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # host = socket.gethostname() # Testing on own computer
     # port = 5570 # Public Port
-    s.connect(("169.254.203.62", 5000))
+    s.connect(("localhost", 4268))
     # Prepending the length field and sending
     s.sendall(packed_len+pingr)
     s.close()

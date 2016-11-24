@@ -5,6 +5,9 @@ import pipe.work.Work;
 public interface Election {
     /**
      * notification of the election results.
+     *
+     * TODO do we need it to be a list?
+     *
      * @param listener
      */
     void setListener(ElectionListener listener);

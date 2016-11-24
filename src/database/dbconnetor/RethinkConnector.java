@@ -2,6 +2,10 @@ package database.dbconnetor;
 
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
+
+/**
+ * Created by aashayshah on 11/7/16.
+ */
 public class RethinkConnector {
 
         public static final RethinkDB r = RethinkDB.r;

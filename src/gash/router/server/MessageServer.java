@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import gash.router.container.ClusterConf;
-import gash.router.container.GlobalConf;
-import gash.router.server.edges.GlobalEdgeMonitor;
 import gash.router.server.election.RaftManager;
 import io.netty.channel.ChannelFutureListener;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -46,22 +44,17 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	protected static Logger logger = LoggerFactory.getLogger("server");
 
 	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
-	private static EdgeMonitor emon = null;
-	private static GlobalEdgeMonitor gmon = null;
-	//private static ServerState serverState=null;
-
+	private static EdgeMonitor emon=null;
 	private static RaftManager mgr = null;
 	//private static ElectionManager emgr = null;
 	private ArrayList<RoutingConfObserver> routingConfOberverList;
-	public static ServerState state;
 
 	// public static final String sPort = "port";
 	// public static final String sPoolSize = "pool.size";
 
 	protected File confFile;
-	protected File gconfFile;
 	protected RoutingConf conf;
-	protected GlobalConf globalConf;
+	protected ClusterConf clusterConf;
 	protected boolean background = false;
 
 	/**
@@ -69,21 +62,22 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	 *
 	 * @param cfg
 	 */
-	public MessageServer(File cfg, File gcfg) {
+	public MessageServer(File cfg) {
 		routingConfOberverList = new ArrayList<>();
 		this.confFile = cfg;
-		this.gconfFile = gcfg;
-		init(cfg,gcfg);
+		init(cfg);
 	}
 
+	public MessageServer(RoutingConf conf) {
+		this.conf = conf;
+	}
 
-	public ServerState getState(){
-		return state;
+	public void release() {
 	}
 
 	public void startServer() {
 		StartWorkCommunication comm = new StartWorkCommunication(conf);
-		attach(comm); //// TODO: 11/23/16
+		attach(comm);
 		logger.info("Work starting");
 		// We always start the worker in the background
 		Thread cthread = new Thread(comm);
@@ -91,26 +85,16 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 		// Start the thread that reads any updates in conf File : thread in background
 		logger.info("Conf updater starting");
-		//Thread confUpdateThread = new Thread(new StartRoutingUpdater(this));
-		//confUpdateThread.start();
-		//raft
+		Thread confUpdateThread = new Thread(new StartRoutingUpdater(this));
+		confUpdateThread.start();
+		//r - raft
 		mgr = RaftManager.initManager(conf);
 		//emgr = ElectionManager.initManager(conf);
-		System.out.print("Raft Started: " + mgr);
-
-		state.setGlobalConf(globalConf);
-		state.setConf(conf);
-
-		gmon = new GlobalEdgeMonitor(state);
-		state.setGemon(gmon);
-
-//		StartGlobalCommunication global = new StartGlobalCommunication(state);
-//		Thread globalThread = new Thread(global);
-//		globalThread.start();
+		System.out.print("Raft: " + mgr);
 
 		if (!conf.isInternalNode()) {
-			StartGlobalCommandCommunication comm2 = new StartGlobalCommandCommunication(state);
-			logger.info("Global Command starting");
+			StartCommandCommunication comm2 = new StartCommandCommunication(conf);
+			logger.info("Command starting");
 
 			if (background) {
 				Thread cthread2 = new Thread(comm2);
@@ -135,7 +119,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		System.exit(0);
 	}
 
-	private void init(File cfg, File gcfg) {
+	private void init(File cfg) {
 		if (!cfg.exists())
 			throw new RuntimeException(cfg.getAbsolutePath() + " not found");
 		// resource initialization - how message are processed
@@ -158,56 +142,9 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 				}
 			}
 		}
-//		if (!gcfg.exists())
-//			throw new RuntimeException(gcfg.getAbsolutePath() + " not found");
-//		// resource initialization - how message are processed
-//		BufferedInputStream br1 = null;
-//		try {
-//			byte[] raw = new byte[(int) gcfg.length()];
-//			br1 = new BufferedInputStream(new FileInputStream(gcfg));
-//			br1.read(raw);
-//			globalConf = JsonUtil.decode(new String(raw), GlobalConf.class);
-//			if (!verifyGlobalConf(globalConf))
-//				throw new RuntimeException("verification of configuration failed");
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		} finally {
-//			if (br1 != null) {
-//				try {
-//					br1.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-		if (!gcfg.exists())
-			throw new RuntimeException(gcfg.getAbsolutePath() + " not found");
-		// resource initialization - how message are processed
-		BufferedInputStream br2 = null;
-		try {
-			byte[] raw = new byte[(int) gcfg.length()];
-			br2 = new BufferedInputStream(new FileInputStream(gcfg));
-			br2.read(raw);
-			globalConf = JsonUtil.decode(new String(raw), GlobalConf.class);
-			if( globalConf == null )
-				throw new RuntimeException("verification of global configuration failed");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (br2 != null) {
-				try {
-					br2.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	private boolean verifyConf(RoutingConf conf) {
-		return (conf != null);
-	}
-	private boolean verifyGlobalConf(GlobalConf conf) {
 		return (conf != null);
 	}
 
@@ -236,14 +173,11 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 	 * @param //port
 	 *            The port to listen to
 	 */
-	private static class StartGlobalCommandCommunication implements Runnable {
-		ServerState state;
+	private static class StartCommandCommunication implements Runnable {
 		RoutingConf conf;
-		GlobalConf gconf;
 
-		public StartGlobalCommandCommunication(ServerState state) {
-			this.conf = state.getConf();
-			this.gconf = state.getGlobalConf();
+		public StartCommandCommunication(RoutingConf conf) {
+			this.conf = conf;
 		}
 
 		public void run() {
@@ -264,7 +198,7 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
 				boolean compressComm = false;
-				b.childHandler(new GlobalCommandInit(state));
+				b.childHandler(new GlobalCommandInit(conf, compressComm));
 
 				// Start the server.
 				logger.info("Starting command server (" + conf.getNodeId() + "), listening on port = "
@@ -307,7 +241,8 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 
 			emon = new EdgeMonitor(state);// emon is an instance of parent class
 			Thread t = new Thread(emon);
-			// RAFT
+			// r - RAFT
+
 			t.start();
 		}
 
@@ -339,10 +274,12 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
 						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
 
-				mgr.startMonitor(state); // RAFT
+				mgr.startMonitor(state); // r - RAFT
+
 				// block until the server socket is closed.
 				f.channel().closeFuture().sync();
 				logger.info("I am done");
+
 			} catch (Exception ex) {
 				// on bind().sync()
 				logger.error("Failed to setup handler.", ex);
@@ -466,61 +403,6 @@ public class MessageServer implements RoutingConfSubject{//}, Runnable{
 		}
 	}
 
-//	private static class StartCluserCommunication implements Runnable{
-//
-//		public ServerState state;
-//		public GlobalConf globalConf;
-//		public RoutingConf routingConf = null;
-//		public GlobalEdgeMonitor gmon = null;
-//
-//
-//		public StartGlobalCommunication(ServerState state){
-//			this.state = state;
-//			this.globalConf = state.getGlobalConf();
-//			gmon = new GlobalEdgeMonitor(state);
-//			state.setGemon(gmon);
-//			this.routingConf = state.getConf();
-//		}
-//
-//		public void run() {
-//			EventLoopGroup bossGroup = new NioEventLoopGroup();
-//			EventLoopGroup workerGroup = new NioEventLoopGroup();
-//
-//			try {
-//				ServerBootstrap b = new ServerBootstrap();
-//				bootstrap.put(globalConf.getGlobalPort(), b);
-//
-//				b.group(bossGroup, workerGroup);
-//				b.channel(NioServerSocketChannel.class);
-//				b.option(ChannelOption.SO_BACKLOG, 100);
-//				b.option(ChannelOption.TCP_NODELAY, true);
-//				b.option(ChannelOption.SO_KEEPALIVE, true);
-//
-//				boolean compressComm = false;
-//				b.childHandler(new GlobalCommandInit(state));
-//
-//				// Start the server.
-//				logger.info("Starting global server (" + globalConf.getClusterId() + "), listening on port = "
-//						+ globalConf.getGlobalPort());
-//				ChannelFuture f = b.bind(globalConf.getGlobalPort()).syncUninterruptibly();
-//
-//				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
-//						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
-//
-//				// block until the server socket is closed.
-//				f.channel().closeFuture().sync();
-//
-//			} catch (Exception ex) {
-//				// on bind().sync()
-//				logger.error("Failed to setup handler.", ex);
-//			} finally {
-//				// Shut down all event loops to terminate all threads.
-//				bossGroup.shutdownGracefully();
-//				workerGroup.shutdownGracefully();
-//			}
-//
-//		}
-//	}
 	/**
 	 * return the object of EdgeMonitor
 	 *
