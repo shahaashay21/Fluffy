@@ -19,43 +19,43 @@ import java.util.concurrent.TimeUnit;
  * @author gash
  *
  */
-public class CommandInit extends ChannelInitializer<SocketChannel> {
-	boolean compress = false;
-	RoutingConf conf;
-
-	public CommandInit(RoutingConf conf, boolean enableCompression) {
-		super();
-		compress = enableCompression;
-		this.conf = conf;
-	}
-
-	@Override
-	public void initChannel(SocketChannel ch) throws Exception {
-		ChannelPipeline pipeline = ch.pipeline();
-
-		// Enable stream compression (you can remove these two if unnecessary)
-		if (compress) {
-			pipeline.addLast("deflater", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.GZIP));
-			pipeline.addLast("inflater", ZlibCodecFactory.newZlibDecoder(ZlibWrapper.GZIP));
-		}
-
-		/**
-		 * length (4 bytes).
-		 * 
-		 * Note: max message size is 64 Mb = 67108864 bytes this defines a
-		 * framer with a max of 64 Mb message, 4 bytes are the length, and strip
-		 * 4 bytes
-		 */
-		pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
-		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS));
-
-		// decoder must be first
-		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Pipe.CommandRequest.getDefaultInstance()));
-		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
-		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
-
-
-		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new CommandHandler(conf));
-	}
+public class CommandInit {//extends ChannelInitializer<SocketChannel> {
+//	boolean compress = false;
+//	RoutingConf conf;
+//
+//	public CommandInit(RoutingConf conf, boolean enableCompression) {
+//		super();
+//		compress = enableCompression;
+//		this.conf = conf;
+//	}
+//
+//	@Override
+//	public void initChannel(SocketChannel ch) throws Exception {
+//		ChannelPipeline pipeline = ch.pipeline();
+//
+//		// Enable stream compression (you can remove these two if unnecessary)
+//		if (compress) {
+//			pipeline.addLast("deflater", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.GZIP));
+//			pipeline.addLast("inflater", ZlibCodecFactory.newZlibDecoder(ZlibWrapper.GZIP));
+//		}
+//
+//		/**
+//		 * length (4 bytes).
+//		 *
+//		 * Note: max message size is 64 Mb = 67108864 bytes this defines a
+//		 * framer with a max of 64 Mb message, 4 bytes are the length, and strip
+//		 * 4 bytes
+//		 */
+//		pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
+//		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS)); // Added by r
+//
+//		// decoder must be first
+//		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Pipe.CommandRequest.getDefaultInstance()));
+//		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
+//		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
+//
+//
+//		// our server processor (new instance for each connection)
+//		pipeline.addLast("handler", new CommandHandler(conf));
+//	}
 }

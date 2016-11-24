@@ -23,11 +23,9 @@ import org.slf4j.LoggerFactory;
 
 public class CommandOutboundAppWorker extends Thread {
 	protected static Logger logger = LoggerFactory.getLogger("coaw:server");
-
 	int workerId;
 	PerChannelCommandQueue sq;
 	boolean forever = true;
-
 	public CommandOutboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelCommandQueue sq) {
 		super(tgrp, "outboundWork-" + workerId);
 		this.workerId = workerId;

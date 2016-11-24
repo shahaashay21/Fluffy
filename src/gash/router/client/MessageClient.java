@@ -108,7 +108,7 @@ public class MessageClient {
     public void save(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(999, 1);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
@@ -154,7 +154,7 @@ public class MessageClient {
 
     public void read(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(999, 1);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);

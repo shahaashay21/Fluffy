@@ -13,10 +13,6 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- * Created by aashayshah on 11/7/16.
- */
 public class RethinkDAO {
 
     protected static Logger logger = LoggerFactory.getLogger("gciaw:server");
