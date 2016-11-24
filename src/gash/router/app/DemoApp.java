@@ -98,10 +98,9 @@ public class DemoApp implements CommListener {
 
 	@Override
 	public void onMessage(Global.GlobalMessage msg) {
-		System.out.println("Got message from server");
+//		System.out.println("Got message from server");
 		if(msg.getResponse().getRequestType().toString().equals("READ")){
 			try {
-				System.out.println("CHUNK COUNT"+ msg.getResponse().getFile().getTotalNoOfChunks());
 				if(totalChunk == 0){
 					totalChunk = msg.getResponse().getFile().getTotalNoOfChunks();
 				}
@@ -137,7 +136,7 @@ public class DemoApp implements CommListener {
 							System.out.println(eachMessage.getResponse().getFile().getData().toString());
 							System.out.println(eachMessage.getResponse().getFile().getFilename());
 
-							FileOutputStream fileOutputStream = new FileOutputStream("/Users/rahilvora/Desktop/test/" + newNameOfFile, true);
+							FileOutputStream fileOutputStream = new FileOutputStream("Files/" + newNameOfFile, true);
 							fileOutputStream.write(finalFile);
 							fileOutputStream.close();
 						}
@@ -169,10 +168,10 @@ public class DemoApp implements CommListener {
 			DemoApp da = new DemoApp(mc);
 
 			// do stuff w/ the connection
-			da.ping(2);
+//			da.ping(2);
 //			da.message("HEREE AASHAY !!!");
 //			da.read("wiki1.csr");
-			//da.read("SampleVideo_2mb.mp4");
+			da.read("SampleVideo_2mb.mp4");
 //			da.read("chapter2.pdf");
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");

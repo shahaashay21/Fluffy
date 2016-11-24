@@ -4672,6 +4672,28 @@ public final class Work {
      * <code>required .Payload payload = 3;</code>
      */
     pipe.work.Work.PayloadOrBuilder getPayloadOrBuilder();
+
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    boolean hasFile();
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    pipe.common.Common.File getFile();
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    pipe.common.Common.FileOrBuilder getFileOrBuilder();
+
+    /**
+     * <code>optional bool broadCast = 5;</code>
+     */
+    boolean hasBroadCast();
+    /**
+     * <code>optional bool broadCast = 5;</code>
+     */
+    boolean getBroadCast();
   }
   /**
    * Protobuf type {@code WorkRequest}
@@ -4758,6 +4780,24 @@ public final class Work {
                 payload_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000004;
+              break;
+            }
+            case 34: {
+              pipe.common.Common.File.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = file_.toBuilder();
+              }
+              file_ = input.readMessage(pipe.common.Common.File.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(file_);
+                file_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              broadCast_ = input.readBool();
               break;
             }
           }
@@ -4857,10 +4897,48 @@ public final class Work {
       return payload_;
     }
 
+    public static final int FILE_FIELD_NUMBER = 4;
+    private pipe.common.Common.File file_;
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    public boolean hasFile() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    public pipe.common.Common.File getFile() {
+      return file_;
+    }
+    /**
+     * <code>optional .File file = 4;</code>
+     */
+    public pipe.common.Common.FileOrBuilder getFileOrBuilder() {
+      return file_;
+    }
+
+    public static final int BROADCAST_FIELD_NUMBER = 5;
+    private boolean broadCast_;
+    /**
+     * <code>optional bool broadCast = 5;</code>
+     */
+    public boolean hasBroadCast() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool broadCast = 5;</code>
+     */
+    public boolean getBroadCast() {
+      return broadCast_;
+    }
+
     private void initFields() {
       header_ = pipe.common.Common.Header.getDefaultInstance();
       secret_ = 0L;
       payload_ = pipe.work.Work.Payload.getDefaultInstance();
+      file_ = pipe.common.Common.File.getDefaultInstance();
+      broadCast_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4884,6 +4962,12 @@ public final class Work {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (hasFile()) {
+        if (!getFile().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -4899,6 +4983,12 @@ public final class Work {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, payload_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, file_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, broadCast_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -4920,6 +5010,14 @@ public final class Work {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, payload_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, file_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, broadCast_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5036,6 +5134,7 @@ public final class Work {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getHeaderFieldBuilder();
           getPayloadFieldBuilder();
+          getFileFieldBuilder();
         }
       }
       private static Builder create() {
@@ -5058,6 +5157,14 @@ public final class Work {
           payloadBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        if (fileBuilder_ == null) {
+          file_ = pipe.common.Common.File.getDefaultInstance();
+        } else {
+          fileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        broadCast_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -5106,6 +5213,18 @@ public final class Work {
         } else {
           result.payload_ = payloadBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (fileBuilder_ == null) {
+          result.file_ = file_;
+        } else {
+          result.file_ = fileBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.broadCast_ = broadCast_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5131,6 +5250,12 @@ public final class Work {
         if (other.hasPayload()) {
           mergePayload(other.getPayload());
         }
+        if (other.hasFile()) {
+          mergeFile(other.getFile());
+        }
+        if (other.hasBroadCast()) {
+          setBroadCast(other.getBroadCast());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -5151,6 +5276,12 @@ public final class Work {
         if (!getPayload().isInitialized()) {
           
           return false;
+        }
+        if (hasFile()) {
+          if (!getFile().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -5438,6 +5569,154 @@ public final class Work {
         return payloadBuilder_;
       }
 
+      private pipe.common.Common.File file_ = pipe.common.Common.File.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.common.Common.File, pipe.common.Common.File.Builder, pipe.common.Common.FileOrBuilder> fileBuilder_;
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public boolean hasFile() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public pipe.common.Common.File getFile() {
+        if (fileBuilder_ == null) {
+          return file_;
+        } else {
+          return fileBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public Builder setFile(pipe.common.Common.File value) {
+        if (fileBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          file_ = value;
+          onChanged();
+        } else {
+          fileBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public Builder setFile(
+          pipe.common.Common.File.Builder builderForValue) {
+        if (fileBuilder_ == null) {
+          file_ = builderForValue.build();
+          onChanged();
+        } else {
+          fileBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public Builder mergeFile(pipe.common.Common.File value) {
+        if (fileBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              file_ != pipe.common.Common.File.getDefaultInstance()) {
+            file_ =
+              pipe.common.Common.File.newBuilder(file_).mergeFrom(value).buildPartial();
+          } else {
+            file_ = value;
+          }
+          onChanged();
+        } else {
+          fileBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public Builder clearFile() {
+        if (fileBuilder_ == null) {
+          file_ = pipe.common.Common.File.getDefaultInstance();
+          onChanged();
+        } else {
+          fileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public pipe.common.Common.File.Builder getFileBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getFileFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      public pipe.common.Common.FileOrBuilder getFileOrBuilder() {
+        if (fileBuilder_ != null) {
+          return fileBuilder_.getMessageOrBuilder();
+        } else {
+          return file_;
+        }
+      }
+      /**
+       * <code>optional .File file = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          pipe.common.Common.File, pipe.common.Common.File.Builder, pipe.common.Common.FileOrBuilder> 
+          getFileFieldBuilder() {
+        if (fileBuilder_ == null) {
+          fileBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              pipe.common.Common.File, pipe.common.Common.File.Builder, pipe.common.Common.FileOrBuilder>(
+                  getFile(),
+                  getParentForChildren(),
+                  isClean());
+          file_ = null;
+        }
+        return fileBuilder_;
+      }
+
+      private boolean broadCast_ ;
+      /**
+       * <code>optional bool broadCast = 5;</code>
+       */
+      public boolean hasBroadCast() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool broadCast = 5;</code>
+       */
+      public boolean getBroadCast() {
+        return broadCast_;
+      }
+      /**
+       * <code>optional bool broadCast = 5;</code>
+       */
+      public Builder setBroadCast(boolean value) {
+        bitField0_ |= 0x00000010;
+        broadCast_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool broadCast = 5;</code>
+       */
+      public Builder clearBroadCast() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        broadCast_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:WorkRequest)
     }
 
@@ -5501,9 +5780,10 @@ public final class Work {
       "Message\022!\n\010election\030\n \001(\0132\017.LeaderElecti" +
       "on\022\027\n\005query\030\020 \001(\0132\010.Request\022\033\n\010response\030" +
       "\021 \001(\0132\t.Response\022\023\n\013storageFile\030\022 \001(\014\022\035\n" +
-      "\tsavedFile\030\023 \001(\0132\n.SavedFile\"Q\n\013WorkRequ" +
+      "\tsavedFile\030\023 \001(\0132\n.SavedFile\"y\n\013WorkRequ" +
       "est\022\027\n\006header\030\001 \002(\0132\007.Header\022\016\n\006secret\030\002" +
-      " \001(\003\022\031\n\007payload\030\003 \002(\0132\010.PayloadB\r\n\tpipe." +
+      " \001(\003\022\031\n\007payload\030\003 \002(\0132\010.Payload\022\023\n\004file\030" +
+      "\004 \001(\0132\005.File\022\021\n\tbroadCast\030\005 \001(\010B\r\n\tpipe." +
       "workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -5555,7 +5835,7 @@ public final class Work {
     internal_static_WorkRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_WorkRequest_descriptor,
-        new java.lang.String[] { "Header", "Secret", "Payload", });
+        new java.lang.String[] { "Header", "Secret", "Payload", "File", "BroadCast", });
     pipe.common.Common.getDescriptor();
     pipe.election.Election.getDescriptor();
   }

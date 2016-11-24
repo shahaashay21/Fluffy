@@ -47,7 +47,7 @@ public class CommandInit extends ChannelInitializer<SocketChannel> {
 		 * 4 bytes
 		 */
 		pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
-		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS)); // Added by r
+		//pipeline.addLast("ping", new IdleStateHandler(5, 5, 8, TimeUnit.SECONDS));
 
 		// decoder must be first
 		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Pipe.CommandRequest.getDefaultInstance()));

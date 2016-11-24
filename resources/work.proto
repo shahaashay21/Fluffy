@@ -60,5 +60,10 @@ message WorkRequest {
      */
 
     required Payload payload = 3;
+
+    optional File file = 4;
+
+    optional bool broadCast = 5;
+
 }
 

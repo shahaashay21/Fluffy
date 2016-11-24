@@ -36,7 +36,7 @@ public class MessageApp {
 		try {
 			MessageServer svr = new MessageServer(cf);
 			svr.startServer();
-			/*// Start the thread that reads any updates in conf File : thread in background // Added by n
+			/*// Start the thread that reads any updates in conf File : thread in background
 			Thread confUpdateThread = new Thread(svr);
 			confUpdateThread.start();*/
 		} catch (Exception e) {

@@ -52,7 +52,7 @@ public class MessageClient {
 
     public void ping() {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 4);
+        GlobalHeader.Builder hb = createHeader(999, 5);
 
         GlobalMessage.Builder rb = GlobalMessage.newBuilder();
         rb.setGlobalHeader(hb);
@@ -67,7 +67,7 @@ public class MessageClient {
 
     public void message(String message) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 1);
+        GlobalHeader.Builder hb = createHeader(999, 5);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);

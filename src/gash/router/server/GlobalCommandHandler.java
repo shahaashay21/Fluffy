@@ -40,6 +40,7 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	protected RoutingConf conf;
 	private ChannelQueue queue;
 	private HashMap<Integer,String> map = new HashMap<>();
+	public static HashMap<String, Channel> globalClientChannel = new HashMap<>();
 
 	public GlobalCommandHandler(RoutingConf conf) {
 		if (conf != null) {
@@ -94,6 +95,10 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
+		if(msg.hasRequest()) {
+			System.out.println("SAVED CHANNEL IN GLOBAL HANDLER");
+			globalClientChannel.put(msg.getRequest().getRequestId(), ctx.channel());
+		}
 		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
 	}
 

@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,14 @@ public class RethinkDAO {
             }
         }
 
+//        public Object updateFile(String fileName, int chunkId, int chunkCount,  byte[] file){
+//            if(file.length != 0){
+//                return RethinkConnector.r.table(document).filter({"fileName": fileName}).run();
+//            }else{
+//                return null;
+//            }
+//        }
+
         public Object delete(JSONObject data){
             if(data != null){
                 return RethinkConnector.r.table(document).filter(data).delete().run(conn.getConnection());
@@ -75,6 +84,7 @@ public class RethinkDAO {
                 return RethinkConnector.r.table(document).run(conn.getConnection());
             }
         }
+
 
         public ArrayList<DataModel> fetchFile(JSONObject data) throws IOException {
 //            if(data != null){

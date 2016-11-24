@@ -190,7 +190,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 	@Override
 	public synchronized void onAdd(EdgeInfo ei) {
-		// TODO check connection //added by n
+		// TODO check connection
 		if(!ei.isActive() || ei.getChannel() == null){
 			logger.info("New edge added, trying to connect to node " + ei.getRef());
 
