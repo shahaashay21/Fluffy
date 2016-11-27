@@ -41,6 +41,7 @@ public class Resource {
         }else if(msg instanceof Pipe.CommandRequest){
             handleCommand((Pipe.CommandRequest) msg);
         }else if(msg instanceof Work.WorkRequest){
+            System.out.println("Got A workkkkkkkkkk message");
             handleWork((Work.WorkRequest) msg);
         }
 

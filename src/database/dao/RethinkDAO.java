@@ -11,14 +11,9 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- * Created by aashayshah on 11/7/16.
- */
 public class RethinkDAO {
 
     protected static Logger logger = LoggerFactory.getLogger("gciaw:server");
@@ -59,6 +54,7 @@ public class RethinkDAO {
             }
         }
 
+
         public Integer updateFile(String fileName, int chunkId, int chunkCount,  byte[] file){
             if(file.length != 0){
                 JSONObject fileNameObject = new JSONObject();
@@ -97,6 +93,7 @@ public class RethinkDAO {
             }
         }
 
+
         public Integer deleteFile(JSONObject data){
             if(data != null){
                 HashMap<String, Object> deleteConf = RethinkConnector.r.table(document).filter(data).delete().run(conn.getConnection());
@@ -107,7 +104,6 @@ public class RethinkDAO {
             }
             return 0;
         }
-
 
         public ArrayList<DataModel> fetchFile(JSONObject data) throws IOException {
 //            if(data != null){
