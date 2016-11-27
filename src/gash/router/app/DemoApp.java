@@ -90,6 +90,17 @@ public class DemoApp implements CommListener {
 		System.out.println(dt);
 	}
 
+	private void delete(String value) {
+		long st = System.currentTimeMillis(), ft = 0,dt = 0;
+		mc.delete(value);
+		ft = System.currentTimeMillis();
+		dt = ft - st;
+		st = ft;
+
+		System.out.println("Round-trip message times (msec)");
+		System.out.println(dt);
+	}
+
 	@Override
 	public String getListenerID() {
 		return "demo";
@@ -150,6 +161,13 @@ public class DemoApp implements CommListener {
 
 		}else if(msg.getResponse().getRequestType().toString().equals("WRITE"))
 			System.out.println("Result of data save request : Saved successfully---> " + msg.getResponse().getSuccess());
+		else if(msg.getResponse().getRequestType().toString().equals("DELETE")){
+			if(msg.getResponse().getSuccess()){
+				System.out.println("Result of data delete request : Deleted successfully---> " + msg.getResponse().getSuccess());
+			}else {
+				System.out.println("Result of data delete request : There is no data---> " + msg.getResponse().getSuccess());
+			}
+		}
 		else // for GET message response
 			System.out.println("Final message action from server. Data needs to be parsed for --->" + msg.getResponse().getRequestType());
 	}
@@ -171,7 +189,7 @@ public class DemoApp implements CommListener {
 //			da.ping(2);
 //			da.message("HEREE AASHAY !!!");
 //			da.read("wiki1.csr");
-			da.read("SampleVideo_2mb.mp4");
+//			da.read("SampleVideo_2mb.mp4");
 //			da.read("chapter2.pdf");
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");
@@ -180,6 +198,7 @@ public class DemoApp implements CommListener {
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
 //			da.save("/Users/aashayshah/Desktop/Check-Files/5mb.pdf");
+			da.delete("SampleVideo_2mb.mp4");
 
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();

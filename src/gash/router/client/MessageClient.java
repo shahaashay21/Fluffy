@@ -177,6 +177,28 @@ public class MessageClient {
 
     }
 
+    public void delete(String value){
+        GlobalHeader.Builder hb = createHeader(999, 5);
+
+        Common.File.Builder fb = Common.File.newBuilder();
+        fb.setFilename(value);
+        Common.Request.Builder rb = Common.Request.newBuilder();
+        rb.setRequestType(Common.RequestType.DELETE);
+        rb.setFileName(value);
+        rb.setFile(fb);
+        rb.setRequestId("1");
+        GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
+        gmb.setGlobalHeader(hb);
+        gmb.setRequest(rb);
+
+        try {
+            // using queue
+            CommConnection.getInstance().enqueue(gmb.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void release() {
         CommConnection.getInstance().release();

@@ -1,5 +1,7 @@
 package database.dao;
 
+import com.rethinkdb.gen.ast.Delete;
+import com.rethinkdb.gen.ast.MakeArray;
 import com.rethinkdb.net.Cursor;
 import database.dbconnetor.RethinkConnector;
 import database.model.DataModel;
@@ -44,22 +46,32 @@ public class RethinkDAO {
             }
         }
 
-        public Object insertFile(String fileName, int chunkId, int chunkCount,  byte[] file){
+        public Integer insertFile(String fileName, int chunkId, int chunkCount,  byte[] file){
             if(file.length != 0){
 //                return RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("extension", extension).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
-                return RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("chunkCount", chunkCount).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
+                HashMap<String, Object> answer =  RethinkConnector.r.table(document).insert(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("chunkCount", chunkCount).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
+                if(Integer.parseInt(answer.get("inserted").toString()) > 0){
+                    return 1;
+                }
+                return 0;
             }else{
-                return null;
+                return 0;
             }
         }
 
-//        public Object updateFile(String fileName, int chunkId, int chunkCount,  byte[] file){
-//            if(file.length != 0){
-//                return RethinkConnector.r.table(document).filter({"fileName": fileName}).run();
-//            }else{
-//                return null;
-//            }
-//        }
+        public Integer updateFile(String fileName, int chunkId, int chunkCount,  byte[] file){
+            if(file.length != 0){
+                JSONObject fileNameObject = new JSONObject();
+                fileNameObject.put("fileName", fileName);
+                HashMap<String, Object> updatedData =  RethinkConnector.r.table(document).filter(fileNameObject).update(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("chunkCount", chunkCount).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
+                if(Integer.parseInt(updatedData.get("updated").toString()) > 0){
+                    return 1;
+                }
+                return 0;
+            }else{
+                return 0;
+            }
+        }
 
         public Object delete(JSONObject data){
             if(data != null){
@@ -85,6 +97,17 @@ public class RethinkDAO {
             }
         }
 
+        public Integer deleteFile(JSONObject data){
+            if(data != null){
+                HashMap<String, Object> deleteConf = RethinkConnector.r.table(document).filter(data).delete().run(conn.getConnection());
+//                    System.out.println(deleteConf.toString());
+                if(Integer.parseInt(deleteConf.get("deleted").toString()) > 0){
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
 
         public ArrayList<DataModel> fetchFile(JSONObject data) throws IOException {
 //            if(data != null){
@@ -96,7 +119,6 @@ public class RethinkDAO {
                 Cursor returnedData = RethinkConnector.r.table(document).filter(data).pluck("fileName", "chunkId", "file", "chunkCount").run(conn.getConnection());
                 ArrayList<DataModel> returnArrayData = new ArrayList();;
                 while(returnedData.hasNext()){
-
                     HashMap<String, Object> newData = new HashMap<String, Object>();
                     newData = (HashMap<String, Object>) returnedData.next();
                     String newNameOfFile = (String) newData.get("fileName");

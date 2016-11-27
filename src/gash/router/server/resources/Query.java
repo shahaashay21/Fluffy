@@ -41,49 +41,34 @@ public class Query extends Resource {
                 case READ:
                     PrintUtil.printGlobalCommand(msg);
                     try {
-//                        ArrayList<DataModel> arrRespData = checkIfQueryIsLocalAndGetResponse(query);
-//                        logger.info("Length of list is: "+ arrRespData.size());
-//
-//                        //Sorting of messages based on chunkId
-////                        Collections.sort(arrRespData, new Comparator<DataModel>() {
-////                            @Override
-////                            public int compare(DataModel o1, DataModel o2) {
-////
-////                                return o1.getChunkId() - o2.getChunkId();
-////                            }
-////                        });
-//
-//                        if(arrRespData.size() > 0) {
-//                            //generate a response message
-//                            for (DataModel dataModel : arrRespData) {
-////                                responsMessage = responsMessage + dataModel.getData().toString();
-//                                logger.info("Response message in byte" + dataModel.getData());
-//                                logger.info("LENGTH OF FILE IN QUERY IS " + dataModel.getData().length);
-//                                Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId());
-//                                generateResponseOntoIncomingChannel(msg, response, true);
-//                            }
-//                        }else{
-//                            forwardRequestOnWorkChannel(msg,true);
-//                        }
-                        System.out.println("FORWARD FROM GLOBAL READ");
-                        forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                        ArrayList<DataModel> arrRespData = checkIfQueryIsLocalAndGetResponse(query);
+                        logger.info("Length of list is: "+ arrRespData.size());
+
+                        if(arrRespData.size() > 0) {
+                            //generate a response message
+                            for (DataModel dataModel : arrRespData) {
+                                logger.info("Response message in byte" + dataModel.getData());
+                                logger.info("LENGTH OF FILE IN QUERY IS " + dataModel.getData().length);
+                                Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId());
+                                generateResponseOntoIncomingChannel(msg, response, true);
+                            }
+                        }else{
+                            forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                        }
                     }catch(Exception e){
                         e.printStackTrace();
                     }
                     break;
                 case WRITE:
-//                    //PrintUtil.printGlobalCommand(msg);
-//                    RethinkDAO Users = new RethinkDAO("Users");
-//                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
-////                    String fileInserted = (String) Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getChunkCount(), query.getFile().getData().toByteArray());
-////                    System.out.println(fileInserted);
-////                    logger.debug("Result of save data in rethink :"+ fileInserted);
-//                    Common.Response response = getResponseMessageForStore(1,query.getRequestId());
-//                    generateResponseOntoIncomingChannel(msg,response,true);
-
-                    System.out.println("FORWADING TO OTHER NODES");
-                    forwardRequestOnWorkChannel1(msg, false, query.getFile());
-
+                    PrintUtil.printGlobalCommand(msg);
+                    RethinkDAO Users = new RethinkDAO("Users");
+                    Integer answer = Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
+                    if (answer > 0){
+                        Common.Response response = getResponseMessageForStore(1,query.getRequestId(), true);
+                        generateResponseOntoIncomingChannel(msg,response,true);
+                    }else{
+                        forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                    }
                     break;
                 case UPDATE:
                     RethinkDAO UsersUpdate = new RethinkDAO("Users");
@@ -91,6 +76,18 @@ public class Query extends Resource {
 
                     break;
                 case DELETE:
+                    RethinkDAO users = new RethinkDAO("Users");
+                    JSONObject data = new JSONObject();
+                    data.put("fileName", query.getFile().getFilename());
+
+                    Integer deleted = users.deleteFile(data);
+                    if(deleted > 0){
+                        Common.Response responseDelete = getResponseMessageForDelete(1, query.getRequestId(),true);
+                        generateResponseOntoIncomingChannel(msg,responseDelete,true);
+                    }else {
+                        forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                    }
+//                    forwardRequestOnWorkChannel1(msg, false, query.getFile());
                     break;
             }
 
@@ -102,12 +99,10 @@ public class Query extends Resource {
     }
 
     public void handleWork(Work.WorkRequest msg) {
-        System.out.println("FORWARD TO WORK READ");
         System.out.println("HAS BROADCAST: "+ msg.hasBroadCast());
         System.out.println("BROADCAST VALUE: "+ msg.getBroadCast());
+        System.out.println("REQUEST TYPE VALUE: "+ msg.getPayload().getQuery().getRequestType());
         Request query = msg.getPayload().getQuery();
-//        logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
-//        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
         if(msg.hasBroadCast() && msg.getBroadCast()) {
             logger.debug("Query on work channel from " + msg.getHeader().getNodeId());
             switch (query.getRequestType()) {
@@ -132,17 +127,32 @@ public class Query extends Resource {
                     }
                     break;
                 case WRITE:
+                    Common.Response response = null;
                     PrintUtil.printWork(msg);
                     RethinkDAO Users = new RethinkDAO("Users");
-                    Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
-                    logger.debug("Result of save data in rethink ");
-
-                    Common.Response response = getResponseMessageForStore(1, query.getRequestId());
-                Global.GlobalMessage gm = workToGlobalRequest(msg, msg.getFile());
-                generateResponseOntoIncomingChannel(msg,response,false);
+                    Integer answer = Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
+                    if (answer > 0){
+                        response = getResponseMessageForStore(1, query.getRequestId(), true);
+                    }else{
+                        response = getResponseMessageForStore(1, query.getRequestId(), false);
+                    }
+                    Global.GlobalMessage gm = workToGlobalRequest(msg, msg.getFile());
+                    generateResponseOntoIncomingChannel(msg,response,false);
                     break;
                 case UPDATE:
                 case DELETE:
+                    RethinkDAO users = new RethinkDAO("Users");
+                    JSONObject data = new JSONObject();
+                    data.put("fileName", query.getFile().getFilename());
+
+                    Integer deleted = users.deleteFile(data);
+                    if(deleted > 0){
+                        Common.Response responseDelete = getResponseMessageForDelete(1, query.getRequestId(), true);
+                        generateResponseOntoIncomingChannel(msg,responseDelete,true);
+                    }else {
+                        Common.Response responseDelete = getResponseMessageForDelete(1, query.getRequestId(), true);
+                        generateResponseOntoIncomingChannel(msg,responseDelete,false);
+                    }
                     break;
             }
         }
@@ -378,11 +388,19 @@ public class Query extends Resource {
         }
     }
 
-    public Common.Response getResponseMessageForStore(int result, String reqId){
+    public Common.Response getResponseMessageForStore(int result, String reqId, Boolean suc){
         Common.Response.Builder rb = Common.Response.newBuilder();
         rb.setRequestType(Common.RequestType.WRITE);
         rb.setRequestId(reqId);
-        rb.setSuccess(result > 0);
+        rb.setSuccess(suc);
+        return rb.build();
+    }
+
+    public Common.Response getResponseMessageForDelete(int result, String reqId, Boolean suc){
+        Common.Response.Builder rb = Common.Response.newBuilder();
+        rb.setRequestType(Common.RequestType.DELETE);
+        rb.setRequestId(reqId);
+        rb.setSuccess(suc);
         return rb.build();
     }
 
