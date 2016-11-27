@@ -38,7 +38,7 @@ public class RaftElection implements gash.router.server.election.Election {
         Follower,Candidate,Leader
     }
     private int term;
-    private RState currentstate;
+    public RState currentstate;
 
     public RaftElection()
     {
@@ -106,7 +106,7 @@ public class RaftElection implements gash.router.server.election.Election {
         }
         else if (rm.getRaftAction() == Election.RaftMessage.RaftAction.VOTE) {
             if (currentstate == RState.Candidate) {
-                //logger.info("Node " + getNodeId() + " Received vote from Node " + workMessage.getHeader().getNodeId() + " votecount" + count);
+                logger.info("Node " + getNodeId() + " Received vote from Node " + workMessage.getHeader().getNodeId() + " votecount" + count);
                 receiveVote(workMessage);
             }
         } else if (rm.getRaftAction().getNumber() == Election.RaftMessage.RaftAction.APPEND_VALUE) {
@@ -125,10 +125,10 @@ public class RaftElection implements gash.router.server.election.Election {
                 leaderId = workMessage.getHeader().getNodeId();
                 this.term = rm.getTerm();
                 this.lastKnownBeat = System.currentTimeMillis();
-//                logger.info("---Leader--- " + workMessage.getHeader().getNodeId()
-//                        + "\n RaftAction=" + rm.getRaftAction().getNumber()
-//                        + " RaftAppendAction="
-//                        + rm.getRaftAppendAction().getNumber());
+                logger.info("---Leader--- " + workMessage.getHeader().getNodeId()
+                        + "\n RaftAction=" + rm.getRaftAction().getNumber()
+                        + " RaftAppendAction="
+                        + rm.getRaftAppendAction().getNumber());
                 if (rm.getRaftAppendAction().getNumber() == Election.RaftMessage.RaftAppendAction.APPENDHEARTBEAT_VALUE) {
 
 //                    logger.info("*Follower stateReceived AppendAction HB RPC from leader "
@@ -275,7 +275,7 @@ public class RaftElection implements gash.router.server.election.Election {
 
         rm.setTerm(term);
         rm.setRaftAction(Election.RaftMessage.RaftAction.APPEND);
-        // Raft Message to be added
+        // Raft Message is still to be added
         Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder();
         wb.setHeader(hb.build());
         wb.getPayloadBuilder().setRaftmsg(rm);
@@ -284,8 +284,7 @@ public class RaftElection implements gash.router.server.election.Election {
     }
 
     private void startElection(){
-       // logger.info("Time Out!  Election declared by node: " + getNodeId() + " For Term " + (term+1));
-
+//        logger.info("Time Out!  Election declared by node: " + getNodeId() + " For Term " + (term+1));
         lastKnownBeat = System.currentTimeMillis();
         currentstate = RState.Candidate;
         count = 1;
@@ -295,7 +294,7 @@ public class RaftElection implements gash.router.server.election.Election {
             count = 0;
             currentstate = RState.Leader;
             leaderId = this.nodeId;
-            //logger.info(" Leader elected " + this.nodeId);
+            logger.info(" Leader elected " + this.nodeId);
             for(Channel ch : MessageServer.getEmon().getAllChannel())
             {
                 if(ch != null)
@@ -371,7 +370,7 @@ public class RaftElection implements gash.router.server.election.Election {
 
     private void respondToWhoIsTheLeader(Work.WorkRequest msg) {
         if (this.leaderId == 0) {
-            logger.info("----> I cannot respond to who the leader is! I don't know!");
+            logger.info("-- I cannot respond to who the leader is! I don't know!");
             return;
         }
         logger.info("Node " + this.nodeId + " is replying to "

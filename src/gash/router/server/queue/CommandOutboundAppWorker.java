@@ -23,11 +23,9 @@ import org.slf4j.LoggerFactory;
 
 public class CommandOutboundAppWorker extends Thread {
 	protected static Logger logger = LoggerFactory.getLogger("coaw:server");
-
 	int workerId;
 	PerChannelCommandQueue sq;
 	boolean forever = true;
-
 	public CommandOutboundAppWorker(ThreadGroup tgrp, int workerId, PerChannelCommandQueue sq) {
 		super(tgrp, "outboundWork-" + workerId);
 		this.workerId = workerId;
@@ -57,9 +55,7 @@ public class CommandOutboundAppWorker extends Thread {
 					if (sq.channel != null && sq.channel.isOpen() && sq.channel.isWritable()) {
 						
 						ChannelFuture cf = sq.channel.writeAndFlush(msg);
-					
-						
-						
+
 						logger.info("Server--sending -- command -- response");
 						// blocks on write - use listener to be async
 						cf.awaitUninterruptibly();
@@ -70,8 +66,11 @@ public class CommandOutboundAppWorker extends Thread {
 									+ "{Reason:" + cf.cause() + "}");
 							sq.outboundWork.putFirst(msg);
 						}
-						else
+						else{
 							logger.info("Message Sent");
+							cf.channel().close();
+						}
+
 					}
 
 				} else

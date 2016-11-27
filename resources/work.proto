@@ -47,6 +47,8 @@ message Payload{
     optional bytes storageFile = 18;
     optional SavedFile savedFile = 19;
 
+    optional File file = 20;
+
 }
 
 // These are messages to keep the network running (not to perform work)
@@ -60,10 +62,5 @@ message WorkRequest {
      */
 
     required Payload payload = 3;
-
-    optional File file = 4;
-
-    optional bool broadCast = 5;
-
 }
 

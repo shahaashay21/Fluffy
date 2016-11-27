@@ -72,6 +72,8 @@ public class WorkInboundAppWorker extends Thread {
 					boolean msgDropFlag;
 
 					//PrintUtil.printWork(req);
+					//System.out.println("Got A work message");
+
 					if (payload.hasBeat()) {
 						//Work.Heartbeat hb = payload.getBeat();
 						//logger.info("heartbeat from " + req.getHeader().getNodeId());
@@ -81,7 +83,7 @@ public class WorkInboundAppWorker extends Thread {
 						emon.addToInbound(ei);
 						RaftManager.getInstance().assessCurrentState();
 					} else if (payload.hasPing()) {
-						
+						System.out.println("Got A ping message at Work");
 						new Ping(sq).handle(req);
 
 					}else if (payload.hasQuery()) {
@@ -94,7 +96,7 @@ public class WorkInboundAppWorker extends Thread {
 					}
 					else if (payload.hasErr()) {
 						Common.Failure err = payload.getErr();
-						logger.error("failure from " + req.getHeader().getNodeId());
+						logger.error("failure ping from " + req.getHeader().getNodeId());
 						// PrintUtil.printFailure(err);
 					} else if (payload.hasTask()) {
 						Work.Task t = payload.getTask();

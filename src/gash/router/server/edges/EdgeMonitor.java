@@ -45,16 +45,14 @@ import java.util.Iterator;
 
 public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
-	protected static AtomicReference<EdgeMonitor> instance = new AtomicReference<EdgeMonitor>(); // r 4/2/2016
+	protected static AtomicReference<EdgeMonitor> instance = new AtomicReference<EdgeMonitor>();
 
 	private EdgeList outboundEdges;
 	private EdgeList inboundEdges;
-	private EdgeList clusterEdges;
+	//private EdgeList clusterEdges;
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
-
-	//r
 	private EventLoopGroup group;
 	private ChannelFuture channelFuture;
 
@@ -64,7 +62,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 		this.outboundEdges = new EdgeList();
 		this.inboundEdges = new EdgeList();
-
 		this.state = state;
 		this.state.setEmon(this);
 
@@ -78,7 +75,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 //				clusterEdges.addNode(e.getClusterId(), e.getClusterHost(), e.getClusterPort());
 //			}
 //		}
-		instance.compareAndSet(null,this); //4/2/2016
+		instance.compareAndSet(null,this);
 
 		// cannot go below 2 sec
 		if (state.getConf().getHeartbeatDt() > this.dt)
@@ -125,6 +122,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	public ServerState getServerState(){
 		return state;
 	}
+
 	@Override
 	public void run() {
 		while (forever) {
@@ -136,7 +134,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 					if (ei.isActive() && ei.getChannel() != null) {
 
 						Work.WorkRequest wm = createHB(ei);
-						logger.info("HeartBeat to: " + ei.getRef());
+						//logger.info("HeartBeat to: " + ei.getRef());
 						ei.getChannel().writeAndFlush(wm);
 					} else {
 						// TODO create a client to the node
@@ -190,7 +188,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 	@Override
 	public synchronized void onAdd(EdgeInfo ei) {
-		// TODO check connection
+		// TODO check connection //added by n
 		if(!ei.isActive() || ei.getChannel() == null){
 			logger.info("New edge added, trying to connect to node " + ei.getRef());
 
