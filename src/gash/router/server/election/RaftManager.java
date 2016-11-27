@@ -96,16 +96,20 @@ public class RaftManager implements ElectionListener{
             //logger.info("----> I cannot find the leader is! I don't know!");
             return;
         } else {
-            //logger.info("The Leader is " + this.leaderNode);
+            logger.info("The Leader is " + this.leaderNode);
         }
 
     }
 
-    private Integer whoIsTheLeader() {
-        return this.leaderNode;
+    public Integer whoIsTheLeader() {
+        if(this.leaderNode != null){
+            return this.leaderNode;
+        }else {
+            return 99;
+        }
     }
 
-    private Election electionInstance() {
+    public Election electionInstance() {
         if (election == null) {
             synchronized (syncPt) {
                 if (election != null)
@@ -175,7 +179,7 @@ public class RaftManager implements ElectionListener{
     @Override
     public void concludeWith(boolean success, Integer LeaderID) {
         if (success) {
-           // logger.info("----> the leader is " + LeaderID);
+            logger.info("----> the leader is " + LeaderID);
             this.leaderNode = LeaderID;
         }
 

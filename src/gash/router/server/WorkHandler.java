@@ -16,23 +16,26 @@
 package gash.router.server;
 
 //import gash.router.server.election.ElectionManager;
+import com.google.protobuf.GeneratedMessage;
+import gash.router.server.election.RaftManager;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.QueueFactory;
-import gash.router.server.resources.Query;
-import global.Global;
 import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import gash.router.server.edges.EdgeInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import pipe.common.Common;
 
 import pipe.common.Common.Failure;
 import pipe.work.Work;
-
-import java.util.HashMap;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -47,7 +50,6 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	protected ServerState state;
 	protected boolean debug = false;
 	private ChannelQueue queue;
-	public static HashMap<String, Channel> workClientChannel = new HashMap<>();
 
 	public WorkHandler(ServerState state) {
 		if (state != null) {
@@ -56,7 +58,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	}
 
 	/**
-	 * override this method to provide processing behavior. T
+	 * override this method to provide processing behavior.
 	 *
 	 * @param msg
 	 */
@@ -100,28 +102,26 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Work.WorkRequest msg) throws Exception {
+//	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
-		if(msg.hasFile()){
-			logger.info("File Name "+ msg.getFile().getFilename());
-		}
-		if (msg.getPayload().hasQuery()){
-			workClientChannel.put(msg.getPayload().getQuery().getRequestId(), ctx.channel());
-		}
-		if(msg.hasBroadCast() && !msg.getBroadCast()){
-			System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
-			System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
-			System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
-			if(GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
-				Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
-//				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
-				System.out.println("SENT BACK TO CLIENT BOSSSS");
-				Query q = new Query();
-				Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
-				res.writeAndFlush(gms);
+		if(msg instanceof Work.WorkRequest){
+			//System.out.println(msg.getHeader().getNodeId());
+			if(msg.getPayload().hasFile()){
+				System.out.println(msg.getPayload().getFile().getFilename() + "GGOOOTTT IIITTTTTTT");
 			}
+			if(!msg.getPayload().getFile().getFilename().isEmpty()){
+				System.out.println("FILE NNAMMEE" + msg.getPayload().getFile().getFilename());
+				if(!msg.getPayload().getResponse().getRequestId().isEmpty()) {
+					System.out.println("FILE ENNNNNAAMMMMEEE"+ msg.getPayload().getResponse().getFileName());
+					System.out.println("HHEERRREETTT IISS  NONNDDDEEE IIIDDD " + msg.getPayload().getResponse().getRequestId());
+				}
+			}
+			queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
 		}else {
-			queueInstance(ctx.channel(), state).enqueueRequest(msg, ctx.channel());
+//			System.out.println(msg);
+			System.out.println("GOT MSG TO ME WWOROORRRKKKHHAANNNDDLLLEERR");
 		}
+
 	}
 
 	@Override
@@ -168,6 +168,4 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 			inQueue = null;
 		}
 	}
-
-
 }

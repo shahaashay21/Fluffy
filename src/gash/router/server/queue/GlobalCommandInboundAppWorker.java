@@ -16,11 +16,14 @@
 package gash.router.server.queue;
 
 import com.google.protobuf.GeneratedMessage;
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
 import gash.router.server.WorkInit;
 import gash.router.server.edges.EdgeInfo;
+import gash.router.server.election.RaftElection;
+import gash.router.server.election.RaftManager;
 import gash.router.server.resources.Ping;
 import gash.router.server.resources.Query;
 import global.Global;
@@ -51,7 +54,6 @@ public class GlobalCommandInboundAppWorker extends Thread {
 		super(tgrp, "inboundWork-" + workerId);
 		this.workerId = workerId;
 		this.sq = sq;
-
 		if (sq.inboundWork == null)
 			throw new RuntimeException("connection worker detected null inboundWork queue");
 	}
@@ -67,11 +69,12 @@ public class GlobalCommandInboundAppWorker extends Thread {
 		while (true) {
 			if (!forever && sq.inboundWork.size() == 0)
 				break;
-
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inboundWork.take();
 				boolean msgDropFlag;
+				System.out.println("Inbound work quue size "+sq.inboundWork.size());
+
 //				Global.GlobalMessage req1 = ((Global.GlobalMessage) msg);
 //
 //				if (req1.hasPing()) {
@@ -79,26 +82,38 @@ public class GlobalCommandInboundAppWorker extends Thread {
 //					new Ping(sq).handle(req1);
 //				}
 				// process request and enqueue response
+
 				if(msg instanceof Global.GlobalMessage) {
 					//if (((Global.GlobalMessage) msg).getGlobalHeader().getClusterId() == sq.getRoutingConf().getClusterId()) {
 						//PrintUtil.printCommand((Pipe.CommandRequest) msg);
-						Global.GlobalMessage req = ((Global.GlobalMessage) msg);
+					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
+					System.out.println("Got A global message");
+					System.out.println("Inbound work quue size "+sq.inboundWork.size());
 
-						if (req.hasPing()) {
-							System.out.println("Has Pingggggggggggggg");
-							new Ping(sq).handle(req);
-						} else if (req.hasRequest()) {
-							new Query(sq).handle(req);
-						} else if (req.hasMessage()) {
-							logger.info("Mwssage is: " + req.getMessage());
-						} else {
-							logger.error("Unexpected message type. Yet to handle.");
+					if(checkIfLeader()) {
+						if(verifyLocalOrGlobal(req)) {
+							if (req.hasPing()) {
+								System.out.println("Has Pingggggggggggggg");
+								new Ping(sq).handle(req);
+							} else if (req.hasRequest()) {
+								new Query(sq).handle(req);
+							} else if (req.hasMessage()) {
+								logger.info("Message is: " + req.getMessage());
+							} else {
+								logger.error("Unexpected message type. Yet to handle.");
+							}
 						}
-//					} else {
-//						//forwardToClusterRouting((Global.GlobalMessage) msg);
-//					}
+						else{
+//							System.out.println("SQ   ->"+sq);
+//							System.out.println("State   ->"+sq.getState());
+//							System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
+							System.out.println("Forwarding to cluster ");
+							//PrintUtil.printGlobalCommand(req);
+							sq.getState().getGemon().pushMessagesIntoCluster(req);
+						}
+					}
 				}
-			} catch (InterruptedException ie) {
+			}catch (InterruptedException e) {
 				break;
 			} catch (Exception e) {
 				logger.error("Unexpected processing failure", e);
@@ -108,6 +123,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 		if (!forever) {
 			logger.info("Command incoming connection queue closing");
+
 		}
 	}
 
@@ -118,6 +134,34 @@ public class GlobalCommandInboundAppWorker extends Thread {
 //		}
 //	}
 
+	public boolean checkIfLeader(){
+		//RaftManager.getInstance().electionInstance() RaftManager.getInstance().electionInstance().isElectionInprogress() &&
+		if(RaftManager.getInstance().getLeaderNode() == null){
+			System.out.println("Leader not found.");
+			return false;
+		}
+		if(sq.getState().getConf() == null){
+			System.out.println("Conf not found.");
+			return false;
+		}
+		if(RaftManager.getInstance().getLeaderNode() == sq.getState().getConf().getNodeId() ){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean verifyLocalOrGlobal(Global.GlobalMessage message){
+		//if(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId())
+		boolean check = true;
+		for (RoutingConf.RoutingEntry e : sq.getRoutingConf().getRouting()){
+			if(e.getId() == message.getGlobalHeader().getDestinationId()){
+				check = false;
+				break;
+			}
+		}
+		return !check;
+
+	}
 	public synchronized Channel channelInit(String host, int port)
 	{
 		try

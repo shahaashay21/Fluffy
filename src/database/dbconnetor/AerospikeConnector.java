@@ -25,7 +25,7 @@
 //        AerospikeClient ac = null;
 //
 //        configProperty = new Properties();
-////        inputStream = null;
+////        inputStream = .class.getClassLoader().getResourceAsStream("aerospike-config.properties");
 //
 //        if(inputStream == null){
 //            logger.error("Unable to load aerospike property file");

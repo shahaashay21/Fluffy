@@ -15,6 +15,7 @@
  */
 package gash.router.server.queue;
 
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import gash.router.server.ServerState;
 import gash.router.server.WorkHandler;
@@ -39,7 +40,7 @@ public class QueueFactory {
 		return queue;
 	}
 
-	public static ChannelQueue getInstance(Channel channel, RoutingConf conf) {
+	public static ChannelQueue getInstance(Channel channel, ServerState state, GlobalConf globalConf) {
 		// if a single queue is needed, this is where we would obtain a
 		// handle to it.
 		ChannelQueue queue = null;
@@ -47,7 +48,7 @@ public class QueueFactory {
 		if (channel == null)
 			queue = new NoOpWorkQueue();
 		else {
-			queue = new PerChannelGlobalCommandQueue(channel,conf);
+			queue = new PerChannelGlobalCommandQueue(channel, state);
 		}
 
 		// on close remove from queue

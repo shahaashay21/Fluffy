@@ -52,7 +52,7 @@ public class CommWorker extends Thread {
 				} else {
 					//System.out.println("--> channel not writable- tossing out msg!");
 
-					conn.outbound.putFirst(msg); // enque the message again in queue in beginning - by n
+					conn.outbound.putFirst(msg); // enque the message again in queue in beginning
 				}
 
 				System.out.flush();

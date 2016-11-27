@@ -16,6 +16,8 @@
 package gash.router.server.queue;
 
 import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.Message;
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import gash.router.server.MessageServer;
 import gash.router.server.ServerState;
@@ -56,6 +58,9 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 
 	Channel channel;
 	RoutingConf conf;
+	GlobalConf globalConf;
+
+	ServerState state;
 
 	// This implementation uses a fixed number of threads per channel
 	private ArrayList<GlobalCommandOutboundAppWorker> oworkerList;
@@ -64,9 +69,11 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 	// not the best method to ensure uniqueness
 	private ThreadGroup tgroup = new ThreadGroup("PerChannelQ-" + System.nanoTime());
 
-	public PerChannelGlobalCommandQueue(Channel channel, RoutingConf conf) {
+	public PerChannelGlobalCommandQueue(Channel channel, ServerState state) {
 		this.channel = channel;
-		this.conf = conf;
+		this.conf = state.getConf();
+		this.globalConf = state.getGlobalConf();
+		this.state = state;
 		init();
 	}
 
@@ -74,11 +81,11 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 		inboundWork = new LinkedBlockingDeque<GeneratedMessage>();
 		outboundWork = new LinkedBlockingDeque<GeneratedMessage>();
 
-		oworkerList = new ArrayList<>(4);
+		oworkerList = new ArrayList<>(3);
 		iworkerList = new ArrayList<>(3);
 
 		logger.info("Starting to listen to Command worker");
-		for(int i=0;i<4;i++){
+		for(int i=0;i<3;i++){
 			GlobalCommandInboundAppWorker tempWorker = new GlobalCommandInboundAppWorker(tgroup, i+1, this);
 			iworkerList.add(tempWorker);
 			tempWorker.start();
@@ -100,8 +107,17 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 		return conf;
 	}
 
+	public GlobalConf getGlobalConf(){
+		return globalConf;
+	}
+
 	public void setState(ServerState state) {
 		//Nothing to do with this class
+	}
+
+	public ServerState getState() {
+		//Nothing to do with this class
+		return state;
 	}
 
 	@Override
@@ -154,11 +170,12 @@ public class PerChannelGlobalCommandQueue implements ChannelQueue {
 	@Override
 	public void enqueueRequest(GeneratedMessage req, Channel notused) {
 		try {
-			EdgeInfo ei = new EdgeInfo(((Global.GlobalMessage)req).getGlobalHeader().getClusterId(),Integer.toString(((Global.GlobalMessage)req).getGlobalHeader().getDestinationId()),-1);
-			ei.setChannel(notused);
-			ei.setClientChannel(true);
-			MessageServer.getEmon().addToInbound(ei);
-
+//			EdgeInfo ei = new EdgeInfo(((Global.GlobalMessage)req).getGlobalHeader().getClusterId(),Integer.toString(((Global.GlobalMessage)req).getGlobalHeader().getDestinationId()),-1);
+//			ei.setChannel(notused);
+//			ei.setClientChannel(true);
+//			state.getEmon().addToInbound(ei);
+//			System.out.println(state);
+			//System.out.println(MessageServer.);
 			inboundWork.put(req);
 		} catch (InterruptedException e) {
 			logger.error("message not enqueued for processing", e);
