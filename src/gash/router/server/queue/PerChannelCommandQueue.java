@@ -48,8 +48,8 @@ public class PerChannelCommandQueue implements ChannelQueue {
 	// threads
 	//
 	// Note these are directly accessible by the workers
-	LinkedBlockingDeque<com.google.protobuf.GeneratedMessage> inboundWork;
-	LinkedBlockingDeque<com.google.protobuf.GeneratedMessage> outboundWork;
+	LinkedBlockingDeque<GeneratedMessage> inboundWork;
+	LinkedBlockingDeque<GeneratedMessage> outboundWork;
 
 	Channel channel;
 	RoutingConf conf;
@@ -68,15 +68,14 @@ public class PerChannelCommandQueue implements ChannelQueue {
 	}
 
 	protected void init() {
-		inboundWork = new LinkedBlockingDeque<com.google.protobuf.GeneratedMessage>();
-		outboundWork = new LinkedBlockingDeque<com.google.protobuf.GeneratedMessage>();
+		inboundWork = new LinkedBlockingDeque<GeneratedMessage>();
+		outboundWork = new LinkedBlockingDeque<GeneratedMessage>();
 
 		oworkerList = new ArrayList<>(3);
 		iworkerList = new ArrayList<>(3);
 
 		logger.info("Starting to listen to Command worker");
 		//Creating worker threadpool
-		//Changed by: a
 		for(int i=0;i<3;i++){
 			CommandInboundAppWorker tempWorker = new CommandInboundAppWorker(tgroup, i+1, this);
 			iworkerList.add(tempWorker);
@@ -193,11 +192,11 @@ public class PerChannelCommandQueue implements ChannelQueue {
 		}
 	}
 
-	public LinkedBlockingDeque<com.google.protobuf.GeneratedMessage> getInboundWork() {
+	public LinkedBlockingDeque<GeneratedMessage> getInboundWork() {
 		return inboundWork;
 	}
 
-	public LinkedBlockingDeque<com.google.protobuf.GeneratedMessage> getOutboundWork() {
+	public LinkedBlockingDeque<GeneratedMessage> getOutboundWork() {
 		return outboundWork;
 	}
 }

@@ -15,6 +15,7 @@
  */
 package gash.router.server;
 
+import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.QueueFactory;
@@ -38,15 +39,26 @@ import java.util.HashMap;
 public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.GlobalMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
+	protected GlobalConf globalConf;
 	private ChannelQueue queue;
-	private HashMap<Integer,String> map = new HashMap<>();
+	protected ServerState state;
+
+	//private HashMap<Integer,String> map = new HashMap<>();
 	public static HashMap<String, Channel> globalClientChannel = new HashMap<>();
 
-	public GlobalCommandHandler(RoutingConf conf) {
-		if (conf != null) {
-			this.conf = conf;
+    public static HashMap<String, Channel> allChannels = new HashMap<>();
+
+	public GlobalCommandHandler(ServerState state) {
+		if (state != null) {
+			this.conf = state.getConf();
+			this.globalConf = state.getGlobalConf();
+			this.state = state;
 		}
+
 	}
+
+
+    public GlobalCommandHandler(){   }
 
 	/**
 	 * override this method to provide processing behavior. This implementation
@@ -94,13 +106,19 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalMessage msg) throws Exception {
-		//handleMessage(msg, ctx.channel());
+		//handleMessage(msg, ctx.channel());if(msg.hasRequest()) {
 		if(msg.hasRequest()) {
 			System.out.println("SAVED CHANNEL IN GLOBAL HANDLER");
 			globalClientChannel.put(msg.getRequest().getRequestId(), ctx.channel());
+			System.out.println("GOT MSG TO ME GLOBALCOMMANDHANDLER");
+			//allChannels.put(msg.getResponse().getRequestId(), ctx.channel());
 		}
-		queueInstance(ctx.channel()).enqueueRequest(msg,ctx.channel());
+		queueInstance(ctx.channel(), state).enqueueRequest(msg,ctx.channel());
 	}
+
+	public HashMap<String, Channel> getAllChannels(){
+        return allChannels;
+    }
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -114,14 +132,14 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	 * @param channel
 	 * @return
 	 */
-	private ChannelQueue queueInstance(Channel channel) {
+	private ChannelQueue queueInstance(Channel channel, ServerState state) {
 		// if a single queue is needed, this is where we would obtain a
 		// handle to it.
 
 		if (queue != null)
 			return queue;
 		else {
-			queue = QueueFactory.getInstance(channel,conf);
+			queue = QueueFactory.getInstance(channel, state, globalConf);
 
 			// on close remove from queue
 			channel.closeFuture().addListener(new ConnectionCloseListener(queue));

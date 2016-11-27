@@ -52,7 +52,7 @@ public class MessageClient {
 
     public void ping() {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(2, 12);
 
         GlobalMessage.Builder rb = GlobalMessage.newBuilder();
         rb.setGlobalHeader(hb);
@@ -67,7 +67,7 @@ public class MessageClient {
 
     public void message(String message) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(999, 1);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);
@@ -108,7 +108,7 @@ public class MessageClient {
     public void save(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(2, 12);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
@@ -154,7 +154,7 @@ public class MessageClient {
 
     public void read(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(2, 12);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);
