@@ -79,7 +79,7 @@ public class Response extends Resource {
 
                 Work.WorkRequest.Builder wb = Work.WorkRequest.newBuilder(); // message to be returned
 
-                hb.setNodeId(((PerChannelWorkQueue) sq).gerServerState().getConf().getNodeId());
+                hb.setNodeId(((PerChannelWorkQueue) sq).getState().getConf().getNodeId());
                 hb.setTime(((Work.WorkRequest) msg).getHeader().getTime());
                 hb.setDestination(Integer.parseInt(clientMessage.getHeader().getSourceHost().substring(0, clientMessage.getHeader().getSourceHost().indexOf('_'))));// wont be available in case of request from client. but can be determined based on log replication feature
                 hb.setSourceHost(clientMessage.getHeader().getSourceHost().substring(clientMessage.getHeader().getSourceHost().indexOf('_') + 1));

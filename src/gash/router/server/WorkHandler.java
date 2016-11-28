@@ -120,14 +120,29 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 //		System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
 //		System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
 //		System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
+
+
+
+
+
+
 		if(msg.getPayload().hasResponse()){
-			if(GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
-				Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
+			if(msg.getPayload().getResponse().getSuccess()) {
+				if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
+					Query.broadCast = false;
+					Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
+					Query.tempFileName = null;
+					Query.tempFile = null;
+
+					Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
 //				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
-				System.out.println("SENT BACK TO CLIENT BOSSSSaaa");
-				Query q = new Query();
-				Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
-				res.writeAndFlush(gms);
+					System.out.println("SENT BACK TO CLIENT BOSSSSaaa");
+					Query q = new Query();
+					Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
+					res.writeAndFlush(gms);
+				}
+			}else{
+
 			}
 		}else {
 			if (msg.hasBroadCast() && !msg.getBroadCast()) {
@@ -153,8 +168,11 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 
 								Global.GlobalHeader.Builder hb = Global.GlobalHeader.newBuilder();
 								hb.setTime(System.currentTimeMillis());
+
+								///SET TO MY CLUSTER ID AND DESTINATION ID
 								hb.setDestinationId(msg.getHeader().getDestination());
 								hb.setClusterId(msg.getHeader().getNodeId());
+								///END SET TO MY CLUSTER ID AND DESTINATION ID
 
 								Global.GlobalMessage.Builder gmb = Global.GlobalMessage.newBuilder();
 								gmb.setGlobalHeader(hb);
@@ -184,8 +202,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 
 								Global.GlobalHeader.Builder hb = Global.GlobalHeader.newBuilder();
 								hb.setTime(System.currentTimeMillis());
+								///SET TO MY CLUSTER ID AND DESTINATION ID
 								hb.setDestinationId(msg.getHeader().getDestination());
 								hb.setClusterId(msg.getHeader().getNodeId());
+								///END SET TO MY CLUSTER ID AND DESTINATION ID
 
 
 								Global.GlobalMessage.Builder gmb = Global.GlobalMessage.newBuilder();
@@ -248,6 +268,8 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 								Query.tempFileName = null;
 							}
 						}
+					}else{
+
 					}
 				}
 

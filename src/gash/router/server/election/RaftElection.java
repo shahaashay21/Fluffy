@@ -283,7 +283,7 @@ public class RaftElection implements gash.router.server.election.Election {
         //}
     }
 
-    private void startElection(){
+    public void startElection(){
 //        logger.info("Time Out!  Election declared by node: " + getNodeId() + " For Term " + (term+1));
         lastKnownBeat = System.currentTimeMillis();
         currentstate = RState.Candidate;
@@ -356,8 +356,7 @@ public class RaftElection implements gash.router.server.election.Election {
                             ch.writeAndFlush(sendAppendNotice());
                     }
                 else {
-                    boolean blnStartElection = RaftManager.getInstance()
-                            .assessCurrentState();
+                    boolean blnStartElection = RaftManager.getInstance().assessCurrentState();
                     if (blnStartElection) {
                         long now = System.currentTimeMillis();
                         if ((now - lastKnownBeat) > timeElection)

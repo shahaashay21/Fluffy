@@ -80,8 +80,10 @@ public class WorkInboundAppWorker extends Thread {
 						//EdgeMonitor emon = MessageServer.getEmon();
 						EdgeInfo ei = new EdgeInfo(req.getHeader().getNodeId(),"",req.getHeader().getSource());
 						ei.setChannel(sq.getChannel());
-						sq.gerServerState().getEmon().addToInbound(ei);
-						RaftManager.getInstance().assessCurrentState();
+						sq.getState().getEmon().addToInbound(ei);
+						if(RaftManager.getInstance().assessCurrentState()){
+							//RaftManager.getInstance().electionInstance().startElection();
+						}
 					} else if (payload.hasPing()) {
 						System.out.println("Got A ping message at Work");
 						new Ping(sq).handle(req);
@@ -100,7 +102,7 @@ public class WorkInboundAppWorker extends Thread {
 						// PrintUtil.printFailure(err);
 					} else if (payload.hasTask()) {
 						Work.Task t = payload.getTask();
-						sq.gerServerState().getTasks().addTask(t);
+						sq.getState().getTasks().addTask(t);
 					} else if (payload.hasState()) {
 						Work.WorkState s = payload.getState();
 					}

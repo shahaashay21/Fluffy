@@ -38,7 +38,7 @@ public class Task extends Resource {
             return;
         }
         Work.Task t = msg.getPayload().getTask();
-        ((PerChannelWorkQueue)sq).gerServerState().getTasks().addTask(t);
+        ((PerChannelWorkQueue)sq).getState().getTasks().addTask(t);
     }
 
 

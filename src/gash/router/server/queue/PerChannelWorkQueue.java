@@ -97,7 +97,7 @@ public class PerChannelWorkQueue implements ChannelQueue {
 		return channel;
 	}
 
-	public ServerState gerServerState(){
+	public ServerState getState(){
 		return state;
 	}
 

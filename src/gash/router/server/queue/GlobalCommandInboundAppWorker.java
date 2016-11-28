@@ -73,55 +73,42 @@ public class GlobalCommandInboundAppWorker extends Thread {
 			try {
 				// block until a message is enqueued
 				GeneratedMessage msg = sq.inboundWork.take();
-				boolean msgDropFlag;
-				System.out.println("Inbound work quue size "+sq.inboundWork.size());
-
-//				Global.GlobalMessage req1 = ((Global.GlobalMessage) msg);
-//
-//				if (req1.hasPing()) {
-//					System.out.println("Has Pingggggggggggggg");
-//					new Ping(sq).handle(req1);
-//				}
-				// process request and enqueue response
 
 				if(msg instanceof Global.GlobalMessage) {
-					//if (((Global.GlobalMessage) msg).getGlobalHeader().getClusterId() == sq.getRoutingConf().getClusterId()) {
-						//PrintUtil.printCommand((Pipe.CommandRequest) msg);
+
 					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 					System.out.println("Got A global message");
-					System.out.println("Inbound work quue size "+sq.inboundWork.size());
+					System.out.println("Inbound work queue size " + sq.inboundWork.size());
 
-					if(((Global.GlobalMessage) msg).getGlobalHeader().hasIntraCluster()){
-						if(((Global.GlobalMessage) msg).getGlobalHeader().getIntraCluster()){
-							if (req.hasPing()) {
+
+					//Has Ping
+					if (req.hasPing()) {
+						if (verifyLocalOrGlobal(req)) {
+							if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
 								System.out.println("Has Pingggggggggggggg");
 								new Ping(sq).handle(req);
-							} else if (req.hasRequest()) {
-								new Query(sq).handle(req);
-							} else if (req.hasMessage()) {
-								logger.info("Message is: " + req.getMessage());
 							} else {
-								logger.error("Unexpected message type. Yet to handle.");
+								for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
+									if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
+										if (ei.getChannel().isActive()) {
+											ei.getChannel().writeAndFlush(req);
+										}
+									}
+								}
 							}
+						} else {
+							sq.getState().getGemon().pushMessagesIntoCluster(req);
 						}
-					}else if(checkIfLeader()) {
-						if (req.hasPing()) {
-							if (verifyLocalOrGlobal(req)) {
-								System.out.println("Has Pingggggggggggggg");
-								new Ping(sq).handle(req);
-							} else {
-								//System.out.println("SQ   ->"+sq);
-								//System.out.println("State   ->"+sq.getState());
-								//System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
-								//System.out.println("Forwarding to cluster ");
-								//PrintUtil.printGlobalCommand(req);
-								sq.getState().getGemon().pushMessagesIntoCluster(req);
-							}
-						} else if (req.hasRequest()) {
-							if(reqDestinationIsNode(req)){
+					}
+
+
+					//Has Request
+					else if (req.hasRequest()) {
+						if (checkIfLeader()) {
+							if (checkClusterIdForOurRequest(req)) {
 								Common.Failure.Builder cf = Common.Failure.newBuilder();
 								cf.setId(1);
-								cf.setMessage("File "+req.getRequest().getFile().getFilename()+" not found.");
+								cf.setMessage("File " + req.getRequest().getFile().getFilename() + " not found.");
 
 								Common.Response.Builder crb = Common.Response.newBuilder();
 								crb.setRequestId(req.getRequest().getRequestId());
@@ -136,44 +123,58 @@ public class GlobalCommandInboundAppWorker extends Thread {
 								Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 								gm.setGlobalHeader(ghb);
 								gm.setResponse(crb);
-								if(GlobalCommandHandler.globalClientChannel.containsKey(req.getRequest().getRequestId())) {
+								if (GlobalCommandHandler.globalClientChannel.containsKey(req.getRequest().getRequestId())) {
 									Channel res = GlobalCommandHandler.globalClientChannel.get(req.getRequest().getRequestId());
 									//GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
 									System.out.println("SENT BACK TO CLIENT");
 									res.writeAndFlush(gm);
-								}else {
-									logger.info("Request ID not found in Hashmap for Request - RequestId:"+req.getRequest().getRequestId());
+								} else {
+									logger.info("Request ID not found in Hashmap for Request - RequestId:" + req.getRequest().getRequestId());
 								}
-							}else {
-								new Query(sq).handle(req);
+							} else if (verifyLocalOrGlobal(req)) {
+								if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
+									new Query(sq).handle(req);
+								} else {
+									for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
+										if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
+											if (ei.getChannel().isActive()) {
+												ei.getChannel().writeAndFlush(req);
+											}
+										}
+									}
+								}
+							} else {
+								sq.getState().getGemon().pushMessagesIntoCluster(req);
 							}
-						} else if (req.hasResponse()) {
-							if(reqDestinationIsNode(req)){
-								if(GlobalCommandHandler.globalClientChannel.containsKey(req.getResponse().getRequestId())) {
+						}
+					}
+
+
+
+					//Has Response
+					else if (req.hasResponse()) {
+						if (checkIfLeader()) {
+							if (verifyLocalOrGlobal(req)) {
+								if (GlobalCommandHandler.globalClientChannel.containsKey(req.getResponse().getRequestId())) {
 									Channel res = GlobalCommandHandler.globalClientChannel.get(req.getResponse().getRequestId());
 									//GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
 									System.out.println("SENT BACK TO CLIENT");
 									res.writeAndFlush(req);
-								}else {
-									logger.info("Request ID not found in Hashmap for Response - RequestId:"+req.getResponse().getRequestId());
+								} else {
+									logger.info("Request ID not found in Hashmap for Response - RequestId:" + req.getResponse().getRequestId());
 								}
-							}else{
+							} else {
 								sq.getState().getGemon().pushMessagesIntoCluster(req);
 							}
-						//}
-						//else{
-//							System.out.println("SQ   ->"+sq);
-//							System.out.println("State   ->"+sq.getState());
-//							System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
-						//	System.out.println("Forwarding to cluster ");
-							//PrintUtil.printGlobalCommand(req);
-//							sq.getState().getGemon().pushMessagesIntoCluster(req);
-						//}
-						} else if (req.hasMessage()) {
-							logger.info("Message is: " + req.getMessage());
-						} else {
-							logger.error("Unexpected message type. Yet to handle.");
 						}
+					}
+
+
+					//Has message
+					else if (req.hasMessage()) {
+						logger.info("Message is: " + req.getMessage());
+					} else {
+						logger.error("Unexpected message type. Yet to handle.");
 					}
 				}
 			}catch (InterruptedException e) {
@@ -190,14 +191,8 @@ public class GlobalCommandInboundAppWorker extends Thread {
 		}
 	}
 
-//	void forwardToClusterRouting(Global.GlobalMessage msg){
-//		for(RoutingConf.ClusterRoutingEntry cid : sq.getRoutingConf().getClusterRoutingEntryRouting()){
-//			channelInit(cid.getClusterHost(),cid.getClusterPort()).writeAndFlush(msg);
-//			//TODO error handle
-//		}
-//	}
 
-	public boolean reqDestinationIsNode(Global.GlobalMessage req){
+	public boolean checkClusterIdForOurRequest(Global.GlobalMessage req){
 		if(req.getGlobalHeader().getClusterId() == sq.getState().getConf().getClusterId()){
 			return true;
 		} else {
@@ -225,39 +220,12 @@ public class GlobalCommandInboundAppWorker extends Thread {
 		//if(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId())
 		boolean check = false;
 		for(RoutingConf.RoutingEntry e : sq.getRoutingConf().getRouting()){
-			if(e.getId() == sq.getRoutingConf().getNodeId()){
+			if(e.getId() == message.getGlobalHeader().getDestinationId()){
 				check = true;
 				break;
 			}
 		}
-	//		if(sq.getRoutingConf().getClusterId() == message.getGlobalHeader().getClusterId()){
-	//				return true;
-	//		}
 		return check;
 	}
 
-	public synchronized Channel channelInit(String host, int port)
-	{
-		try
-		{
-			group = new NioEventLoopGroup();
-			WorkInit si = new WorkInit(MessageServer.getEmon().getServerState(), false);
-			Bootstrap b = new Bootstrap();
-			b.group(group).channel(NioSocketChannel.class).handler(si);
-			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
-			b.option(ChannelOption.TCP_NODELAY, true);
-			b.option(ChannelOption.SO_KEEPALIVE, true);
-
-			// Make the connection attempt.
-			channelFuture = b.connect(host, port).syncUninterruptibly();
-			//channelFuture.channel().closeFuture().addListener(new EdgeDisconnectionListener(this,ei));
-
-		}
-		catch(Throwable ex)
-		{
-			logger.error("Error initializing channel: " + ex);
-			return null;
-		}
-		return channelFuture.channel();
-	}
 }

@@ -102,7 +102,7 @@ public class Ping extends Resource {
         PrintUtil.printWork(msg);
         
         
-        if(msg.getHeader().getDestination() == ((PerChannelWorkQueue)sq).gerServerState().getConf().getNodeId()){
+        if(msg.getHeader().getDestination() == ((PerChannelWorkQueue)sq).getState().getConf().getNodeId()){
             logger.debug("Ping for me: " + " from "+ msg.getHeader().getSourceHost());
         }
         else { //message doesn't belong to current node. Forward on other edges
