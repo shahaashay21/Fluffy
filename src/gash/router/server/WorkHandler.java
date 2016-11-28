@@ -112,7 +112,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 //	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
 		if(msg.hasFile()){
-//			logger.info("File Name "+ msg.getFile().getFilename());
+			logger.info("File Name "+ msg.getFile().getFilename());
 		}
 		if (msg.getPayload().hasQuery()){
 			workClientChannel.put(msg.getPayload().getQuery().getRequestId(), ctx.channel());
@@ -137,9 +137,21 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
 //				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
 							System.out.println("SENT BACK TO CLIENT BOSSSS");
-							Query q = new Query();
-							Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
-							res.writeAndFlush(gms);
+							System.out.println("FILE NAME"+ msg.getPayload().getResponse().getFile().getFilename());
+							System.out.println("Chunk Id NAME"+ msg.getPayload().getResponse().getFile().getChunkId());
+
+
+							Global.GlobalHeader.Builder hb = Global.GlobalHeader.newBuilder();
+							hb.setTime(System.currentTimeMillis());
+							hb.setDestinationId(msg.getHeader().getDestination());
+							hb.setClusterId(msg.getHeader().getNodeId());
+
+							Global.GlobalMessage.Builder gmb = Global.GlobalMessage.newBuilder();
+							gmb.setGlobalHeader(hb);
+							gmb.setResponse(msg.getPayload().getResponse());
+
+							//Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
+							res.writeAndFlush(gmb.build());
 						}
 					}else{
 						Query.broadCastMap.put(msg.getPayload().getResponse().getRequestId(), remainNodes-1);
@@ -149,24 +161,36 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 					if (msg.getPayload().getResponse().getSuccess()) {
 						Query.broadCast = false;
 						Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
-						Query.tempFileName = null;
-						Query.tempFile = null;
+
 
 						if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
 							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
 //				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
 							System.out.println("SENT BACK TO CLIENT BOSSSS");
-							Query q = new Query();
-							Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
-							res.writeAndFlush(gms);
+
+							System.out.println("FILE NAME"+ msg.getPayload().getResponse().getFile().getFilename());
+							System.out.println("Chunk Id NAME"+ msg.getPayload().getResponse().getFile().getChunkId());
+
+
+							Global.GlobalHeader.Builder hb = Global.GlobalHeader.newBuilder();
+							hb.setTime(System.currentTimeMillis());
+							hb.setDestinationId(msg.getHeader().getDestination());
+							hb.setClusterId(msg.getHeader().getNodeId());
+
+
+							Global.GlobalMessage.Builder gmb = Global.GlobalMessage.newBuilder();
+							gmb.setGlobalHeader(hb);
+							gmb.setResponse(msg.getPayload().getResponse());
+
+							res.writeAndFlush(gmb.build());
 						}
+						Query.tempFileName = null;
+						Query.tempFile = null;
 					}else{
 
 						if(msg.getPayload().hasResponse()){
 							System.out.println("GOTT INNNN RREEESSPPPOONNNSSEE TTYYYPPPEE file name:"+Query.tempFileName);
 						}
-
-
 
 
 						if(msg.getPayload().getQuery().getRequestType()==Common.RequestType.READ){

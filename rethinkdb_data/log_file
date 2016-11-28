@@ -1,0 +1,19 @@
+2016-11-27T21:37:32.707638000 40.042023s notice: Recursively removing directory /Users/aashayshah/Documents/A/275/final-Netty/rethinkdb_data/tmp
+2016-11-27T21:37:32.711583000 40.045973s notice: Initializing directory /Users/aashayshah/Documents/A/275/final-Netty/rethinkdb_data
+2016-11-27T21:37:32.711718000 40.046101s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/aashayshah/Documents/A/275/final-Netty/rethinkdb_data' did not already exist or is empty.)
+2016-11-27T21:37:32.711755000 40.046138s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
+2016-11-27T21:37:32.717896000 40.052280s notice: Running on Darwin 16.1.0 x86_64
+2016-11-27T21:37:32.717938000 40.052321s notice: Loading data from directory /Users/aashayshah/Documents/A/275/final-Netty/rethinkdb_data
+2016-11-27T21:37:32.847975000 40.182358s info: Automatically using cache size of 5686 MB
+2016-11-27T21:37:32.848402000 40.182785s notice: Listening for intracluster connections on port 29015
+2016-11-27T21:37:32.850103000 40.184487s notice: Listening for client driver connections on port 28015
+2016-11-27T21:37:32.850188000 40.184571s notice: Listening for administrative HTTP connections on port 8080
+2016-11-27T21:37:32.850190000 40.184573s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2016-11-27T21:37:32.850192000 40.184575s notice: Listening on driver addresses: 127.0.0.1, ::1
+2016-11-27T21:37:32.850194000 40.184577s notice: Listening on http addresses: 127.0.0.1, ::1
+2016-11-27T21:37:32.850197000 40.184579s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-11-27T21:37:32.850200000 40.184583s notice: Server ready, "Aashays_MacBook_Pro_local_yyv" c4e72c8c-3603-488e-ad17-fd89c368b9ea
+2016-11-27T21:37:32.859884000 40.194268s warn: Problem when checking for new versions of RethinkDB: HTTP request to update.rethinkdb.com failed.
+2016-11-27T21:42:45.187665000 352.544588s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Starting a new Raft election for term 1.
+2016-11-27T21:42:45.187934000 352.544858s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Added replica on this server.
+2016-11-27T21:42:45.205811000 352.562735s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: This server is Raft leader for term 1. Latest log index is 0.

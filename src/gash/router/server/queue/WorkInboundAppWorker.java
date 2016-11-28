@@ -77,10 +77,10 @@ public class WorkInboundAppWorker extends Thread {
 					if (payload.hasBeat()) {
 						//Work.Heartbeat hb = payload.getBeat();
 						logger.info("heartbeat from " + req.getHeader().getNodeId());
-						EdgeMonitor emon = MessageServer.getEmon();
+						//EdgeMonitor emon = MessageServer.getEmon();
 						EdgeInfo ei = new EdgeInfo(req.getHeader().getNodeId(),"",req.getHeader().getSource());
 						ei.setChannel(sq.getChannel());
-						emon.addToInbound(ei);
+						sq.gerServerState().getEmon().addToInbound(ei);
 						RaftManager.getInstance().assessCurrentState();
 					} else if (payload.hasPing()) {
 						System.out.println("Got A ping message at Work");

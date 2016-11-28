@@ -227,6 +227,7 @@ public class Query extends Resource {
             Common.File.Builder fb = Common.File.newBuilder();
             fb.setFilename(dataModel.getFileName());
             fb.setChunkId(dataModel.getChunkId());
+            System.out.println("CURRENT CHUNNK ID"+ dataModel.getChunkId());
             fb.setData(ByteString.copyFrom(dataModel.getData()));
             fb.setTotalNoOfChunks(dataModel.getChunkCount());
             rb.setFile(fb);
@@ -247,6 +248,7 @@ public class Query extends Resource {
         }else {
             broadCast = true;
             broadcastNodes = 0;
+            System.out.println("GOT IN FORWARD WORK CHANNEL");
             for (EdgeInfo ei : MessageServer.getEmon().getOutboundEdgeInfoList()) {
                 if (ei.getChannel() != null && ei.isActive()) {
                     String fileName = ((Global.GlobalMessage) msg).getResponse().getFile().getFilename();
