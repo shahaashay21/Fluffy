@@ -51,13 +51,13 @@ message Request {
 }
 
 message Response {
-    required string requestId = 6;// UUID which maps to a client request
+    required string requestId = 5;// UUID which maps to a client request
     required RequestType requestType = 1; //READ for now
     optional bool success = 2; //true When requested action is successfully (READ for now)
     oneof payload {
         Failure failure = 3;
         File file = 4; //Will be sent When READ/DELETE is success
-        string fileName = 5; //Will be sent When WRITE/UPDATE is success
+        string fileName = 6; //Will be sent When WRITE/UPDATE is success
     }
 }
 

@@ -222,6 +222,7 @@ public class Query extends Resource {
     private void forwardRequestOnWorkChannel1(GeneratedMessage msg, boolean globalCommandMessage, File newFile){
         if(globalCommandMessage){
             //////TODOO SEND MSG TO NEEL'S GLOBAL FORWARD
+            ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster((Global.GlobalMessage) msg);
         }else {
             for (EdgeInfo ei : MessageServer.getEmon().getOutboundEdgeInfoList()) {
                 if (ei.getChannel() != null && ei.isActive()) {
