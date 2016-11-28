@@ -90,7 +90,20 @@ public class GlobalCommandInboundAppWorker extends Thread {
 					System.out.println("Got A global message");
 					System.out.println("Inbound work quue size "+sq.inboundWork.size());
 
-					if(checkIfLeader()) {
+					if(((Global.GlobalMessage) msg).getGlobalHeader().hasIntraCluster()){
+						if(((Global.GlobalMessage) msg).getGlobalHeader().getIntraCluster()){
+							if (req.hasPing()) {
+								System.out.println("Has Pingggggggggggggg");
+								new Ping(sq).handle(req);
+							} else if (req.hasRequest()) {
+								new Query(sq).handle(req);
+							} else if (req.hasMessage()) {
+								logger.info("Message is: " + req.getMessage());
+							} else {
+								logger.error("Unexpected message type. Yet to handle.");
+							}
+						}
+					}else if(checkIfLeader()) {
 						//if(verifyLocalOrGlobal(req)) {
 							if (req.hasPing()) {
 								System.out.println("Has Pingggggggggggggg");

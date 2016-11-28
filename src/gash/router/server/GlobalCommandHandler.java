@@ -107,7 +107,7 @@ public class GlobalCommandHandler extends SimpleChannelInboundHandler<Global.Glo
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Global.GlobalMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());if(msg.hasRequest()) {
-		if(msg.hasRequest()) {
+		if(msg.hasRequest() && msg.getGlobalHeader().hasIntraCluster() && msg.getGlobalHeader().getIntraCluster()) {
 			System.out.println("SAVED CHANNEL IN GLOBAL HANDLER");
 			globalClientChannel.put(msg.getRequest().getRequestId(), ctx.channel());
 			System.out.println("GOT MSG TO ME GLOBALCOMMANDHANDLER");
