@@ -91,7 +91,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 					System.out.println("Inbound work quue size "+sq.inboundWork.size());
 
 					if(checkIfLeader()) {
-						if(verifyLocalOrGlobal(req)) {
+						//if(verifyLocalOrGlobal(req)) {
 							if (req.hasPing()) {
 								System.out.println("Has Pingggggggggggggg");
 								new Ping(sq).handle(req);
@@ -102,15 +102,15 @@ public class GlobalCommandInboundAppWorker extends Thread {
 							} else {
 								logger.error("Unexpected message type. Yet to handle.");
 							}
-						}
-						else{
+						//}
+						//else{
 //							System.out.println("SQ   ->"+sq);
 //							System.out.println("State   ->"+sq.getState());
 //							System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
-							System.out.println("Forwarding to cluster ");
+						//	System.out.println("Forwarding to cluster ");
 							//PrintUtil.printGlobalCommand(req);
-							sq.getState().getGemon().pushMessagesIntoCluster(req);
-						}
+						//	sq.getState().getGemon().pushMessagesIntoCluster(req);
+						//}
 					}
 				}
 			}catch (InterruptedException e) {
@@ -152,16 +152,12 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 	public boolean verifyLocalOrGlobal(Global.GlobalMessage message){
 		//if(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId())
-		boolean check = true;
-		for (RoutingConf.RoutingEntry e : sq.getRoutingConf().getRouting()){
-			if(e.getId() == message.getGlobalHeader().getDestinationId()){
-				check = false;
-				break;
-			}
+		if(sq.getRoutingConf().getClusterId() == message.getGlobalHeader().getClusterId()){
+				return true;
 		}
-		return !check;
-
+		return false;
 	}
+
 	public synchronized Channel channelInit(String host, int port)
 	{
 		try

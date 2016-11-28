@@ -54,6 +54,15 @@ public final class Global {
      * </pre>
      */
     int getDestinationId();
+
+    /**
+     * <code>optional bool intra_cluster = 9;</code>
+     */
+    boolean hasIntraCluster();
+    /**
+     * <code>optional bool intra_cluster = 9;</code>
+     */
+    boolean getIntraCluster();
   }
   /**
    * Protobuf type {@code GlobalHeader}
@@ -124,6 +133,11 @@ public final class Global {
             case 64: {
               bitField0_ |= 0x00000004;
               destinationId_ = input.readInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000008;
+              intraCluster_ = input.readBool();
               break;
             }
           }
@@ -227,10 +241,26 @@ public final class Global {
       return destinationId_;
     }
 
+    public static final int INTRA_CLUSTER_FIELD_NUMBER = 9;
+    private boolean intraCluster_;
+    /**
+     * <code>optional bool intra_cluster = 9;</code>
+     */
+    public boolean hasIntraCluster() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool intra_cluster = 9;</code>
+     */
+    public boolean getIntraCluster() {
+      return intraCluster_;
+    }
+
     private void initFields() {
       clusterId_ = 0;
       time_ = 0L;
       destinationId_ = 0;
+      intraCluster_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -262,6 +292,9 @@ public final class Global {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(8, destinationId_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(9, intraCluster_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -282,6 +315,10 @@ public final class Global {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(8, destinationId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(9, intraCluster_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -410,6 +447,8 @@ public final class Global {
         bitField0_ = (bitField0_ & ~0x00000002);
         destinationId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        intraCluster_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -450,6 +489,10 @@ public final class Global {
           to_bitField0_ |= 0x00000004;
         }
         result.destinationId_ = destinationId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.intraCluster_ = intraCluster_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -474,6 +517,9 @@ public final class Global {
         }
         if (other.hasDestinationId()) {
           setDestinationId(other.getDestinationId());
+        }
+        if (other.hasIntraCluster()) {
+          setIntraCluster(other.getIntraCluster());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -634,6 +680,38 @@ public final class Global {
       public Builder clearDestinationId() {
         bitField0_ = (bitField0_ & ~0x00000004);
         destinationId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean intraCluster_ ;
+      /**
+       * <code>optional bool intra_cluster = 9;</code>
+       */
+      public boolean hasIntraCluster() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool intra_cluster = 9;</code>
+       */
+      public boolean getIntraCluster() {
+        return intraCluster_;
+      }
+      /**
+       * <code>optional bool intra_cluster = 9;</code>
+       */
+      public Builder setIntraCluster(boolean value) {
+        bitField0_ |= 0x00000008;
+        intraCluster_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool intra_cluster = 9;</code>
+       */
+      public Builder clearIntraCluster() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        intraCluster_ = false;
         onChanged();
         return this;
       }
@@ -3727,18 +3805,19 @@ public final class Global {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014global.proto\032\014common.proto\"H\n\014GlobalHe" +
+      "\n\014global.proto\032\014common.proto\"_\n\014GlobalHe" +
       "ader\022\022\n\ncluster_id\030\001 \002(\005\022\014\n\004time\030\002 \002(\003\022\026" +
-      "\n\016destination_id\030\010 \001(\005\"\364\001\n\rGlobalMessage" +
-      "\022#\n\014globalHeader\030\001 \002(\0132\r.GlobalHeader\022\016\n" +
-      "\004ping\030\002 \001(\010H\000\022\021\n\007message\030\003 \001(\tH\000\022\033\n\007requ" +
-      "est\030\004 \001(\0132\010.RequestH\000\022\035\n\010response\030\005 \001(\0132" +
-      "\t.ResponseH\000\022*\n\022whoIsClusterLeader\030\006 \001(\013" +
-      "2\014.WhoIsLeaderH\000\022(\n\021clusterLeaderInfo\030\007 " +
-      "\001(\0132\013.LeaderInfoH\000B\t\n\007payload\"9\n\013WhoIsLe" +
-      "ader\022\023\n\013requesterIp\030\001 \002(\t\022\025\n\rrequesterPo",
-      "rt\030\002 \002(\005\"2\n\nLeaderInfo\022\020\n\010leaderIp\030\001 \002(\t" +
-      "\022\022\n\nleaderPort\030\002 \002(\005B\n\n\006globalH\001"
+      "\n\016destination_id\030\010 \001(\005\022\025\n\rintra_cluster\030" +
+      "\t \001(\010\"\364\001\n\rGlobalMessage\022#\n\014globalHeader\030" +
+      "\001 \002(\0132\r.GlobalHeader\022\016\n\004ping\030\002 \001(\010H\000\022\021\n\007" +
+      "message\030\003 \001(\tH\000\022\033\n\007request\030\004 \001(\0132\010.Reque" +
+      "stH\000\022\035\n\010response\030\005 \001(\0132\t.ResponseH\000\022*\n\022w" +
+      "hoIsClusterLeader\030\006 \001(\0132\014.WhoIsLeaderH\000\022" +
+      "(\n\021clusterLeaderInfo\030\007 \001(\0132\013.LeaderInfoH" +
+      "\000B\t\n\007payload\"9\n\013WhoIsLeader\022\023\n\013requester",
+      "Ip\030\001 \002(\t\022\025\n\rrequesterPort\030\002 \002(\005\"2\n\nLeade" +
+      "rInfo\022\020\n\010leaderIp\030\001 \002(\t\022\022\n\nleaderPort\030\002 " +
+      "\002(\005B\n\n\006globalH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3758,7 +3837,7 @@ public final class Global {
     internal_static_GlobalHeader_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_GlobalHeader_descriptor,
-        new java.lang.String[] { "ClusterId", "Time", "DestinationId", });
+        new java.lang.String[] { "ClusterId", "Time", "DestinationId", "IntraCluster", });
     internal_static_GlobalMessage_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_GlobalMessage_fieldAccessorTable = new

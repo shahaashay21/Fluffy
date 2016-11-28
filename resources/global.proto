@@ -7,6 +7,7 @@ message GlobalHeader {
     required int32 cluster_id = 1; //Own Cluster Id
     required int64 time = 2;
     optional int32 destination_id = 8; // ClusterId who has got Client Request
+    optional bool intra_cluster = 9;
 }
 
 message GlobalMessage {

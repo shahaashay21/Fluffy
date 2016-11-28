@@ -85,7 +85,7 @@ public class MessageClient {
 
     public void query(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(999, 1);
 
         Common.Request.Builder rb = Common.Request.newBuilder();
         rb.setRequestType(Common.RequestType.READ);
@@ -108,7 +108,7 @@ public class MessageClient {
     public void save(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(2, 12);
+        GlobalHeader.Builder hb = createHeader(1, 2);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
@@ -154,7 +154,7 @@ public class MessageClient {
 
     public void read(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(2, 12);
+        GlobalHeader.Builder hb = createHeader(1, 1);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);
@@ -178,7 +178,7 @@ public class MessageClient {
     }
 
     public void delete(String value){
-        GlobalHeader.Builder hb = createHeader(999, 5);
+        GlobalHeader.Builder hb = createHeader(1, 1);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);
@@ -214,11 +214,12 @@ public class MessageClient {
         return ++curID;
     }
 
-    public static GlobalHeader.Builder createHeader(int cluster_id, int distination_id) {
+    public static GlobalHeader.Builder createHeader(int cluster_id, int destination_id) {
         GlobalHeader.Builder hb = GlobalHeader.newBuilder();
         hb.setClusterId(cluster_id);
         hb.setTime(System.currentTimeMillis());
-        hb.setDestinationId(distination_id);
+        hb.setDestinationId(destination_id);
+        hb.setIntraCluster(true);
         return hb;
     }
 }
