@@ -56,6 +56,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 	protected boolean debug = false;
 	private ChannelQueue queue;
 	public static HashMap<String, Channel> workClientChannel = new HashMap<>();
+//	public static int remainNodes = 0;
 
 	public WorkHandler(ServerState state) {
 		if (state != null) {
@@ -111,21 +112,26 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 //	protected void channelRead0(ChannelHandlerContext ctx, GeneratedMessage msg) throws Exception {
 		//handleMessage(msg, ctx.channel());
 		if(msg.hasFile()){
-			logger.info("File Name "+ msg.getFile().getFilename());
+//			logger.info("File Name "+ msg.getFile().getFilename());
 		}
 		if (msg.getPayload().hasQuery()){
 			workClientChannel.put(msg.getPayload().getQuery().getRequestId(), ctx.channel());
 		}
-		System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
-		System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
-		System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
+//		System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
+//		System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
+//		System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
 		if(msg.hasBroadCast() && !msg.getBroadCast()){
+
+			System.out.println("GOOTTTTT RESSPPONNSSEE BRROAADDD NNOOODDDEEE");
 			if(Query.broadCast){
 				int remainNodes = Query.broadCastMap.get(msg.getPayload().getResponse().getRequestId());
 				if(remainNodes > 1) {
+					System.out.println("GOOTTTTT RESSPPONNSSEE OWWWNNN NNOOODDDEEE"+ remainNodes);
 					if (msg.getPayload().getResponse().getSuccess()) {
 						Query.broadCast = false;
 						Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
+						Query.tempFileName = null;
+						Query.tempFile = null;
 
 						if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
 							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
@@ -135,11 +141,16 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 							Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
 							res.writeAndFlush(gms);
 						}
+					}else{
+						Query.broadCastMap.put(msg.getPayload().getResponse().getRequestId(), remainNodes-1);
 					}
 				}else if(remainNodes == 1){
+					System.out.println("GOOTTTTT LLLASSSSTTT RREEEPPPLLLLYYYY");
 					if (msg.getPayload().getResponse().getSuccess()) {
 						Query.broadCast = false;
 						Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
+						Query.tempFileName = null;
+						Query.tempFile = null;
 
 						if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
 							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
@@ -151,7 +162,16 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 						}
 					}else{
 
+						if(msg.getPayload().hasResponse()){
+							System.out.println("GOTT INNNN RREEESSPPPOONNNSSEE TTYYYPPPEE file name:"+Query.tempFileName);
+						}
+
+
+
+
 						if(msg.getPayload().getQuery().getRequestType()==Common.RequestType.READ){
+							Query.broadCast = false;
+							Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
 							//ghb.setClusterId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
 							//ghb.set(clientMessage.getHeader().getSourceHost()); // would be used to return message back to client
 
@@ -160,9 +180,26 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 							Common.Request.Builder crb = Common.Request.newBuilder();
 							crb.setRequestId(msg.getPayload().getQuery().getRequestId());
 							crb.setRequestType(msg.getPayload().getQuery().getRequestType());
-							if(msg.getPayload().getQuery().hasFile()){
-								crb.setFile(msg.getPayload().getQuery().getFile());
-							}
+//							if(msg.getPayload().getQuery().hasFile()){
+//								System.out.println("Has File in broadcast");
+//								crb.setFile(msg.getPayload().getQuery().getFile());
+//							}else {
+//								System.out.println("DO not have File in broadcast");
+//
+//							}
+							//Common.File.Builder fb = Common.File.newBuilder();
+							//fb.setFilename(Query.tempFileName);
+
+//							if(Query.tempFileName!=null){
+//								System.out.println("FILE NAME "+ Query.tempFileName);
+//								fb.setFilename(Query.tempFileName);
+//								crb.setFile(fb);
+//							}else{
+							//	fb.setFilename(msg.getPayload().getResponse().getFailure().getFileName());
+							//}
+
+							System.out.println("SETTINNGG FIILLEE NNNAAAMMMEEE"+Query.tempFile.getFilename());
+							crb.setFile(Query.tempFile);
 
 							Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
 							ghb.setClusterId(msg.getHeader().getNodeId());
@@ -172,8 +209,9 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 							Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
 							cb.setGlobalHeader(ghb);
 							cb.setRequest(crb); // set the reponse to the client
-
+							System.out.println("FORWARDED TO NEXT CLUSTERRRRRRRRRRRRRRRRRRR");
 							state.getGemon().pushMessagesIntoCluster(cb.build());
+							Query.tempFileName = null;
 						}
 					}
 				}

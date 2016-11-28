@@ -26,6 +26,7 @@ message Failure {
     required int32 id = 1;
     optional int32 ref_id = 2;
     optional string message = 3;
+    optional string fileName = 4;
 }
 message File {
     optional int32 chunkId = 1;

@@ -6,6 +6,7 @@ import database.dao.RethinkDAO;
 import database.model.DataModel;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
+import gash.router.server.WorkHandler;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.queue.ChannelQueue;
 import gash.router.server.queue.PerChannelGlobalCommandQueue;
@@ -50,7 +51,7 @@ public class Query extends Resource {
                             for (DataModel dataModel : arrRespData) {
                                 logger.info("Response message in byte" + dataModel.getData());
                                 logger.info("LENGTH OF FILE IN QUERY IS " + dataModel.getData().length);
-                                Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId(), true);
+                                Common.Response response = getResponseMessageForGet(dataModel, query.getRequestId(), true, query.getFile().getFilename());
                                 generateResponseOntoIncomingChannel(msg, response, true);
                             }
                         }else{
@@ -118,10 +119,10 @@ public class Query extends Resource {
 //                                responsMessage = responsMessage + dataModel.getData().toString();
                                 logger.info("Response message in byte" + dataModel.getData());
                                 logger.info("LENGTH OF FILE IN QUERY IS " + dataModel.getData().length);
-                                response = getResponseMessageForGet(dataModel, query.getRequestId(), true);
+                                response = getResponseMessageForGet(dataModel, query.getRequestId(), true, msg.getPayload().getQuery().getFile().getFilename());
                             }
                         } else {
-                            response = getResponseMessageForGet(null, query.getRequestId(), false);
+                            response = getResponseMessageForGet(null, query.getRequestId(), false, msg.getPayload().getQuery().getFile().getFilename());
                         }
                         generateResponseOntoIncomingChannel(msg, response, false);
                     } catch (Exception e) {
@@ -205,7 +206,7 @@ public class Query extends Resource {
         return arrRespData;
     }
 
-    private Common.Response getResponseMessageForGet(DataModel dataModel, String reqId, Boolean suc ){
+    private Common.Response getResponseMessageForGet(DataModel dataModel, String reqId, Boolean suc, String fileName ){
 
         if(dataModel == null){
             Common.Response.Builder rb = Common.Response.newBuilder();
@@ -213,6 +214,7 @@ public class Query extends Resource {
             rb.setSuccess(suc);
             rb.setRequestId(reqId);
             Common.Failure.Builder failure = Common.Failure.newBuilder();
+            failure.setFileName(fileName);
             failure.setId(111);
             Common.File.Builder fb = Common.File.newBuilder();
             rb.setFailure(failure);
@@ -236,6 +238,8 @@ public class Query extends Resource {
     public static boolean broadCast = false;
     public static HashMap<String, Integer> broadCastMap = new HashMap<>();
     public static int broadcastNodes = 0;
+    public static String tempFileName;
+    public static File tempFile;
     private void forwardRequestOnWorkChannel1(GeneratedMessage msg, boolean forwardToGlobal, File newFile){
         if(forwardToGlobal){
             //////TODOO SEND MSG TO NEEL'S GLOBAL FORWARD
@@ -273,6 +277,9 @@ public class Query extends Resource {
 
                 }
             }
+//            WorkHandler.remainNodes = broadcastNodes;
+            tempFile = newFile;
+            tempFileName = newFile.getFilename();
             broadCastMap.put(((Global.GlobalMessage) msg).getRequest().getRequestId(), broadcastNodes);
         }
     }
