@@ -120,11 +120,13 @@ public class Query extends Resource {
                                 logger.info("Response message in byte" + dataModel.getData());
                                 logger.info("LENGTH OF FILE IN QUERY IS " + dataModel.getData().length);
                                 response = getResponseMessageForGet(dataModel, query.getRequestId(), true, msg.getPayload().getQuery().getFile().getFilename());
+                                generateResponseOntoIncomingChannel(msg, response, false);
                             }
                         } else {
                             response = getResponseMessageForGet(null, query.getRequestId(), false, msg.getPayload().getQuery().getFile().getFilename());
+                            generateResponseOntoIncomingChannel(msg, response, false);
                         }
-                        generateResponseOntoIncomingChannel(msg, response, false);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
