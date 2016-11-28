@@ -18,6 +18,7 @@ package gash.router.server.queue;
 import com.google.protobuf.GeneratedMessage;
 import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
+import gash.router.server.GlobalCommandHandler;
 import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
 import gash.router.server.WorkInit;
@@ -104,16 +105,60 @@ public class GlobalCommandInboundAppWorker extends Thread {
 							}
 						}
 					}else if(checkIfLeader()) {
-						//if(verifyLocalOrGlobal(req)) {
-							if (req.hasPing()) {
+						if (req.hasPing()) {
+							if (verifyLocalOrGlobal(req)) {
 								System.out.println("Has Pingggggggggggggg");
 								new Ping(sq).handle(req);
-							} else if (req.hasRequest()) {
-								new Query(sq).handle(req);
-							} else if (req.hasMessage()) {
-								logger.info("Message is: " + req.getMessage());
 							} else {
-								logger.error("Unexpected message type. Yet to handle.");
+								//System.out.println("SQ   ->"+sq);
+								//System.out.println("State   ->"+sq.getState());
+								//System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
+								//System.out.println("Forwarding to cluster ");
+								//PrintUtil.printGlobalCommand(req);
+								sq.getState().getGemon().pushMessagesIntoCluster(req);
+							}
+						} else if (req.hasRequest()) {
+							if(reqDestinationIsNode(req)){
+								Common.Failure.Builder cf = Common.Failure.newBuilder();
+								cf.setId(1);
+								cf.setMessage("File "+req.getRequest().getFile().getFilename()+" not found.");
+
+								Common.Response.Builder crb = Common.Response.newBuilder();
+								crb.setRequestId(req.getRequest().getRequestId());
+								crb.setRequestType(req.getRequest().getRequestType());
+								crb.setSuccess(false);
+								crb.setFailure(cf);
+
+								Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+								ghb.setClusterId(sq.getState().getConf().getClusterId());
+								ghb.setTime(req.getGlobalHeader().getTime());
+
+								Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+								gm.setGlobalHeader(ghb);
+								gm.setResponse(crb);
+								if(GlobalCommandHandler.globalClientChannel.containsKey(req.getRequest().getRequestId())) {
+									Channel res = GlobalCommandHandler.globalClientChannel.get(req.getRequest().getRequestId());
+									//GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
+									System.out.println("SENT BACK TO CLIENT");
+									res.writeAndFlush(gm);
+								}else {
+									logger.info("Request ID not found in Hashmap for Request - RequestId:"+req.getRequest().getRequestId());
+								}
+							}else {
+								new Query(sq).handle(req);
+							}
+						} else if (req.hasResponse()) {
+							if(reqDestinationIsNode(req)){
+								if(GlobalCommandHandler.globalClientChannel.containsKey(req.getResponse().getRequestId())) {
+									Channel res = GlobalCommandHandler.globalClientChannel.get(req.getResponse().getRequestId());
+									//GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
+									System.out.println("SENT BACK TO CLIENT");
+									res.writeAndFlush(req);
+								}else {
+									logger.info("Request ID not found in Hashmap for Response - RequestId:"+req.getResponse().getRequestId());
+								}
+							}else{
+								sq.getState().getGemon().pushMessagesIntoCluster(req);
 							}
 						//}
 						//else{
@@ -124,6 +169,11 @@ public class GlobalCommandInboundAppWorker extends Thread {
 							//PrintUtil.printGlobalCommand(req);
 //							sq.getState().getGemon().pushMessagesIntoCluster(req);
 						//}
+						} else if (req.hasMessage()) {
+							logger.info("Message is: " + req.getMessage());
+						} else {
+							logger.error("Unexpected message type. Yet to handle.");
+						}
 					}
 				}
 			}catch (InterruptedException e) {
@@ -147,6 +197,14 @@ public class GlobalCommandInboundAppWorker extends Thread {
 //		}
 //	}
 
+	public boolean reqDestinationIsNode(Global.GlobalMessage req){
+		if(req.getGlobalHeader().getClusterId() == sq.getState().getConf().getClusterId()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public boolean checkIfLeader(){
 		//RaftManager.getInstance().electionInstance() RaftManager.getInstance().electionInstance().isElectionInprogress() &&
 		if(RaftManager.getInstance().getLeaderNode() == null){
@@ -165,10 +223,17 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 	public boolean verifyLocalOrGlobal(Global.GlobalMessage message){
 		//if(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId())
-		if(sq.getRoutingConf().getClusterId() == message.getGlobalHeader().getClusterId()){
-				return true;
+		boolean check = false;
+		for(RoutingConf.RoutingEntry e : sq.getRoutingConf().getRouting()){
+			if(e.getId() == sq.getRoutingConf().getNodeId()){
+				check = true;
+				break;
+			}
 		}
-		return false;
+	//		if(sq.getRoutingConf().getClusterId() == message.getGlobalHeader().getClusterId()){
+	//				return true;
+	//		}
+		return check;
 	}
 
 	public synchronized Channel channelInit(String host, int port)
