@@ -19,6 +19,7 @@ package gash.router.server;
 import com.google.protobuf.GeneratedMessage;
 import gash.router.server.election.RaftManager;
 import gash.router.server.queue.ChannelQueue;
+import gash.router.server.queue.PerChannelGlobalCommandQueue;
 import gash.router.server.queue.QueueFactory;
 import gash.router.server.resources.Query;
 import global.Global;
@@ -115,38 +116,73 @@ public class WorkHandler extends SimpleChannelInboundHandler<Work.WorkRequest> {
 		if (msg.getPayload().hasQuery()){
 			workClientChannel.put(msg.getPayload().getQuery().getRequestId(), ctx.channel());
 		}
+		System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
+		System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
+		System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
 		if(msg.hasBroadCast() && !msg.getBroadCast()){
-			System.out.println("REQUEST ID: "+ msg.getPayload().getResponse().getRequestId());
-			System.out.println("CONTAIN OR NOT: "+ GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId()));
-			System.out.println("TYPE: "+ msg.getPayload().getResponse().getRequestType());
-			if(GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
-				Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
+			if(Query.broadCast){
+				int remainNodes = Query.broadCastMap.get(msg.getPayload().getResponse().getRequestId());
+				if(remainNodes > 1) {
+					if (msg.getPayload().getResponse().getSuccess()) {
+						Query.broadCast = false;
+						Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
+
+						if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
+							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
 //				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
-				System.out.println("SENT BACK TO CLIENT BOSSSS");
-				Query q = new Query();
-				Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
-				res.writeAndFlush(gms);
+							System.out.println("SENT BACK TO CLIENT BOSSSS");
+							Query q = new Query();
+							Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
+							res.writeAndFlush(gms);
+						}
+					}
+				}else if(remainNodes == 1){
+					if (msg.getPayload().getResponse().getSuccess()) {
+						Query.broadCast = false;
+						Query.broadCastMap.remove(msg.getPayload().getResponse().getRequestId());
+
+						if (GlobalCommandHandler.globalClientChannel.containsKey(msg.getPayload().getResponse().getRequestId())) {
+							Channel res = GlobalCommandHandler.globalClientChannel.get(msg.getPayload().getResponse().getRequestId());
+//				GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
+							System.out.println("SENT BACK TO CLIENT BOSSSS");
+							Query q = new Query();
+							Global.GlobalMessage gms = q.workToGlobalResponse(msg, msg.getFile());
+							res.writeAndFlush(gms);
+						}
+					}else{
+
+						if(msg.getPayload().getQuery().getRequestType()==Common.RequestType.READ){
+							//ghb.setClusterId(((PerChannelGlobalCommandQueue) sq).getRoutingConf().getNodeId());
+							//ghb.set(clientMessage.getHeader().getSourceHost()); // would be used to return message back to client
+
+							//((PerChannelGlobalCommandQueue) sq).enqueueResponse(cb.build(),null);
+
+							Common.Request.Builder crb = Common.Request.newBuilder();
+							crb.setRequestId(msg.getPayload().getQuery().getRequestId());
+							crb.setRequestType(msg.getPayload().getQuery().getRequestType());
+							if(msg.getPayload().getQuery().hasFile()){
+								crb.setFile(msg.getPayload().getQuery().getFile());
+							}
+
+							Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+							ghb.setClusterId(msg.getHeader().getNodeId());
+							ghb.setDestinationId(msg.getHeader().getDestination());// wont be available in case of request from client. but can be determined based on log replication feature
+							ghb.setTime(msg.getHeader().getTime());
+
+							Global.GlobalMessage.Builder cb = Global.GlobalMessage.newBuilder(); // message to be returned to actual client
+							cb.setGlobalHeader(ghb);
+							cb.setRequest(crb); // set the reponse to the client
+
+							state.getGemon().pushMessagesIntoCluster(cb.build());
+						}
+					}
+				}
 			}
+
+
 		}else {
 			queueInstance(ctx.channel(), state).enqueueRequest(msg, ctx.channel());
 		}
-//		if(msg instanceof Work.WorkRequest){
-//			//System.out.println(msg.getHeader().getNodeId());
-//			if(msg.getPayload().hasFile()){
-//				System.out.println(msg.getPayload().getFile().getFilename() + "GGOOOTTT IIITTTTTTT");
-//			}
-//			if(!msg.getPayload().getFile().getFilename().isEmpty()){
-//				System.out.println("FILE NNAMMEE" + msg.getPayload().getFile().getFilename());
-//				if(!msg.getPayload().getResponse().getRequestId().isEmpty()) {
-//					System.out.println("FILE ENNNNNAAMMMMEEE"+ msg.getPayload().getResponse().getFileName());
-//					System.out.println("HHEERRREETTT IISS  NONNDDDEEE IIIDDD " + msg.getPayload().getResponse().getRequestId());
-//				}
-//			}
-//			queueInstance(ctx.channel(),state).enqueueRequest(msg,ctx.channel());
-//		}else {
-////			System.out.println(msg);
-//			System.out.println("GOT MSG TO ME WWOROORRRKKKHHAANNNDDLLLEERR");
-//		}
 
 	}
 

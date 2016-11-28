@@ -122,7 +122,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 //							System.out.println("GEdge monitor: ->"+sq.getState().getGemon());
 						//	System.out.println("Forwarding to cluster ");
 							//PrintUtil.printGlobalCommand(req);
-						//	sq.getState().getGemon().pushMessagesIntoCluster(req);
+//							sq.getState().getGemon().pushMessagesIntoCluster(req);
 						//}
 					}
 				}

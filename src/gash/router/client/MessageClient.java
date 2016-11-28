@@ -108,7 +108,7 @@ public class MessageClient {
     public void save(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(1, 2);
+        GlobalHeader.Builder hb = createHeader(1, 1);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
