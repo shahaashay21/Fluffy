@@ -95,9 +95,14 @@ public class Query extends Resource {
 
             case UPDATE:
                 RethinkDAO UsersUpdate = new RethinkDAO("Users");
+                Integer updateResponse = UsersUpdate.updateFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
+                if(updateResponse > 0){
+                    Common.Response response = getResponseMessageForStore(query.getRequestId(), true);
+                    generateResponseOntoIncomingChannel(msg,response,true);
+                }else{
+                    logger.info("Rethink Update unsuccessful");
+                }
                 break;
-
-
             case DELETE:
                 RethinkDAO users = new RethinkDAO("Users");
                 JSONObject data = new JSONObject();

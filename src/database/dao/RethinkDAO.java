@@ -1,5 +1,6 @@
 package database.dao;
 
+import com.rethinkdb.gen.ast.Count;
 import com.rethinkdb.gen.ast.Delete;
 import com.rethinkdb.gen.ast.MakeArray;
 import com.rethinkdb.net.Cursor;
@@ -57,13 +58,16 @@ public class RethinkDAO {
 
         public Integer updateFile(String fileName, int chunkId, int chunkCount,  byte[] file){
             if(file.length != 0){
-                JSONObject fileNameObject = new JSONObject();
-                fileNameObject.put("fileName", fileName);
-                HashMap<String, Object> updatedData =  RethinkConnector.r.table(document).filter(fileNameObject).update(RethinkConnector.r.hashMap("fileName", fileName).with("chunkId", chunkId).with("chunkCount", chunkCount).with("file", RethinkConnector.r.binary(file))).run(conn.getConnection());
-                if(Integer.parseInt(updatedData.get("updated").toString()) > 0){
+                JSONObject data = new JSONObject();
+                data.put("fileName", fileName);
+                deleteFile(data);
+                int inserted = insertFile(fileName, chunkId, chunkCount, file);
+                if(inserted > 0){
                     return 1;
+                }else{
+                    return 0;
                 }
-                return 0;
+
             }else{
                 return 0;
             }
