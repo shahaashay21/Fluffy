@@ -58,19 +58,27 @@ public class Query extends Resource {
                             generateResponseOntoIncomingChannel(msg, response, true);
                         }
                     }else{
+                        System.out.println("NOT AVAILABLE WITH ME");
                         //forwardRequestOnWorkChannel1(msg, false, query.getFile());
                         if(msg.getGlobalHeader().hasIntraCluster() && msg.getGlobalHeader().getIntraCluster()){
+                            System.out.println("FROM INTRA CLUSTER REQUEST");
                             Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
                             Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
-                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
+                            ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+                            ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                            ghb.setTime(System.currentTimeMillis());
+//                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+//                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
 
                             gm.setRequest(msg.getRequest());
                             gm.setGlobalHeader(ghb);
-                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+                            ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+//                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
                         }else{
-                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+                            System.out.println("NOT FROM INTRA CLUSTER REQUEST");
+                            ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+//                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                         }
                     }
                 }catch(Exception e){
@@ -117,7 +125,7 @@ public class Query extends Resource {
                         Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
                         Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-                        ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+                        ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getGlobalConf().getClusterId());
                         ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
 
                         gm.setRequest(msg.getRequest());
