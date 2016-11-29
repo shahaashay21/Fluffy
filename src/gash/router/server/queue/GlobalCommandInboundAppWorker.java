@@ -111,11 +111,12 @@ public class GlobalCommandInboundAppWorker extends Thread {
 								System.out.println("ROUND TRIP FOR MY CLUSTER");
 								Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
-								if((req.getRequest().getRequestType() == Common.RequestType.WRITE) || (req.getRequest().getRequestType() == Common.RequestType.UPDATE)){
+								if((req.getRequest().getRequestType() == Common.RequestType.WRITE) || (req.getRequest().getRequestType() == Common.RequestType.UPDATE)
+										|| (req.getRequest().getRequestType() == Common.RequestType.DELETE) ){
 									Common.Response.Builder rb = Common.Response.newBuilder();
 									rb.setRequestType(req.getRequest().getRequestType());
 									rb.setSuccess(true);
-									System.out.println("File write/update success and send to client");
+									System.out.println("File "+req.getRequest().getRequestType()+" success and send to client");
 									rb.setRequestId(((Global.GlobalMessage) msg).getRequest().getRequestId());
 									rb.setFileName(req.getRequest().getFileName());
 									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();

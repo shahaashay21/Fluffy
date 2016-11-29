@@ -151,24 +151,27 @@ public class Query extends Resource {
                 Integer deleted = users.deleteFile(data);
                 if(deleted > 0){
                     System.out.println("Delete successful");
-                    Common.Response responseDelete = getResponseMessageForDelete(query.getRequestId(),true);
-                    generateResponseOntoIncomingChannel(msg,responseDelete,true);
+//                    Common.Response responseDelete = getResponseMessageForDelete(query.getRequestId(),true);
+//                    generateResponseOntoIncomingChannel(msg,responseDelete,true);
                 }else {
-                    if(msg.getGlobalHeader().hasIntraCluster() && msg.getGlobalHeader().getIntraCluster()){
-                        Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
-
-                        Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-                        ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getGlobalConf().getClusterId());
-                        ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
-
-                        gm.setRequest(msg.getRequest());
-                        gm.setGlobalHeader(ghb);
-                        ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
-                    }else{
-                        ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
-                    }
-                    //forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                    System.out.println("Delete unsuccessful");
                 }
+                if(msg.getGlobalHeader().getIntraCluster() && msg.getGlobalHeader().hasIntraCluster()){
+                    System.out.println("FROM direct client to CLUSTER update request");
+                    Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+                    ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                    ghb.setTime(System.currentTimeMillis());
+
+                    Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+                    gm.setRequest(msg.getRequest());
+                    gm.setGlobalHeader(ghb);
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+                }else {
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+                }
+
+                //forwardRequestOnWorkChannel1(msg, false, query.getFile());
                 break;
         }
     }
