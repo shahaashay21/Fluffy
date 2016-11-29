@@ -152,6 +152,53 @@ public class MessageClient {
         }
     }
 
+    public void update(String value) {
+        // construct the message to send
+        List<byte[]> arrayList = new ArrayList<>();
+        GlobalHeader.Builder hb = createHeader(1, 1);
+        Path path = Paths.get(value);
+        try {
+            byte[] data = Files.readAllBytes(path);
+//            arrayList = ResourceUtil.divideArray(data,1048576);
+
+            //NEW ONE
+            arrayList = ResourceUtil.divideArray(data,1049576);
+//            arrayList = ResourceUtil.divideArray(data,1010049576);
+//            FileOutputStream fileOutputStream = new FileOutputStream("/Users/aashayshah/Documents/A/275/final-Netty/Files/"+ path.getFileName().toString(), true);
+//            for(byte[] a : arrayList){
+//                fileOutputStream.write(a);
+//            }
+//            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < arrayList.size(); i++)
+        {
+            Common.File.Builder fb = Common.File.newBuilder();
+            System.out.println(path.getFileName().toString());
+            fb.setFilename(path.getFileName().toString());
+            fb.setData(ByteString.copyFrom(arrayList.get(i)));
+            fb.setChunkId(i);
+            fb.setTotalNoOfChunks(arrayList.size());
+            Common.Request.Builder rb = Common.Request.newBuilder();
+            rb.setRequestId("A1345");
+            rb.setRequestType(Common.RequestType.UPDATE);
+            rb.setFileName(path.getFileName().toString());
+            rb.setFile(fb);
+            GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
+            gmb.setGlobalHeader(hb);
+            gmb.setRequest(rb);
+
+            try {
+                // using queue
+                CommConnection.getInstance().enqueue(gmb.build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void read(String value) {
         // construct the message to send
         GlobalHeader.Builder hb = createHeader(1, 1);

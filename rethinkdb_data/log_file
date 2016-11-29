@@ -17,11 +17,18 @@
 2016-11-27T21:42:45.187665000 352.544588s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Starting a new Raft election for term 1.
 2016-11-27T21:42:45.187934000 352.544858s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Added replica on this server.
 2016-11-27T21:42:45.205811000 352.562735s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: This server is Raft leader for term 1. Latest log index is 0.
-2016-11-28T14:40:04.708888000 20.026789s notice: Recursively removing directory /Users/rahilvora/Desktop/newGitRepo/fluffy/rethinkdb_data/tmp
-2016-11-28T14:40:04.711176000 20.029083s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
-2016-11-28T14:40:04.728130000 20.046031s notice: Running on Darwin 16.1.0 x86_64
-2016-11-28T14:40:04.728212000 20.046112s notice: Loading data from directory /Users/rahilvora/Desktop/newGitRepo/fluffy/rethinkdb_data
-2016-11-28T14:40:04.748831000 20.066730s info: Automatically using cache size of 100 MB
-2016-11-28T14:40:04.748847000 20.066747s warn: Cache size does not leave much memory for server and query overhead (available memory: 382 MB).
-2016-11-28T14:40:04.748854000 20.066753s warn: Cache size is very low and may impact performance.
-2016-11-28T14:40:04.749484000 20.067383s error: TCP socket creation failed for port 29015: Address already in use.
+2016-11-28T10:31:07.343413000 40.044912s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
+2016-11-28T10:31:07.351082000 40.052554s notice: Running on Darwin 16.1.0 x86_64
+2016-11-28T10:31:07.351382000 40.052854s notice: Loading data from directory /Users/aashayshah/Documents/A/275/final-Netty/rethinkdb_data
+2016-11-28T10:31:07.401305000 40.102777s info: Automatically using cache size of 5205 MB
+2016-11-28T10:31:07.401838000 40.103310s notice: Listening for intracluster connections on port 29015
+2016-11-28T10:31:07.418168000 40.119640s notice: Listening for client driver connections on port 28015
+2016-11-28T10:31:07.418315000 40.119786s notice: Listening for administrative HTTP connections on port 8080
+2016-11-28T10:31:07.418316000 40.119788s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2016-11-28T10:31:07.418318000 40.119789s notice: Listening on driver addresses: 127.0.0.1, ::1
+2016-11-28T10:31:07.418319000 40.119791s notice: Listening on http addresses: 127.0.0.1, ::1
+2016-11-28T10:31:07.418326000 40.119797s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-11-28T10:31:07.418327000 40.119798s notice: Server ready, "Aashays_MacBook_Pro_local_yyv" c4e72c8c-3603-488e-ad17-fd89c368b9ea
+2016-11-28T10:31:07.428724000 40.130196s warn: Problem when checking for new versions of RethinkDB: HTTP request to update.rethinkdb.com failed.
+2016-11-28T10:31:09.345825000 42.047444s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Starting a new Raft election for term 2.
+2016-11-28T10:31:09.365613000 42.067232s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: This server is Raft leader for term 2. Latest log index is 2.
