@@ -26,15 +26,8 @@ public class Ping extends Resource {
             return;
         }
         System.out.println("Has Pingggggggggggggg");
-        if(msg.getGlobalHeader().getDestinationId() == ((PerChannelGlobalCommandQueue)sq).getRoutingConf().getNodeId()){
-            logger.info("ping from " + msg.getGlobalHeader().getClusterId());
-            System.out.println("Has Pingggggggggggggg in ifffffffffffff");
-        }
-        else{ //message doesn't belong to current node. Forward on other edges
-            forwardRequestOnWorkChannel(msg,true);
-        }
-
-
+        logger.info("ping from " + msg.getGlobalHeader().getClusterId());
+        System.out.println("Has Pingggggggggggggg in ifffffffffffff");
 
     }
 

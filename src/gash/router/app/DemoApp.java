@@ -112,49 +112,53 @@ public class DemoApp implements CommListener {
 		System.out.println("Got message from server");
 		if(msg.getResponse().getRequestType().toString().equals("READ")){
 			try {
-				System.out.println("CHUNK COUNT"+ msg.getResponse().getFile().getTotalNoOfChunks());
-				if(totalChunk == 0){
-					totalChunk = msg.getResponse().getFile().getTotalNoOfChunks();
-				}
-				if(totalChunk > intakeMessages.size()){
-					boolean repeatMessage = false;
-					for(Global.GlobalMessage tempMessage : intakeMessages){
-						if(msg.getResponse().getFile().getChunkId() == tempMessage.getResponse().getFile().getChunkId()){
-							repeatMessage = true;
+				if(msg.getResponse().getSuccess()) {
+					System.out.println("CHUNK COUNT" + msg.getResponse().getFile().getTotalNoOfChunks());
+					if (totalChunk == 0) {
+						totalChunk = msg.getResponse().getFile().getTotalNoOfChunks();
+					}
+					if (totalChunk > intakeMessages.size()) {
+						boolean repeatMessage = false;
+						for (Global.GlobalMessage tempMessage : intakeMessages) {
+							if (msg.getResponse().getFile().getChunkId() == tempMessage.getResponse().getFile().getChunkId()) {
+								repeatMessage = true;
+							}
+						}
+						if (!repeatMessage) {
+							intakeMessages.add(msg);
 						}
 					}
-					if(!repeatMessage) {
-						intakeMessages.add(msg);
-					}
-				}
 
 
-				if(intakeMessages.size() == totalChunk && intakeMessages.size() != 0) {
-					//Sorting of messages based on chunkId
-					Collections.sort(intakeMessages, new Comparator<Global.GlobalMessage>() {
-						@Override
-						public int compare(Global.GlobalMessage o1, Global.GlobalMessage o2) {
-							return o1.getResponse().getFile().getChunkId() - o2.getResponse().getFile().getChunkId();
+					if (intakeMessages.size() == totalChunk && intakeMessages.size() != 0) {
+						//Sorting of messages based on chunkId
+						Collections.sort(intakeMessages, new Comparator<Global.GlobalMessage>() {
+							@Override
+							public int compare(Global.GlobalMessage o1, Global.GlobalMessage o2) {
+								return o1.getResponse().getFile().getChunkId() - o2.getResponse().getFile().getChunkId();
+							}
+						});
+						for (Global.GlobalMessage eachMessage : intakeMessages) {
+							String newNameOfFile = (String) eachMessage.getResponse().getFile().getFilename().toString();
+
+							byte[] finalFile = eachMessage.getResponse().getFile().getData().toByteArray();
+
+							if (finalFile.length > 0 && newNameOfFile.length() > 0) {
+								System.out.println("Length of answers is: " + finalFile.length);
+								System.out.println(eachMessage.getResponse().getFile().getData());
+								System.out.println(eachMessage.getResponse().getFile().getData().toString());
+								System.out.println(eachMessage.getResponse().getFile().getFilename());
+
+								FileOutputStream fileOutputStream = new FileOutputStream("Files/" + newNameOfFile, true);
+								fileOutputStream.write(finalFile);
+								fileOutputStream.close();
+							}
 						}
-					});
-					for(Global.GlobalMessage eachMessage : intakeMessages) {
-						String newNameOfFile = (String) eachMessage.getResponse().getFile().getFilename().toString();
-
-						byte[] finalFile = eachMessage.getResponse().getFile().getData().toByteArray();
-
-						if (finalFile.length > 0 && newNameOfFile.length() > 0) {
-							System.out.println("Length of answers is: " + finalFile.length);
-							System.out.println(eachMessage.getResponse().getFile().getData());
-							System.out.println(eachMessage.getResponse().getFile().getData().toString());
-							System.out.println(eachMessage.getResponse().getFile().getFilename());
-
-							FileOutputStream fileOutputStream = new FileOutputStream("Files/" + newNameOfFile, true);
-							fileOutputStream.write(finalFile);
-							fileOutputStream.close();
-						}
+						intakeMessages.clear();
+						totalChunk = 0;
 					}
-					intakeMessages.clear();
-					totalChunk = 0;
+				}else {
+					System.out.println("File is not available");
 				}
 			}catch(Exception e){
 				e.printStackTrace();

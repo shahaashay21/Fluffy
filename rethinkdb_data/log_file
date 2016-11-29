@@ -17,3 +17,11 @@
 2016-11-27T21:42:45.187665000 352.544588s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Starting a new Raft election for term 1.
 2016-11-27T21:42:45.187934000 352.544858s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: Added replica on this server.
 2016-11-27T21:42:45.205811000 352.562735s info: Table 9156f7cc-443b-4a51-b132-cb9f6725085a: This server is Raft leader for term 1. Latest log index is 0.
+2016-11-28T14:40:04.708888000 20.026789s notice: Recursively removing directory /Users/rahilvora/Desktop/newGitRepo/fluffy/rethinkdb_data/tmp
+2016-11-28T14:40:04.711176000 20.029083s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
+2016-11-28T14:40:04.728130000 20.046031s notice: Running on Darwin 16.1.0 x86_64
+2016-11-28T14:40:04.728212000 20.046112s notice: Loading data from directory /Users/rahilvora/Desktop/newGitRepo/fluffy/rethinkdb_data
+2016-11-28T14:40:04.748831000 20.066730s info: Automatically using cache size of 100 MB
+2016-11-28T14:40:04.748847000 20.066747s warn: Cache size does not leave much memory for server and query overhead (available memory: 382 MB).
+2016-11-28T14:40:04.748854000 20.066753s warn: Cache size is very low and may impact performance.
+2016-11-28T14:40:04.749484000 20.067383s error: TCP socket creation failed for port 29015: Address already in use.

@@ -1,6 +1,6 @@
 /*
  * copyright 2015, gash
- * 
+ *
  * Gash licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
@@ -15,6 +15,7 @@
  */
 package gash.router.server.queue;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.GeneratedMessage;
 import gash.router.container.GlobalConf;
 import gash.router.container.RoutingConf;
@@ -78,74 +79,125 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 					Global.GlobalMessage req = ((Global.GlobalMessage) msg);
 					System.out.println("Got A global message");
+					System.out.println("got A global message request type" + req.getRequest().getRequestType());
+					System.out.println("got A global message response type" + req.getResponse().getRequestType());
 					System.out.println("Inbound work queue size " + sq.inboundWork.size());
 
 
-					//Has Ping
-					if (req.hasPing()) {
-						if (verifyLocalOrGlobal(req)) {
-							if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
-								System.out.println("Has Pingggggggggggggg");
-								new Ping(sq).handle(req);
-							} else {
-								for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
-									if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
-										if (ei.getChannel().isActive()) {
-											ei.getChannel().writeAndFlush(req);
-										}
-									}
-								}
-							}
-						} else {
-							sq.getState().getGemon().pushMessagesIntoCluster(req);
-						}
+					if(req.hasPing() && checkIfLeader()){
+						System.out.println("Has Pingggggggggggggg");
+						new Ping(sq).handle(req);
+						sq.getState().getGemon().pushMessagesIntoCluster(req);
+						//TODO
 					}
 
-
 					//Has Request
-					else if (req.hasRequest()) {
+					if (req.hasRequest()) {
+						System.out.println("GOT REQUEST FROM OTHER CLUSTER CLIENT");
 						if (checkIfLeader()) {
+							System.out.println("I AM LEADER");
 							if (checkClusterIdForOurRequest(req)) {
-								Common.Failure.Builder cf = Common.Failure.newBuilder();
-								cf.setId(1);
-								cf.setMessage("File " + req.getRequest().getFile().getFilename() + " not found.");
-
-								Common.Response.Builder crb = Common.Response.newBuilder();
-								crb.setRequestId(req.getRequest().getRequestId());
-								crb.setRequestType(req.getRequest().getRequestType());
-								crb.setSuccess(false);
-								crb.setFailure(cf);
-
-								Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-								ghb.setClusterId(sq.getState().getConf().getClusterId());
-								ghb.setTime(req.getGlobalHeader().getTime());
-
+								System.out.println("ROUND TRIP FOR MY CLUSTER");
 								Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
-								gm.setGlobalHeader(ghb);
-								gm.setResponse(crb);
+
+								if(req.getRequest().getRequestType() == Common.RequestType.WRITE){
+									Common.Response.Builder rb = Common.Response.newBuilder();
+									rb.setRequestType(Common.RequestType.READ);
+									rb.setSuccess(true);
+									System.out.println("File " + req.getRequest().getFileName() + " not found.");
+									rb.setRequestId(((Global.GlobalMessage) msg).getRequest().getRequestId());
+									rb.setFileName(req.getRequest().getFileName());
+									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+									ghb.setClusterId(req.getGlobalHeader().getClusterId());
+									ghb.setDestinationId(req.getGlobalHeader().getDestinationId());
+									ghb.setTime(System.currentTimeMillis());
+									gm.setGlobalHeader(ghb);
+									gm.setResponse(rb); // set the reponse to the client
+								}else {
+									Common.Failure.Builder cf = Common.Failure.newBuilder();
+									cf.setId(1);
+									cf.setMessage("File " + req.getRequest().getFileName() + " not found.");
+
+									Common.Response.Builder crb = Common.Response.newBuilder();
+									crb.setRequestId(req.getRequest().getRequestId());
+									crb.setRequestType(req.getRequest().getRequestType());
+									crb.setSuccess(false);
+									crb.setFailure(cf);
+
+									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+									ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
+									ghb.setTime(req.getGlobalHeader().getTime());
+
+									gm.setGlobalHeader(ghb);
+									gm.setResponse(crb);
+								}
+
 								if (GlobalCommandHandler.globalClientChannel.containsKey(req.getRequest().getRequestId())) {
 									Channel res = GlobalCommandHandler.globalClientChannel.get(req.getRequest().getRequestId());
 									//GlobalCommandHandler.globalClientChannel.remove(msg.getPayload().getResponse().getRequestId());
 									System.out.println("SENT BACK TO CLIENT");
-									res.writeAndFlush(gm);
+									res.writeAndFlush(gm.build());
 								} else {
 									logger.info("Request ID not found in Hashmap for Request - RequestId:" + req.getRequest().getRequestId());
 								}
+								//new Query(sq).handle(req);
 							} else if (verifyLocalOrGlobal(req)) {
-								if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
+								System.out.println("NOT FOR MY CLUSTER");
+								System.out.println("MSG DESTINATION ID" + req.getGlobalHeader().getDestinationId());
+								System.out.println("MY NODE ID" + sq.getState().getConf().getNodeId());
+
+
+							if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
 									new Query(sq).handle(req);
 								} else {
-									for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
-										if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
-											if (ei.getChannel().isActive()) {
-												ei.getChannel().writeAndFlush(req);
-											}
-										}
-									}
+									System.out.println("NOT FOR MY NODE ID");
+//									for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
+//										if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
+//											if (ei.getChannel().isActive()) {
+//												ei.getChannel().writeAndFlush(req);
+//											}
+//										}
+//									}
+
+//									Common.Failure.Builder cf = Common.Failure.newBuilder();
+//									cf.setId(1);
+//									cf.setMessage("File " + req.getRequest().getFile().getFilename() + " not found.");
+//
+//									Common.Response.Builder crb = Common.Response.newBuilder();
+//									crb.setRequestId(req.getRequest().getRequestId());
+//									crb.setRequestType(req.getRequest().getRequestType());
+//									crb.setSuccess(false);
+//									crb.setFailure(cf);
+//
+//									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+//									ghb.setClusterId(((Global.GlobalMessage) msg).getGlobalHeader().getClusterId());
+//									ghb.setDestinationId(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId());
+//									ghb.setTime(req.getGlobalHeader().getTime());
+//
+//									Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+//									gm.setGlobalHeader(ghb);
+//									gm.setResponse(crb);
+//									sq.getState().getGemon().pushMessagesIntoCluster(req);
+
+									Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+
+									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+									ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
+									ghb.setDestinationId(sq.getState().getConf().getNodeId());
+									ghb.setTime(System.currentTimeMillis());
+
+									gm.setRequest(req.getRequest());
+									gm.setGlobalHeader(ghb);
+									sq.getState().getGemon().pushMessagesIntoCluster(gm.build());
+//                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+//                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
 								}
 							} else {
-								sq.getState().getGemon().pushMessagesIntoCluster(req);
+								new Query(sq).handle(req);
+								//sq.getState().getGemon().pushMessagesIntoCluster(req);
 							}
+						}else{
+							System.out.println("I AM NOT A LEADER SO I WON'T PROCESS");
 						}
 					}
 
@@ -193,7 +245,9 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 
 	public boolean checkClusterIdForOurRequest(Global.GlobalMessage req){
-		if(req.getGlobalHeader().getClusterId() == sq.getState().getConf().getClusterId()){
+		System.out.println("MSG CLUSTER ID " + req.getGlobalHeader().getClusterId());
+		System.out.println("MY CLUSTER ID " + sq.getState().getGlobalConf().getClusterId());
+		if(req.getGlobalHeader().getClusterId() == sq.getState().getGlobalConf().getClusterId()){
 			return true;
 		} else {
 			return false;
@@ -224,6 +278,9 @@ public class GlobalCommandInboundAppWorker extends Thread {
 				check = true;
 				break;
 			}
+		}
+		if (message.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
+			check = true;
 		}
 		return check;
 	}

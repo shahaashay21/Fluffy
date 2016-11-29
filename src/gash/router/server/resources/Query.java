@@ -41,7 +41,7 @@ public class Query extends Resource {
 
         query = msg.getRequest();
         logger.info("GGGOOTTT RREEEQQUEESSTTT "+query.getRequestType());
-        logger.info("RREEEQQUEESSTTT iiissss"+query.getFile().getFilename());
+        logger.info("RREEEQQUEESSTTT iiissss"+query.getFileName());
         switch (query.getRequestType()) {
             case READ:
                 PrintUtil.printGlobalCommand(msg);
@@ -58,19 +58,28 @@ public class Query extends Resource {
                             generateResponseOntoIncomingChannel(msg, response, true);
                         }
                     }else{
+                        System.out.println("NOT AVAILABLE WITH ME");
                         //forwardRequestOnWorkChannel1(msg, false, query.getFile());
                         if(msg.getGlobalHeader().hasIntraCluster() && msg.getGlobalHeader().getIntraCluster()){
+                            System.out.println("FROM INTRA CLUSTER REQUEST");
                             Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
                             Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
-                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
+                            ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+                            ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                            ghb.setTime(System.currentTimeMillis());
+//                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+//                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
 
                             gm.setRequest(msg.getRequest());
                             gm.setGlobalHeader(ghb);
-                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+                            ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+//                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
                         }else{
-                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+                            System.out.println("NOT FROM INTRA CLUSTER REQUEST");
+
+                            ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+//                            ((PerChannelWorkQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                         }
                     }
                 }catch(Exception e){
@@ -84,11 +93,26 @@ public class Query extends Resource {
                 RethinkDAO Users = new RethinkDAO("Users");
                 Integer answer = Users.insertFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
                 if (answer > 0){
-                    Common.Response response = getResponseMessageForStore(query.getRequestId(), true);
-                    generateResponseOntoIncomingChannel(msg,response,true);
+                    logger.info("Rethink write successful");
+//                  ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
+//                  forwardRequestOnWorkChannel1(msg, false, query.getFile());
+
                 }else{
                     logger.info("Rethink write unsuccessful");
-//                        forwardRequestOnWorkChannel1(msg, false, query.getFile());
+                }
+                if(msg.getGlobalHeader().getIntraCluster() && msg.getGlobalHeader().hasIntraCluster()){
+                    System.out.println("FROM direct client to CLUSTER REQUEST");
+                    Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+                    ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                    ghb.setTime(System.currentTimeMillis());
+
+                    Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+                    gm.setRequest(msg.getRequest());
+                    gm.setGlobalHeader(ghb);
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+                }else {
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                 }
                 break;
 
@@ -103,13 +127,15 @@ public class Query extends Resource {
                     logger.info("Rethink Update unsuccessful");
                 }
                 break;
+
             case DELETE:
                 RethinkDAO users = new RethinkDAO("Users");
                 JSONObject data = new JSONObject();
-                data.put("fileName", query.getFile().getFilename());
-
+                data.put("fileName", query.getFileName());
+                System.out.println("In Query.DDDEEEEELLLLEEEETTTTTEEEEEE");
                 Integer deleted = users.deleteFile(data);
                 if(deleted > 0){
+                    System.out.println("Delete successful");
                     Common.Response responseDelete = getResponseMessageForDelete(query.getRequestId(),true);
                     generateResponseOntoIncomingChannel(msg,responseDelete,true);
                 }else {
@@ -117,7 +143,7 @@ public class Query extends Resource {
                         Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
                         Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-                        ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+                        ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getGlobalConf().getClusterId());
                         ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
 
                         gm.setRequest(msg.getRequest());
@@ -133,7 +159,7 @@ public class Query extends Resource {
     }
 
     public void handleCommand(Pipe.CommandRequest msg) {
-        
+
     }
 
     public void handleWork(Work.WorkRequest msg) {
@@ -239,7 +265,7 @@ public class Query extends Resource {
         //logic to check if it belongs to current node
         RethinkDAO users = new RethinkDAO("Users");
         JSONObject fileNameFilter = new JSONObject();
-        fileNameFilter.put("fileName", query.getFile().getFilename());
+        fileNameFilter.put("fileName", query.getFileName());
         ArrayList<DataModel> arrRespData = users.fetchFile(fileNameFilter);
         return arrRespData;
     }
@@ -441,6 +467,7 @@ public class Query extends Resource {
                 }
             }
             else {
+                System.out.println("Sent global response message to cluster");
                 ((PerChannelGlobalCommandQueue) sq).getState().getGemon().pushMessagesIntoCluster(cb.build());
             }
         }
