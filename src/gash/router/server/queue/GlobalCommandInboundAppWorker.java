@@ -86,8 +86,19 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 					if(req.hasPing() && checkIfLeader()){
 						System.out.println("Has Pingggggggggggggg");
+
+						Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+						ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
+						ghb.setDestinationId(sq.getState().getConf().getNodeId());
+						ghb.setTime(System.currentTimeMillis());
+
+						Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+						//gm.setRequest(req.getRequest());
+						gm.setGlobalHeader(ghb);
+						gm.setPing(true);
+
 						new Ping(sq).handle(req);
-						sq.getState().getGemon().pushMessagesIntoCluster(req);
+						sq.getState().getGemon().pushMessagesIntoCluster(gm.build());
 						//TODO
 					}
 
@@ -100,11 +111,11 @@ public class GlobalCommandInboundAppWorker extends Thread {
 								System.out.println("ROUND TRIP FOR MY CLUSTER");
 								Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
 
-								if(req.getRequest().getRequestType() == Common.RequestType.WRITE){
+								if((req.getRequest().getRequestType() == Common.RequestType.WRITE) || (req.getRequest().getRequestType() == Common.RequestType.UPDATE)){
 									Common.Response.Builder rb = Common.Response.newBuilder();
-									rb.setRequestType(Common.RequestType.READ);
+									rb.setRequestType(req.getRequest().getRequestType());
 									rb.setSuccess(true);
-									System.out.println("File " + req.getRequest().getFileName() + " not found.");
+									System.out.println("File write/update success and send to client");
 									rb.setRequestId(((Global.GlobalMessage) msg).getRequest().getRequestId());
 									rb.setFileName(req.getRequest().getFileName());
 									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
@@ -113,7 +124,7 @@ public class GlobalCommandInboundAppWorker extends Thread {
 									ghb.setTime(System.currentTimeMillis());
 									gm.setGlobalHeader(ghb);
 									gm.setResponse(rb); // set the reponse to the client
-								}else {
+								} else {
 									Common.Failure.Builder cf = Common.Failure.newBuilder();
 									cf.setId(1);
 									cf.setMessage("File " + req.getRequest().getFileName() + " not found.");
