@@ -121,10 +121,25 @@ public class Query extends Resource {
                 RethinkDAO UsersUpdate = new RethinkDAO("Users");
                 Integer updateResponse = UsersUpdate.updateFile(query.getFile().getFilename(), query.getFile().getChunkId(), query.getFile().getTotalNoOfChunks(), query.getFile().getData().toByteArray());
                 if(updateResponse > 0){
-                    Common.Response response = getResponseMessageForStore(query.getRequestId(), true);
-                    generateResponseOntoIncomingChannel(msg,response,true);
+                    logger.info("Rethink update successful");
+//                    Common.Response response = getResponseMessageForStore(query.getRequestId(), true);
+//                    generateResponseOntoIncomingChannel(msg,response,true);
                 }else{
                     logger.info("Rethink Update unsuccessful");
+                }
+                if(msg.getGlobalHeader().getIntraCluster() && msg.getGlobalHeader().hasIntraCluster()){
+                    System.out.println("FROM direct client to CLUSTER update request");
+                    Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+                    ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                    ghb.setTime(System.currentTimeMillis());
+
+                    Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+                    gm.setRequest(msg.getRequest());
+                    gm.setGlobalHeader(ghb);
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(gm.build());
+                }else {
+                    ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                 }
                 break;
 
