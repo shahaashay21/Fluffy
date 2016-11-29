@@ -39,7 +39,7 @@ public class GlobalEdgeMonitor {
 	}
 	
 	public void pushMessagesIntoCluster(GlobalMessage global){
-		int counter=3;
+		int counter=8;
 		System.out.println("GlobalOutbound size : "+globalOutboud.getMap().size());
 		for(Map.Entry<String,GlobalEdgeInfo> geientry: globalOutboud.getMap().entrySet()){
 			System.out.println("Counter at GlobalOubound "+counter);

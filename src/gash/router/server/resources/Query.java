@@ -66,7 +66,8 @@ public class Query extends Resource {
 
                             Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
                             ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
-                            ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+//                            ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                            ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
                             ghb.setTime(System.currentTimeMillis());
 //                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
 //                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
@@ -104,7 +105,8 @@ public class Query extends Resource {
                     System.out.println("FROM direct client to CLUSTER REQUEST");
                     Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
                     ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
-                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
+//                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
                     ghb.setTime(System.currentTimeMillis());
 
                     Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
@@ -131,7 +133,8 @@ public class Query extends Resource {
                     System.out.println("FROM direct client to CLUSTER update request");
                     Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
                     ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
-                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+//                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
                     ghb.setTime(System.currentTimeMillis());
 
                     Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
@@ -160,7 +163,8 @@ public class Query extends Resource {
                     System.out.println("FROM direct client to CLUSTER update request");
                     Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
                     ghb.setClusterId(((PerChannelGlobalCommandQueue)sq).getState().getGlobalConf().getClusterId());
-                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+//                    ghb.setDestinationId(((PerChannelGlobalCommandQueue)sq).getState().getConf().getNodeId());
+
                     ghb.setTime(System.currentTimeMillis());
 
                     Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
@@ -170,7 +174,7 @@ public class Query extends Resource {
                 }else {
                     ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                 }
-
+                ((PerChannelGlobalCommandQueue)sq).getState().getGemon().pushMessagesIntoCluster(msg);
                 //forwardRequestOnWorkChannel1(msg, false, query.getFile());
                 break;
         }

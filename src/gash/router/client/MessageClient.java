@@ -52,7 +52,7 @@ public class MessageClient {
 
     public void ping() {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(2, 12);
+        GlobalHeader.Builder hb = createHeader(6, 3);
 
         GlobalMessage.Builder rb = GlobalMessage.newBuilder();
         rb.setGlobalHeader(hb);
@@ -67,7 +67,7 @@ public class MessageClient {
 
     public void message(String message) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
 
         GlobalMessage.Builder gmb = GlobalMessage.newBuilder();
         gmb.setGlobalHeader(hb);
@@ -85,7 +85,7 @@ public class MessageClient {
 
     public void query(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(999, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
 
         Common.Request.Builder rb = Common.Request.newBuilder();
         rb.setRequestType(Common.RequestType.READ);
@@ -108,7 +108,7 @@ public class MessageClient {
     public void save(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(1, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
@@ -155,7 +155,7 @@ public class MessageClient {
     public void update(String value) {
         // construct the message to send
         List<byte[]> arrayList = new ArrayList<>();
-        GlobalHeader.Builder hb = createHeader(1, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
         Path path = Paths.get(value);
         try {
             byte[] data = Files.readAllBytes(path);
@@ -201,7 +201,7 @@ public class MessageClient {
 
     public void read(String value) {
         // construct the message to send
-        GlobalHeader.Builder hb = createHeader(1, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);
@@ -225,7 +225,7 @@ public class MessageClient {
     }
 
     public void delete(String value){
-        GlobalHeader.Builder hb = createHeader(1, 1);
+        GlobalHeader.Builder hb = createHeader(99, 99);
 
         Common.File.Builder fb = Common.File.newBuilder();
         fb.setFilename(value);

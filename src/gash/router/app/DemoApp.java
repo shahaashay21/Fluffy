@@ -211,14 +211,15 @@ public class DemoApp implements CommListener {
 //			da.read("239-1.mov");
 //			da.read("5mb.pdf");
 			//da.save("/Users/rahilvora/Desktop/RahilVora.pdf");
-			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb.mp4");
+//			da.save("/Users/aashayshah/Desktop/Check-Files/SampleVideo_2mb_copy.mp4");
+//			da.save("/Users/aashayshah/Desktop/Check-Files/TEAM-6.3.zip");
 //			da.save("/Users/aashayshah/Desktop/239-1.mov");
 //			da.save("/Users/aashayshah/Desktop/chapter2.pdf");
 //			da.save("/Users/aashayshah/Desktop/Check-Files/5mb.pdf");
-//			da.delete("SampleVideo_2mb.mp4");
+			da.delete("TEAM-6.3.zip");
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();
-			Thread.sleep(10 * 1000);
+			Thread.sleep(2000 * 1000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

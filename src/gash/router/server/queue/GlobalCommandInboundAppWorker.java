@@ -86,10 +86,14 @@ public class GlobalCommandInboundAppWorker extends Thread {
 
 					if(req.hasPing() && checkIfLeader()){
 						System.out.println("Has Pingggggggggggggg");
+						System.out.println("Destination ID"+ req.getGlobalHeader().getDestinationId());
+						System.out.println("Our CLUSTER ID"+ sq.getState().getGlobalConf().getClusterId());
 
 						Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
 						ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
-						ghb.setDestinationId(sq.getState().getConf().getNodeId());
+//						ghb.setClusterId(req.getGlobalHeader().getClusterId());
+//						ghb.setDestinationId(sq.getState().getConf().getNodeId());
+						ghb.setDestinationId(req.getGlobalHeader().getDestinationId());
 						ghb.setTime(System.currentTimeMillis());
 
 						Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
@@ -153,57 +157,57 @@ public class GlobalCommandInboundAppWorker extends Thread {
 									logger.info("Request ID not found in Hashmap for Request - RequestId:" + req.getRequest().getRequestId());
 								}
 								//new Query(sq).handle(req);
-							} else if (verifyLocalOrGlobal(req)) {
-								System.out.println("NOT FOR MY CLUSTER");
-								System.out.println("MSG DESTINATION ID" + req.getGlobalHeader().getDestinationId());
-								System.out.println("MY NODE ID" + sq.getState().getConf().getNodeId());
-
-
-							if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
-									new Query(sq).handle(req);
-								} else {
-									System.out.println("NOT FOR MY NODE ID");
-//									for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
-//										if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
-//											if (ei.getChannel().isActive()) {
-//												ei.getChannel().writeAndFlush(req);
-//											}
-//										}
-//									}
-
-//									Common.Failure.Builder cf = Common.Failure.newBuilder();
-//									cf.setId(1);
-//									cf.setMessage("File " + req.getRequest().getFile().getFilename() + " not found.");
+//							} else if (verifyLocalOrGlobal(req)) {
+//								System.out.println("NOT FOR MY CLUSTER");
+//								System.out.println("MSG DESTINATION ID" + req.getGlobalHeader().getDestinationId());
+//								System.out.println("MY NODE ID" + sq.getState().getConf().getNodeId());
 //
-//									Common.Response.Builder crb = Common.Response.newBuilder();
-//									crb.setRequestId(req.getRequest().getRequestId());
-//									crb.setRequestType(req.getRequest().getRequestType());
-//									crb.setSuccess(false);
-//									crb.setFailure(cf);
 //
-//									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-//									ghb.setClusterId(((Global.GlobalMessage) msg).getGlobalHeader().getClusterId());
-//									ghb.setDestinationId(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId());
-//									ghb.setTime(req.getGlobalHeader().getTime());
+//							if (req.getGlobalHeader().getDestinationId() == sq.getState().getConf().getNodeId()) {
+//									new Query(sq).handle(req);
+//								} else {
+//									System.out.println("NOT FOR MY NODE ID");
+////									for (EdgeInfo ei : sq.getState().getEmon().getOutboundEdgeInfoList()) {
+////										if (ei.getRef() == req.getGlobalHeader().getDestinationId()) {
+////											if (ei.getChannel().isActive()) {
+////												ei.getChannel().writeAndFlush(req);
+////											}
+////										}
+////									}
+//
+////									Common.Failure.Builder cf = Common.Failure.newBuilder();
+////									cf.setId(1);
+////									cf.setMessage("File " + req.getRequest().getFile().getFilename() + " not found.");
+////
+////									Common.Response.Builder crb = Common.Response.newBuilder();
+////									crb.setRequestId(req.getRequest().getRequestId());
+////									crb.setRequestType(req.getRequest().getRequestType());
+////									crb.setSuccess(false);
+////									crb.setFailure(cf);
+////
+////									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+////									ghb.setClusterId(((Global.GlobalMessage) msg).getGlobalHeader().getClusterId());
+////									ghb.setDestinationId(((Global.GlobalMessage) msg).getGlobalHeader().getDestinationId());
+////									ghb.setTime(req.getGlobalHeader().getTime());
+////
+////									Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+////									gm.setGlobalHeader(ghb);
+////									gm.setResponse(crb);
+////									sq.getState().getGemon().pushMessagesIntoCluster(req);
 //
 //									Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
+//
+//									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
+//									ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
+//									ghb.setDestinationId(sq.getState().getConf().getNodeId());
+//									ghb.setTime(System.currentTimeMillis());
+//
+//									gm.setRequest(req.getRequest());
 //									gm.setGlobalHeader(ghb);
-//									gm.setResponse(crb);
-//									sq.getState().getGemon().pushMessagesIntoCluster(req);
-
-									Global.GlobalMessage.Builder gm = Global.GlobalMessage.newBuilder();
-
-									Global.GlobalHeader.Builder ghb = Global.GlobalHeader.newBuilder();
-									ghb.setClusterId(sq.getState().getGlobalConf().getClusterId());
-									ghb.setDestinationId(sq.getState().getConf().getNodeId());
-									ghb.setTime(System.currentTimeMillis());
-
-									gm.setRequest(req.getRequest());
-									gm.setGlobalHeader(ghb);
-									sq.getState().getGemon().pushMessagesIntoCluster(gm.build());
-//                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
-//                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
-								}
+//									sq.getState().getGemon().pushMessagesIntoCluster(gm.build());
+////                            ghb.setClusterId(((PerChannelWorkQueue)sq).getState().getConf().getClusterId());
+////                            ghb.setDestinationId(((PerChannelWorkQueue)sq).getState().getConf().getNodeId());
+//								}
 							} else {
 								new Query(sq).handle(req);
 								//sq.getState().getGemon().pushMessagesIntoCluster(req);
